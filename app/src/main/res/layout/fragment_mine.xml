@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:orientation="vertical">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_mine"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="我的"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar_mine"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/blue_color"
+            android:layout_width="fill_parent"
+            android:layout_height="?actionBarSize"
+            android:background="@color/colorPrimary" />
+
+        <RelativeLayout
+            android:id="@+id/rl_header"
+            android:layout_width="fill_parent"
+            android:layout_height="155.0dip"
+            android:background="@color/transparent">
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="77.5dip"
+                android:background="@drawable/home_background" />
+
+            <ImageView
+                android:id="@+id/user_icon"
+                android:layout_width="80.0dip"
+                android:layout_height="80.0dip"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/spacePrimary"
+                android:src="@drawable/home_head_default" />
+
+            <TextView
+                android:id="@+id/tv_account"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/user_icon"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/dp8"
+                android:text="@string/loginstr"
+                android:textColor="@color/listview_item_click_blue_color"
+                android:textSize="17.0sp" />
+
+            <TextView
+                android:id="@+id/tv_profession"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_account"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/dp2"
+                android:textColor="@color/textColorGray"
+                android:textSize="@dimen/sp13" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1.0px"
+            android:background="@color/gray_line_color" />
+
+    </LinearLayout>
+
+</RelativeLayout>
