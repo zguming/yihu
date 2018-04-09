@@ -13,33 +13,25 @@ import com.unnamed.b.atv.model.TreeNode;
  * Created by Bogdan Melnychuk on 2/15/15.
  */
 //androidTreeListView一级列表适配器
-public class SelectableHeaderHolder extends TreeNode.BaseNodeViewHolder<SelectableHeaderHolder.IconTreeItem> {
+public class SelectableHeader2Holder extends TreeNode.BaseNodeViewHolder<SelectableHeader2Holder.IconTreeItem> {
     private TextView tvValue;
-    private ImageView arrowView;
 
-    public SelectableHeaderHolder(Context context) {
+    public SelectableHeader2Holder(Context context) {
         super(context);
     }
 
     @Override
     public View createNodeView(final TreeNode node, IconTreeItem value) {
         final LayoutInflater inflater = LayoutInflater.from(context);
-        final View view = inflater.inflate(R.layout.layout_selectable_header, null, false);
+        final View view = inflater.inflate(R.layout.layout_selectable_header2, null, false);
 
         tvValue = (TextView) view.findViewById(R.id.node_value);
         tvValue.setText(value.text);
 
-        arrowView =  view.findViewById(R.id.arrow_icon);
 
         return view;
     }
 
-    @Override
-    //箭头的转换
-    public void toggle(boolean active) {
-        super.toggle(active);
-        arrowView.setImageResource(active ? R.drawable.ic_arrow_down : R.drawable.ic_arrow_right_small);
-    }
 
     public static class IconTreeItem {
         public String text;

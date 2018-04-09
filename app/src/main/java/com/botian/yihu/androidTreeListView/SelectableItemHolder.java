@@ -11,6 +11,7 @@ import com.unnamed.b.atv.model.TreeNode;
 /**
  * Created by Bogdan Melnychuk on 2/15/15.
  */
+//androidTreeListView二级列表适配器
 public class SelectableItemHolder extends TreeNode.BaseNodeViewHolder<String> {
     private TextView tvValue;
 
@@ -25,18 +26,12 @@ public class SelectableItemHolder extends TreeNode.BaseNodeViewHolder<String> {
 
         tvValue = (TextView) view.findViewById(R.id.node_value);
         tvValue.setText(value);
-
+        //最后一个item隐藏 下垂直线
         if (node.isLastChild()) {
             view.findViewById(R.id.bot_line).setVisibility(View.INVISIBLE);
+            view.findViewById(R.id.bottom_line).setVisibility(View.VISIBLE);
         }
 
         return view;
     }
-
-
-    /*@Override
-    public void toggleSelectionMode(boolean editModeEnabled) {
-        nodeSelector.setVisibility(editModeEnabled ? View.VISIBLE : View.GONE);
-        nodeSelector.setChecked(mNode.isSelected());
-    }*/
 }

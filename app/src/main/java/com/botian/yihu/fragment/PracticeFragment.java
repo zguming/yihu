@@ -1,4 +1,4 @@
-package com.botian.yihu;
+package com.botian.yihu.fragment;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -10,11 +10,12 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.botian.yihu.GlideImageLoader;
+import com.botian.yihu.R;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -25,7 +26,7 @@ import butterknife.Unbinder;
 /**
  * Created by Administrator on 2018/1/12 0012.
  */
-
+//练习
 public class PracticeFragment extends Fragment {
 
 

@@ -1,4 +1,4 @@
-package com.botian.yihu;
+package com.botian.yihu.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,10 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.botian.yihu.R;
+
 /**
  * Created by Administrator on 2018/1/31 0031.
  */
-
+//直播
 public class LiveFragment extends Fragment {
 
     @Nullable

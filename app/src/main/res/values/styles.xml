@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorPrimary</item>
     </style>
     <style name="PracticeFragmentTheme" parent="AppTheme">
     </style>
@@ -16,5 +16,16 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_centerVertical">true</item>
+    </style>
+    <style name="get_return_code_style">
+        <item name="android:textSize">14.0sp</item>
+        <item name="android:textColor">@drawable/select_get_return_code_text</item>
+        <item name="android:background">@drawable/get_return_code_btn_style</item>
+        <item name="android:padding">5.0dip</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">33.0dip</item>
+        <item name="android:layout_marginLeft">15.0dip</item>
+        <item name="android:layout_marginRight">15.0dip</item>
+        <item name="android:layout_marginBottom">5.0dip</item>
     </style>
 </resources>

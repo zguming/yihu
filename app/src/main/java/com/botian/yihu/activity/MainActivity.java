@@ -1,4 +1,4 @@
-package com.botian.yihu;
+package com.botian.yihu.activity;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -8,7 +8,13 @@ import android.os.Bundle;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
-
+import com.botian.yihu.R;
+import com.botian.yihu.fragment.LiveFragment;
+import com.botian.yihu.fragment.MineFragment;
+import com.botian.yihu.fragment.NewsFragment;
+import com.botian.yihu.fragment.PracticeFragment;
+import com.botian.yihu.fragment.VideoFragment;
+//主界面
 public class MainActivity extends AppCompatActivity implements BottomNavigationBar.OnTabSelectedListener{
     private VideoFragment mVideoFragment;
     private MineFragment mMineFragment;

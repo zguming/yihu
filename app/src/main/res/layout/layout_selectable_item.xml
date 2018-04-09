@@ -2,40 +2,38 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:minHeight="48dp"
-    android:paddingLeft="10dp"
     android:background="?android:attr/selectableItemBackground"
-    android:layout_height="match_parent">
+    android:layout_height="30dp">
 
     <LinearLayout
-        android:layout_marginLeft="28dp"
-        android:layout_alignWithParentIfMissing="true"
-        android:orientation="vertical"
         android:id="@+id/picture_wrapper"
         android:layout_width="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_height="wrap_content">
+        android:layout_height="30dp"
+        android:layout_marginLeft="45dp"
+        android:orientation="vertical">
 
         <View
             android:id="@+id/top_line"
-            android:background="#12558C"
-            android:layout_gravity="center_horizontal"
             android:layout_width="1dp"
-            android:layout_height="16dp" />
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
+            android:background="#12558C" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxHeight="14dp"
+            android:id="@+id/circle_solid_blue"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
             android:adjustViewBounds="true"
             android:src="@drawable/circle_solid_blue" />
 
         <View
             android:id="@+id/bot_line"
-            android:background="#12558C"
-            android:layout_gravity="center_horizontal"
             android:layout_width="1dp"
-            android:layout_height="16dp" />
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
+            android:background="#12558C" />
     </LinearLayout>
 
     <TextView
@@ -46,4 +44,17 @@
         android:id="@+id/node_value"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1.0px"
+        android:layout_toRightOf="@id/picture_wrapper"
+        android:background="@color/gray_line_color"
+        android:layout_alignParentBottom="true" />
+    <View
+        android:id="@+id/bottom_line"
+        android:layout_width="fill_parent"
+        android:layout_height="1.0px"
+        android:background="@color/gray_line_color"
+        android:visibility="invisible"
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>
