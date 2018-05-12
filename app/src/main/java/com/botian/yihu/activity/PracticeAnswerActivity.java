@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -71,6 +72,8 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
         ObserverOnNextListener<PracticeAnswer> listener = new ObserverOnNextListener<PracticeAnswer>() {
             @Override
             public void onNext(PracticeAnswer data) {
+                Log.d("TAG", "onNext:data.11111 "+data.getMsg());
+                Log.e("MainActivity", "doOnNext:" + Thread.currentThread().getName());
                 practiceList = data.getData();
                 viewsList = new ArrayList<View>();
                 initView();
@@ -99,9 +102,10 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
         for (int i = 0; i < practiceList.size(); i++) {
             View view = LayoutInflater.from(this).inflate(R.layout.item_answer, null, false);
             TextView cailiao = view.findViewById(R.id.cailiao);
-            //if(!practiceList.get(i).getMaterial().equals("")){
-                //cailiao.setText(practiceList.get(i).getMaterial());
-            //}
+            if(practiceList.get(i).getMaterial() != null){
+                cailiao.setText(practiceList.get(i).getMaterial());
+                cailiao.setVisibility(View.VISIBLE);
+            }
             TextView timu = view.findViewById(R.id.timu);
             ImageView imageView = view.findViewById(R.id.imageview);
             TextView current = view.findViewById(R.id.current_num);

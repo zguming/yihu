@@ -1,5 +1,7 @@
 package com.botian.yihu.api;
 
+import android.util.Log;
+
 import com.botian.yihu.MyObserver;
 import com.botian.yihu.ProgressObserver;
 import com.botian.yihu.data.ChapterPracticeListBean;
@@ -21,7 +23,6 @@ import com.botian.yihu.data.ZanBean;
 import com.botian.yihu.data.Material;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,9 +31,9 @@ import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.BiFunction;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+
 public class ApiMethods {
 
     /**
@@ -44,19 +45,22 @@ public class ApiMethods {
                 .compose(rxApp.<Long>bindToLifecycle())
                 .subscribe(observer);
     }
-    //zip 操作符，实现多个接口数据共同更新 UI,PracticeAnswerActivity专用
-    private static void ApiSubscribeZip(Observable observable1, Observable observable2,Observer observer, RxAppCompatActivity rxApp) {
-        Observable.zip(observable1, observable2, new BiFunction<PracticeAnswer, Material, Material>() {
-            @Override
-            public Material apply(PracticeAnswer practiceAnswer,  Material material) throws Exception {
-                List<Material.DataBean> list = new ArrayList<>();
 
-                Material.DataBean aaa=new Material.DataBean();
+    //zip 操作符，实现多个接口数据共同更新 UI,PracticeAnswerActivity专用
+    private static void ApiSubscribeZip(Observable observable1, Observable observable2, final Observer observer, RxAppCompatActivity rxApp) {
+        final String[] cailiao = new String[1];
+        final List<PracticeAnswer.DataBean> practiceList= new ArrayList<>();
+        Observable.zip(observable1, observable2, new BiFunction<PracticeAnswer, Material, List<Material.DataBean>>() {
+            @Override
+            public List<Material.DataBean> apply(PracticeAnswer practiceAnswer, Material material) throws Exception {
+                practiceList.addAll(practiceAnswer.getData());
+                List<Material.DataBean> list = new ArrayList<>();
+                Material.DataBean aaa = new Material.DataBean();
                 aaa.setId(22);
                 aaa.setLitpic("");
                 aaa.setCreate_time("");
                 aaa.setStatus(1);
-                aaa.setTitle("");
+                aaa.setTitle("你好啊啊 啊啊啊 啊");
                 aaa.setTypeid(1);
                 aaa.setUpdate_time("");
                 list.add(aaa);
@@ -64,33 +68,68 @@ public class ApiMethods {
                 list.add(aaa);
                 list.add(aaa);
                 material.setData(list);
-                return material;
+                return list;
             }
-        }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(rxApp.<Long>bindToLifecycle())
-                .doOnNext(new Consumer<Material>() {
+        })
+                //.doOnNext(new Consumer<Material>() {
+                //@Override
+                //public void accept(Material material) throws Exception {
+
+                //}
+                //})
+                .flatMap(new Function<List<Material.DataBean>, ObservableSource<Material.DataBean>>() {
+
                     @Override
-                    public void accept(Material material) throws Exception {
+                    public ObservableSource<Material.DataBean> apply(List<Material.DataBean> material) throws Exception {
+                        //if (material.getData().size()>0){
+                        return Observable.fromIterable(material);
+                        //return Api.getApiService().getPracticeStuff("", material.get(0).getTypeid()+"");
+
+                        //}
+                        //return null;
+                    }
+                })
+                .flatMap(new Function<Material.DataBean, ObservableSource<PracticeAnswer>>() {
+                    @Override
+                    public ObservableSource<PracticeAnswer> apply(Material.DataBean material) throws Exception {
+                        //if (material.getData().size()>0){
+                        Log.e("和你", "doOnNext:" + Thread.currentThread().getName());
+                        cailiao[0] =material.getTitle();
+                        return Api.getApiService().getPracticeStuff("", material.getTypeid()+"");
 
                     }
                 })
-                .observeOn(Schedulers.io()) // 回到 io 线程去处理获取材料题的请求
-                .flatMap(new Function<Material, ObservableSource<PracticeAnswer>>() {
-
+                .map(new Function<PracticeAnswer, PracticeAnswer>() {
                     @Override
-                    public ObservableSource<PracticeAnswer> apply( Material material) throws Exception {
-                        if (material.getData().size()>0){
-                                return Api.getApiService().getPracticeStuff("", material.getData().get(0).getId()+"");
-
+                    public PracticeAnswer apply(PracticeAnswer practiceAnswer) throws Exception {
+                        //if (material.getData().size()>0){
+                        Log.e("工程", "doOnNext:" + Thread.currentThread().getName());
+                        List<PracticeAnswer.DataBean> list=new ArrayList<>();
+                        list.addAll(practiceAnswer.getData());
+                        for (int i=0;i<list.size();i++){
+                            list.get(i).setMaterial(cailiao[0]);
                         }
-                        return null;
+                        practiceList.addAll(list);
+                        practiceAnswer.setData(practiceList);
+                        
+                        return  practiceAnswer;
 
                     }
                 })
+                /*.observeOn(Schedulers.newThread()) //指定doOnNext执行线程是新线程
+                .doOnNext(new Consumer<PracticeAnswer>() {
+                    @Override
+                    public void accept(PracticeAnswer practiceAnswer) throws Exception {
+                        Log.d("TAG", "accept:yyy军阀LDA三分 ");
+                        Log.e("MainActivity", "doOnNext:" + Thread.currentThread().getName());
+                    }
+                })*/
+                .subscribeOn(Schedulers.io())
+                .compose(rxApp.<Long>bindToLifecycle())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }
+
 
     /**
      * 用于获取验证码
@@ -152,14 +191,16 @@ public class ApiMethods {
      * 用于请求章节练习题&章节练习材料标题
      */
     public static void getPracticeAnswer(ProgressObserver<PracticeAnswer> observer, String typeid, RxAppCompatActivity rxApp) {
-        ApiSubscribeZip(Api.getApiService().getPracticeAnswer("", typeid),Api.getApiService().getPracticeMterial("", typeid), observer, rxApp);
+        ApiSubscribeZip(Api.getApiService().getPracticeAnswer("", typeid), Api.getApiService().getPracticeMterial("", typeid), observer, rxApp);
     }
+
     /**
      * 用于请求章节练习材料题
      */
     public static void getPracticeStuff(ProgressObserver<PracticeAnswer> observer, String typeid, RxAppCompatActivity rxApp) {
         //ApiSubscribeZip(Api.getApiService().getPracticeStuff("", typeid), observer, rxApp);
     }
+
     /**
      * 用于请求章节练习二级列表
      */
