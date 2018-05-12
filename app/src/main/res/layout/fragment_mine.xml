@@ -41,8 +41,7 @@
             <RelativeLayout
                 android:id="@+id/rl_header"
                 android:layout_width="fill_parent"
-                android:layout_height="155.0dip"
-                android:background="@color/transparent">
+                android:layout_height="155.0dip">
 
                 <ImageView
                     android:layout_width="fill_parent"

@@ -30,9 +30,11 @@ public class ProgressDialogHandler extends Handler {
         if (pd == null) {
             //pd = new ProgressDialog(context);
             pd = new XProgressDialog(context, "请稍后..", XProgressDialog.THEME_CIRCLE_PROGRESS);
-
-            pd.setCancelable(cancelable);
-
+            //pd = new XProgressDialog(context,XProgressDialog.THEME_CIRCLE_PROGRESS);
+            //mProgressDialog.setTitle("标题");
+            //pd.setMessage("内容");
+            //mProgressDialog.show();
+            //pd.setCancelable(cancelable);
             if (cancelable) {
                 pd.setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
@@ -44,6 +46,7 @@ public class ProgressDialogHandler extends Handler {
 
             if (!pd.isShowing()) {
                 pd.show();
+                pd.setCancelable(cancelable);
             }
         }
     }

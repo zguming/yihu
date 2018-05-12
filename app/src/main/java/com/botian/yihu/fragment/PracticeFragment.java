@@ -1,5 +1,8 @@
 package com.botian.yihu.fragment;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,15 +12,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.botian.yihu.GlideImageLoader;
 import com.botian.yihu.R;
+import com.botian.yihu.activity.ChapterPracticeListActivity;
+import com.botian.yihu.activity.ChapterPracticeOneActivity;
+import com.botian.yihu.activity.MyCollectActivity;
+import com.botian.yihu.activity.WrongActivity;
+import com.botian.yihu.view.SubjectSelectActivity;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -28,7 +33,6 @@ import butterknife.Unbinder;
  */
 //练习
 public class PracticeFragment extends Fragment {
-
 
     @BindView(R.id.tv_collect)
     TextView tvCollect;
@@ -51,8 +55,28 @@ public class PracticeFragment extends Fragment {
     TextView titleSwitch;
     @BindView(R.id.banner)
     Banner banner;
-
+    @BindView(R.id.my_subject)
+    TextView mySubject;
+    @BindView(R.id.tv_chapter_practice)
+    TextView tvChapterPractice;
+    @BindView(R.id.tv_high_test)
+    TextView tvHighTest;
+    @BindView(R.id.rl_high_exams)
+    RelativeLayout rlHighExams;
+    @BindView(R.id.tv_practice_exam)
+    TextView tvPracticeExam;
+    @BindView(R.id.rl_practice_exam)
+    RelativeLayout rlPracticeExam;
+    @BindView(R.id.tv_calendar_years_exams)
+    TextView tvCalendarYearsExams;
+    @BindView(R.id.rl_calendar_year_exams)
+    RelativeLayout rlCalendarYearExams;
+    @BindView(R.id.tv_forecast_exams)
+    TextView tvForecastExams;
+    @BindView(R.id.rl_forecast_exams)
+    RelativeLayout rlForecastExams;
     private View view;
+    private SharedPreferences pref;
 
     @Nullable
     @Override
@@ -115,6 +139,13 @@ public class PracticeFragment extends Fragment {
         return fragment;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        pref=this.getActivity().getSharedPreferences("subjectSelectData", Context.MODE_PRIVATE);
+        String subjectName=pref.getString("subjectName","护士执业");
+        mySubject.setText(subjectName);
+    }
 
     @Override
     public void onDestroyView() {
@@ -122,23 +153,30 @@ public class PracticeFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.tv_collect, R.id.tv_wrong, R.id.tv_notes, R.id.tv_pay})
+    @OnClick({R.id.tv_collect, R.id.tv_wrong, R.id.tv_notes, R.id.tv_pay, R.id.title_switch, R.id.rl_chapter_practice})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_collect:
+                Intent intent2=new Intent(getActivity(), MyCollectActivity.class);
+                startActivity(intent2);
                 break;
             case R.id.tv_wrong:
+                Intent intent1=new Intent(getActivity(), WrongActivity.class);
+                startActivity(intent1);
                 break;
             case R.id.tv_notes:
                 break;
             case R.id.tv_pay:
                 break;
+            case R.id.title_switch:
+                Intent intent = new Intent(getActivity(), SubjectSelectActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.rl_chapter_practice:
+                Intent intent9 = new Intent(getActivity(), ChapterPracticeListActivity.class);
+                startActivity(intent9);
+                break;
         }
     }
-
-    @OnClick(R.id.rl_chapter_practice)
-    public void onViewClicked() {
-    }
-
 
 }

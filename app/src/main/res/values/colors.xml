@@ -60,7 +60,6 @@
     <color name="buttom_line_nt">#ff494949</color>
     <color name="button_material_dark">#ff5a595b</color>
     <color name="button_material_light">#ffd6d7d7</color>
-    <color name="c1">#fff1f1f1</color>
     <color name="c10">#ffe79e99</color>
     <color name="c11">#ffffe8e7</color>
     <color name="c12">#ffffffff</color>
@@ -71,12 +70,9 @@
     <color name="c17">#ff252525</color>
     <color name="c18">#ffe8e8e8</color>
     <color name="c19">#ffe11c00</color>
-    <color name="c2">#ffeeeeee</color>
     <color name="c20">#ff1f1f1f</color>
     <color name="c21">#fff28f25</color>
     <color name="c22">#ff86ba63</color>
-    <color name="c3">#ffdedede</color>
-    <color name="c4">#ffcecece</color>
     <color name="c5">#ff9b9b9b</color>
     <color name="c6">#ff646464</color>
     <color name="c7">#ff383838</color>
@@ -315,7 +311,6 @@
     <color name="topicTypeBg_day">@color/GrayBackground</color>
     <color name="topicTypeBg_night">#ff292a2e</color>
     <color name="translucent_background">#00000000</color>
-    <color name="transparent">#00000000</color>
     <color name="transparentGrayBackground">#95f4f4f4</color>
     <color name="transparent_b2000000">#b2000000</color>
     <color name="triangle">#ff4794ed</color>
@@ -449,4 +444,18 @@
     <color name="yellow_ffb400">#ffffb400</color>
     <color name="yellow_fff800">#fffff800</color>
     <color name="blue">#ff1086f4</color>
+    <color name="listview_children_item">#f4f4f4</color>
+    <color name="listview_parent_item">#ffffff</color>
+    <color name="bottom_line_blue">#018fff</color>
+    <color name="lianxi_bg">#fff7f7f7</color>
+    <color name="light_gray">#ffeaeaef</color>
+    <color name="answer_dialog_color1">#ff9a9a9a</color>
+    <color name="wite">#ffffffff</color>
+    <color name="vip_kuaidaoqi">#ffc1c0c0</color>
+    <color name="fontcolor_3">#ff777778</color>
+    <color name="bgcolor_2">#ff018fff</color>
+    <color name="topcolor">#f5f6fa</color>
+    <color name="correct">#4ec1a8</color>
+    <color name="false1">#ff5a5a</color>
+    <color name="xxx">#f0eeee</color>
 </resources>

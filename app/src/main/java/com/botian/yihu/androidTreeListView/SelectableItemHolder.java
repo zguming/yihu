@@ -31,7 +31,6 @@ public class SelectableItemHolder extends TreeNode.BaseNodeViewHolder<String> {
             view.findViewById(R.id.bot_line).setVisibility(View.INVISIBLE);
             view.findViewById(R.id.bottom_line).setVisibility(View.VISIBLE);
         }
-
         return view;
     }
 }

@@ -2,9 +2,10 @@ package com.botian.yihu.presenter;
 
 import android.content.Context;
 
-import com.botian.yihu.bean.LoginBean;
+import com.botian.yihu.data.LoginBean;
 import com.botian.yihu.contranct.LoginContranct;
 import com.botian.yihu.model.LoginModel;
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 /**
  * Created by Administrator on 2018/3/28 0028.
@@ -24,7 +25,7 @@ public class LoginPresenter implements LoginContranct.LoginPresenter{
         loginModel = new LoginModel();
     }
     @Override//在这个方法里进行M层和V层的交互
-    public void presenter(Context context,String phone,String pwd) {
+    public void presenter(Context context,String phone,String pwd,RxAppCompatActivity yy) {
         //M层创建保存数据的callback接口对象 这个接口里方法的参数就是数据集合
         loginModel.model(new LoginContranct.LoginModel.CallBack() {
             @Override
@@ -32,7 +33,7 @@ public class LoginPresenter implements LoginContranct.LoginPresenter{
                 //然后再用V层接口对象保存数据 在V层里展示出来
                 loginView.view(data);
             }
-        },context,phone,pwd);
+        },context,phone,pwd,yy);
 
     }
 

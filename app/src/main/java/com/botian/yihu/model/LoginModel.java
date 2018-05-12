@@ -5,13 +5,14 @@ import android.content.Context;
 import com.botian.yihu.ObserverOnNextListener;
 import com.botian.yihu.ProgressObserver;
 import com.botian.yihu.api.ApiMethods;
-import com.botian.yihu.bean.LoginBean;
+import com.botian.yihu.data.LoginBean;
 import com.botian.yihu.contranct.LoginContranct;
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 public class LoginModel implements LoginContranct.LoginModel {
 
     @Override
-    public void model(final LoginContranct.LoginModel.CallBack callBack, Context context, String phone,  String pwd) {
+    public void model(final LoginContranct.LoginModel.CallBack callBack, Context context, String phone,  String pwd,RxAppCompatActivity yy) {
         ObserverOnNextListener<LoginBean> listener = new ObserverOnNextListener<LoginBean>() {
             @Override
             public void onNext(LoginBean data) {
@@ -21,7 +22,7 @@ public class LoginModel implements LoginContranct.LoginModel {
 
             }
         };
-        ApiMethods.login(new ProgressObserver<LoginBean>(context, listener), phone,  pwd);
+        ApiMethods.login(new ProgressObserver<LoginBean>(context, listener), phone,  pwd,yy);
     }
 
 }

@@ -16,7 +16,9 @@ import com.unnamed.b.atv.model.TreeNode;
 public class SelectableHeaderHolder extends TreeNode.BaseNodeViewHolder<SelectableHeaderHolder.IconTreeItem> {
     private TextView tvValue;
     private ImageView arrowView;
-
+    private View bottomLine;
+    private View bottomLine2;
+    private View bottomLine3;
     public SelectableHeaderHolder(Context context) {
         super(context);
     }
@@ -30,6 +32,9 @@ public class SelectableHeaderHolder extends TreeNode.BaseNodeViewHolder<Selectab
         tvValue.setText(value.text);
 
         arrowView =  view.findViewById(R.id.arrow_icon);
+        bottomLine=view.findViewById(R.id.bot_line);
+        bottomLine2=view.findViewById(R.id.bottom_line);
+        bottomLine3=view.findViewById(R.id.bottom_line3);
 
         return view;
     }
@@ -38,7 +43,10 @@ public class SelectableHeaderHolder extends TreeNode.BaseNodeViewHolder<Selectab
     //箭头的转换
     public void toggle(boolean active) {
         super.toggle(active);
-        arrowView.setImageResource(active ? R.drawable.ic_arrow_down : R.drawable.ic_arrow_right_small);
+        arrowView.setImageResource(active ? R.drawable.iconfont_jianhao : R.drawable.iconfont_jiahao);
+        bottomLine.setVisibility(active ?View.VISIBLE:View.INVISIBLE);
+        bottomLine2.setVisibility(active ?View.GONE:View.VISIBLE);
+        bottomLine3.setVisibility(active ?View.VISIBLE:View.GONE);
     }
 
     public static class IconTreeItem {

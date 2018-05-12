@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="22dp"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_back" />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:text="章节练习"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </android.support.v7.widget.Toolbar>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+    </android.support.v4.view.ViewPager>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager_answer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:visibility="gone">
+
+    </android.support.v4.view.ViewPager>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/gray_line_color"/>
+    <LinearLayout
+        android:id="@+id/bottom_tab"
+        android:layout_width="fill_parent"
+        android:layout_height="55dp"
+        android:layout_gravity="center_vertical"
+        android:background="@android:color/transparent"
+        android:visibility="invisible">
+
+        <RelativeLayout
+            android:layout_width="0.0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.0">
+
+            <ImageButton
+                android:id="@+id/ib_left"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dp15"
+                android:background="@android:color/transparent"
+                android:padding="@dimen/dp5"
+                android:scaleType="fitStart"
+                android:src="@drawable/ic_practice_left_normal"
+                android:tag="skin:ic_practice_left_normal:src" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0.0dip"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="@dimen/dp3"
+            android:layout_weight="1.0">
+
+            <TextView
+                android:id="@+id/tv_topic_card"
+                android:drawableTop="@drawable/ic_topic_card_normal"
+                android:tag="skin:selector_btn_topic_card:drawableTop"
+                android:textSize="@dimen/sp11"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/TextColorBlack"
+                android:text="答题卡" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0.0dip"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="@dimen/dp3"
+            android:layout_weight="1.0">
+
+            <TextView
+                android:id="@+id/tv_collect"
+                android:drawableTop="@drawable/ic_collect_normal"
+                android:tag="skin:selector_btn_collect:drawableTop"
+                android:textSize="@dimen/sp11"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/TextColorBlack"
+                android:text="  收藏" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_topic_answer"
+            android:layout_width="0.0dip"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="@dimen/dp3"
+            android:layout_weight="1.0">
+
+            <TextView
+                android:id="@+id/tv_answer"
+                android:drawableTop="@drawable/ic_answer_normal"
+                android:tag="skin:selector_btn_answer:drawableTop"
+                android:textSize="@dimen/sp11"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/TextColorBlack"
+                android:text="  背题" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0.0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.0">
+
+            <ImageButton
+                android:id="@+id/ib_right"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dp10"
+                android:adjustViewBounds="true"
+                android:background="@android:color/transparent"
+                android:padding="@dimen/dp5"
+                android:scaleType="fitEnd"
+                android:src="@drawable/ic_practice_right_normal"
+                android:tag="skin:ic_practice_right_normal:src" />
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

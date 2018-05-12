@@ -16,7 +16,7 @@ public class ProgressObserver<T> implements Observer<T>, ProgressCancelListener 
    public ProgressObserver(Context context, ObserverOnNextListener listener) {
         this.listener = listener;
         this.context = context;
-        mProgressDialogHandler = new ProgressDialogHandler(context, this, true);
+        mProgressDialogHandler = new ProgressDialogHandler(context, this, false);
     }
 
 

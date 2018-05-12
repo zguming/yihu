@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linear_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_background"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:background="@color/xxx"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical"
+            android:text="最佳选择题"
+            android:layout_marginLeft="@dimen/dp10"
+            android:textColor="@color/TextColorBlack"
+            android:textSize="15sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_marginRight="@dimen/dp10"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/current_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+               android:textColor="@color/blue"
+                android:text="3"
+                android:layout_alignParentBottom="true"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/total_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@id/current_num"
+                android:text="/9"
+                android:textSize="15sp" />
+        </RelativeLayout>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/gray_line_color"/>
+
+    <ScrollView
+        android:id="@+id/myScrollview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/lianxi_bg"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/cailiao"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingMultiplier="1.3"
+                android:paddingLeft="@dimen/dp10"
+                android:paddingTop="@dimen/dp10"
+                android:text=""
+                android:singleLine="false"
+                android:textColor="@color/TextColorBlack"
+                android:textSize="16sp"
+                android:visibility="gone"/>
+            <TextView
+                android:id="@+id/timu"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingMultiplier="1.3"
+                android:paddingLeft="@dimen/dp10"
+                android:paddingTop="@dimen/dp10"
+                android:text=""
+                android:singleLine="false"
+                android:textColor="@color/TextColorBlack"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/imageview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dip" />
+
+            <LinearLayout
+                android:id="@+id/linear_choice_question"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/linear_answer_a"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/touch_click"
+                    android:clickable="true"
+                    android:orientation="horizontal"
+                    android:padding="10dip"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/answer_a"
+                        android:layout_width="25dip"
+                        android:layout_height="25dip"
+                        android:src="@drawable/answer_a" />
+
+                    <TextView
+                        android:id="@+id/answer_text_a"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingMultiplier="1.3"
+                        android:paddingLeft="15dip"
+                        android:text=""
+                        android:textColor="@color/TextColorBlack"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_answer_b"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/touch_click"
+                    android:clickable="true"
+                    android:orientation="horizontal"
+                    android:padding="10dip"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/answer_b"
+                        android:layout_width="25dip"
+                        android:layout_height="25dip"
+                        android:src="@drawable/answer_b" />
+
+                    <TextView
+                        android:id="@+id/answer_text_b"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingMultiplier="1.3"
+                        android:paddingLeft="15dip"
+                        android:text=""
+                        android:textColor="@color/TextColorBlack"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_answer_c"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/touch_click"
+                    android:clickable="true"
+                    android:orientation="horizontal"
+                    android:padding="10dip"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/answer_c"
+                        android:layout_width="25dip"
+                        android:layout_height="25dip"
+                        android:src="@drawable/answer_c" />
+
+                    <TextView
+                        android:id="@+id/answer_text_c"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingMultiplier="1.3"
+                        android:paddingLeft="15dip"
+                        android:text=""
+                        android:textColor="@color/TextColorBlack"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_answer_d"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/touch_click"
+                    android:clickable="true"
+                    android:orientation="horizontal"
+                    android:padding="10dip"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/answer_d"
+                        android:layout_width="25dip"
+                        android:layout_height="25dip"
+                        android:src="@drawable/answer_d" />
+
+                    <TextView
+                        android:id="@+id/answer_text_d"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingMultiplier="1.3"
+                        android:paddingLeft="15dip"
+                        android:text=""
+                        android:textColor="@color/TextColorBlack"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_answer_e"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/touch_click"
+                    android:clickable="true"
+                    android:orientation="horizontal"
+                    android:padding="10dip"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/answer_e"
+                        android:layout_width="25dip"
+                        android:layout_height="25dip"
+                        android:src="@drawable/answer_e" />
+
+                    <TextView
+                        android:id="@+id/answer_text_e"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingMultiplier="1.3"
+                        android:paddingLeft="15dip"
+                        android:text=""
+                        android:textColor="@color/TextColorBlack"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/bottom_hide"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15.0dip"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/gray_line_color" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10.0dip"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_answer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="答案："
+                        android:textColor="#ff7a7a7a"
+                        android:textSize="13.0sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:paddingRight="5.0dip"
+                        android:text="正确答案是"
+                        android:textColor="#ff202020"
+                        android:textSize="13.0sp" />
+
+                    <TextView
+                        android:id="@+id/check"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:paddingRight="5.0dip"
+                        android:textColor="@color/correct"
+                        android:textSize="22.0sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5.0dip"
+                        android:text="你的答案是"
+                        android:textColor="#ff202020"
+                        android:textSize="13.0sp" />
+
+                    <TextView
+                        android:id="@+id/tv_tips_yourchoose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5.0dip"
+                        android:textColor="#ff202020"
+                        android:textSize="22.0sp" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/btnLookOtherNote"
+                        android:layout_width="wrap_content"
+                        android:layout_height="28.0dip"
+                        android:background="@drawable/selector_topic_comment"
+                        android:paddingLeft="8.0dip"
+                        android:paddingRight="8.0dip"
+                        android:text="查看评论"
+                        android:textColor="@color/white"
+                        android:textSize="13.0sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/analyse"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10.0dip"
+                    android:gravity="center_vertical"
+                    android:text="解析："
+                    android:textColor="#ff7a7a7a"
+                    android:textSize="13.0sp" />
+
+                <TextView
+                    android:id="@+id/analyseinfo"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="3.0dip"
+                    android:paddingTop="5.0dip"
+                    android:text="这道题你百度吧"
+                    android:textColor="#ff202020"
+                    android:textSize="13.0sp" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10.0dip"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.0"
+                            android:text="笔记："
+                            android:textColor="#ff7a7a7a" />
+
+                        <TextView
+                            android:id="@+id/btnNoteEdit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="28.0dip"
+                            android:drawablePadding="-7.0dip"
+                            android:drawableRight="@drawable/ic_arrow_right"
+                            android:gravity="center"
+                            android:text="添加笔记"
+                            android:textColor="@color/blue"
+                            android:textSize="13.0sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/noteContent"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3.0dip"
+                        android:paddingTop="5.0dip"
+                        android:text="这道题我写错了"
+                        android:textColor="#ff202020"
+                        android:textSize="13.0sp" />
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10.0dip"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.0"
+                            android:text="反馈："
+                            android:textColor="#ff7a7a7a" />
+
+                        <TextView
+                            android:id="@+id/btn_feedback_error"
+                            android:layout_width="wrap_content"
+                            android:layout_height="28.0dip"
+                            android:drawablePadding="-7.0dip"
+                            android:drawableRight="@drawable/ic_arrow_right"
+                            android:gravity="center_vertical"
+                            android:text="错题反馈"
+                            android:textColor="@color/blue"
+                            android:textSize="13.0sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

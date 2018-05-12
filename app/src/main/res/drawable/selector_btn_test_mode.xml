@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector>
+    <item android:state_pressed="true" android:drawable="@color/fragment_text_unclick"
+        xmlns:android="http://schemas.android.com/apk/res/android" />
+    <item android:drawable="@color/Main_text_click"
+        xmlns:android="http://schemas.android.com/apk/res/android" />
+</selector>

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.botian.yihu">
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -19,6 +21,25 @@
         </activity>
         <activity android:name=".view.LoginActivity" />
         <activity android:name=".view.RegisterActivity" />
+        <activity android:name=".view.SubjectSelectActivity" />
+        <activity android:name=".view.ForgetPasswordActivity" />
+        <activity android:name=".activity.PracticeAnswerActivity" />
+        <activity
+            android:name=".activity.PlayVideoActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activity.OtherCommentActivity" />
+        <activity android:name=".activity.ChapterPracticeOneActivity" />
+        <activity android:name=".activity.ChapterPracticeSpecialActivity" />
+        <activity android:name=".activity.ChapterPracticeTwoActivity" />
+        <activity android:name=".activity.SendCommentActivity" />
+        <activity android:name=".activity.MyCollectActivity" />
+        <activity android:name=".activity.WrongActivity" />
+        <activity android:name=".activity.WrongChapterPracticeActivity" />
+        <activity android:name=".activity.FeedbackErrorActivity" />
+        <activity android:name=".activity.MyCollectionPracticeActivity" />
+        <activity android:name=".activity.TopicCardActivity" />
+        <activity android:name=".activity.ChapterPracticeListActivity" />
     </application>
 
 </manifest>

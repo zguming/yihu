@@ -1,5 +1,6 @@
 package com.botian.yihu.activity;
 
+import android.content.SharedPreferences;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -14,8 +15,10 @@ import com.botian.yihu.fragment.MineFragment;
 import com.botian.yihu.fragment.NewsFragment;
 import com.botian.yihu.fragment.PracticeFragment;
 import com.botian.yihu.fragment.VideoFragment;
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+
 //主界面
-public class MainActivity extends AppCompatActivity implements BottomNavigationBar.OnTabSelectedListener{
+public class MainActivity extends RxAppCompatActivity implements BottomNavigationBar.OnTabSelectedListener{
     private VideoFragment mVideoFragment;
     private MineFragment mMineFragment;
     private NewsFragment mNewsFragment;
@@ -26,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         BottomNavigationBar bottomNavigationBar = findViewById(R.id.bottom_navigation_bar);
         bottomNavigationBar.setMode(BottomNavigationBar.MODE_FIXED);
         bottomNavigationBar
