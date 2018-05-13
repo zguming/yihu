@@ -72,13 +72,15 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
         ObserverOnNextListener<PracticeAnswer> listener = new ObserverOnNextListener<PracticeAnswer>() {
             @Override
             public void onNext(PracticeAnswer data) {
-                Log.d("TAG", "onNext:data.11111 "+data.getMsg());
-                Log.e("MainActivity", "doOnNext:" + Thread.currentThread().getName());
+                Log.d("TAG", "onNext:；就as定了樊笼阿扥 ");
                 practiceList = data.getData();
                 viewsList = new ArrayList<View>();
                 initView();
                 mAdapter = new MyPagerAdapter(viewsList);
                 viewPager.setAdapter(mAdapter);
+                tvTopicCard.setClickable(true);
+                tvCollect.setClickable(true);
+                tvAnswer.setClickable(true);
             }
         };
         ApiMethods.getPracticeAnswer(new ProgressObserver<PracticeAnswer>(this, listener), typeid, this);
@@ -95,6 +97,9 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
         Drawable answer = getResources().getDrawable(R.drawable.ic_answer_normal);
         answer.setBounds(0, 0, 100, 100);
         tvAnswer.setCompoundDrawables(null, answer, null, null);
+        tvTopicCard.setClickable(false);
+        tvCollect.setClickable(false);
+        tvAnswer.setClickable(false);
         bottomTab.setVisibility(View.VISIBLE);
     }
 

@@ -1,6 +1,7 @@
 package com.botian.yihu.api;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.botian.yihu.MyApplication;
 import com.botian.yihu.util.NetWorkUtils;
@@ -83,7 +84,7 @@ public class Api {
                 .cache(cache)
                 .build();
         Retrofit retrofit = new Retrofit.Builder()
-                .client(client)
+                //.client(client)
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())//请求的结果转为实体类
                 //适配RxJava2.0,RxJava1.x则为RxJavaCallAdapterFactory.create()

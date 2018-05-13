@@ -12,6 +12,7 @@ public class ProgressObserver<T> implements Observer<T>, ProgressCancelListener 
     private ProgressDialogHandler mProgressDialogHandler;
     private Context context;
     private Disposable d;
+    T t;
 
    public ProgressObserver(Context context, ObserverOnNextListener listener) {
         this.listener = listener;
@@ -42,7 +43,8 @@ public class ProgressObserver<T> implements Observer<T>, ProgressCancelListener 
 
     @Override
     public void onNext(T t) {
-        listener.onNext(t);
+        this.t=t;
+        //listener.onNext(t);
     }
 
     @Override
@@ -54,6 +56,7 @@ public class ProgressObserver<T> implements Observer<T>, ProgressCancelListener 
     @Override
     public void onComplete() {
         dismissProgressDialog();
+        listener.onNext(t);
         Log.d(TAG, "onComplete: ");
     }
 

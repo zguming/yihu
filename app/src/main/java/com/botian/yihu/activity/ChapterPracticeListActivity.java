@@ -61,12 +61,6 @@ public class ChapterPracticeListActivity extends RxAppCompatActivity {
     public void setList() {
         TreeNode root = TreeNode.root();
         List<ChapterPracticeList> chapterPracticeListData;
-        chapterPracticeListData = DataSupport.findAll(ChapterPracticeList.class);
-        for (int i = 0; i < chapterPracticeListData.size(); i++){
-            Log.d("TAG1", chapterPracticeListData.get(i).getNoid()+"");
-            Log.d("TAG1", chapterPracticeListData.get(i).getPid()+"");
-            Log.d("TAG1", chapterPracticeListData.get(i).getTypename()+"");
-        }
         chapterPracticeListData = DataSupport.where("pid==?","0").find(ChapterPracticeList.class);
         for (int i = 0; i < chapterPracticeListData.size(); i++) {
             TreeNode folder = new TreeNode(new ChapterPracticeParent.IconTreeItem(chapterPracticeListData.get(i).getTypename(),chapterPracticeListData.get(i).getNoid())).setViewHolder(new ChapterPracticeParent(this));
