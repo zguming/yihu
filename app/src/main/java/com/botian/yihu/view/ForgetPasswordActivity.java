@@ -1,6 +1,5 @@
 package com.botian.yihu.view;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.AppCompatEditText;
@@ -9,21 +8,23 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.botian.yihu.R;
 import com.botian.yihu.contranct.ForgetPasswordContranct;
-import com.botian.yihu.data.RegisterBean;
+import com.botian.yihu.beans.RegisterBean;
 import com.botian.yihu.presenter.ForgetPasswordPresenter;
+import com.botian.yihu.util.ACache;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class ForgetPasswordActivity extends RxAppCompatActivity  implements ForgetPasswordContranct.ForgetPasswordView {
-    private SharedPreferences.Editor editor;
-    private SharedPreferences pref;
     @BindView(R.id.back)
     ImageView back;
     @BindView(R.id.tv_register)
@@ -48,15 +49,16 @@ public class ForgetPasswordActivity extends RxAppCompatActivity  implements Forg
     TextInputLayout tilRegisterPwd2;
     @BindView(R.id.register_btn)
     Button registerBtn;
+    private ACache mCache;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget_password);
+        setTheme(R.style.dialog);
         ButterKnife.bind(this);
-        editor=getSharedPreferences("identifyData",MODE_PRIVATE).edit();
-        //editor.putString("identify",null);
-        editor.apply();
+        //缓存
+        mCache= ACache.get(this);
     }
     /**
      * 显示错误提示，并获取焦点
@@ -96,8 +98,7 @@ public class ForgetPasswordActivity extends RxAppCompatActivity  implements Forg
      * @return
      */
     private boolean validateIdentify(String identify) {
-        pref=getSharedPreferences("identifyData",MODE_PRIVATE);
-        String iden=pref.getString("identify","");
+        String iden = mCache.getAsString("identifyData");
         if (identify.equals("") ||!identify.equals(iden)) {
             showError(tilRegisterIdentify, "请输入正确的验证码");
             return false;
@@ -183,8 +184,8 @@ public class ForgetPasswordActivity extends RxAppCompatActivity  implements Forg
         String msg = data.getMsg();
         String identify=data.getRecode()+"";
         if(!(identify.equals("0"))){
-            editor.putString("identify",identify);
-            editor.apply();
+            //缓存验证码
+            mCache.put("identifyData", identify, 3600);
         }
         if(data.getMsg().equals("密码修改成功")){
             Toast.makeText(this, msg, Toast.LENGTH_LONG).show();

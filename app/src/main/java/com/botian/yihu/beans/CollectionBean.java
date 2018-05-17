@@ -1,16 +1,17 @@
-package com.botian.yihu.data;
+package com.botian.yihu.beans;
 
-public class SendCommentBean {
+public class CollectionBean {
+
 
     /**
-     * code : 1
-     * msg : 评论成功!
-     * data : 1
+     * code : 200
+     * msg : 操作成功
+     * invalidFilter : []
+     * data : {"id":30,"mid":4,"userid":3,"sorts":0,"status":0,"create_time":"2018-05-15 10:39:19","update_time":"2018-05-15 10:39:19","cl":0}
      */
 
     private int code;
     private String msg;
-    private int data;
 
     public int getCode() {
         return code;
@@ -26,13 +27,5 @@ public class SendCommentBean {
 
     public void setMsg(String msg) {
         this.msg = msg;
-    }
-
-    public int getData() {
-        return data;
-    }
-
-    public void setData(int data) {
-        this.data = data;
     }
 }

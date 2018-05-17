@@ -2,14 +2,13 @@ package com.botian.yihu.view;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.botian.yihu.R;
-import com.botian.yihu.data.SubjectBean;
+import com.botian.yihu.beans.SubjectBean;
 import com.botian.yihu.contranct.SubjectContranct;
 import com.botian.yihu.presenter.SubjectPresenter;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
@@ -37,6 +36,7 @@ public class SubjectSelectActivity extends RxAppCompatActivity implements Subjec
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subject);
+        setTheme(R.style.dialog);
         ButterKnife.bind(this);
         pref=getSharedPreferences("subjectSelectData",MODE_PRIVATE);
         no=pref.getInt("subjectNo",1);

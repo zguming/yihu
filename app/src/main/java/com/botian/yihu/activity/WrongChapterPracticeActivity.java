@@ -3,7 +3,6 @@ package com.botian.yihu.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,8 +11,8 @@ import android.widget.TextView;
 
 import com.botian.yihu.R;
 import com.botian.yihu.adapter.MyPagerAdapter;
-import com.botian.yihu.data.CommentParcel;
-import com.botian.yihu.data.PracticeData;
+import com.botian.yihu.beans.CommentParcel;
+import com.botian.yihu.beans.PracticeData;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import org.litepal.crud.DataSupport;

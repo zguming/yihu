@@ -1,14 +1,14 @@
-package com.botian.yihu.data;
+package com.botian.yihu.beans;
 
 import java.util.List;
 
-public class ChapterPracticeTwoBean {
+public class ChapterPracticeOneBean {
 
 
     /**
      * code : 1
      * msg : 获取成功!
-     * data : [{"id":44,"co_id":1,"title":"第一节 护理程序","sort":0,"open":0,"addtime":1524532313,"uptime":1524625208,"pid":43,"rules":null,"share":0,"zhenti":2,"coname":"护士执业"},{"id":50,"co_id":1,"title":"第二节 护士执业防护","sort":0,"open":0,"addtime":1524539095,"uptime":1524625198,"pid":43,"rules":null,"share":0,"zhenti":2,"coname":"护士执业"}]
+     * data : [{"id":43,"co_id":1,"title":"第一章  基础护理知识和技能","sort":0,"open":0,"addtime":1524532298,"uptime":1524625215,"pid":0,"rules":null,"share":0,"zhenti":2,"coname":"护士执业"}]
      */
 
     private int code;
@@ -41,14 +41,14 @@ public class ChapterPracticeTwoBean {
 
     public static class DataBean {
         /**
-         * id : 44
+         * id : 43
          * co_id : 1
-         * title : 第一节 护理程序
+         * title : 第一章  基础护理知识和技能
          * sort : 0
          * open : 0
-         * addtime : 1524532313
-         * uptime : 1524625208
-         * pid : 43
+         * addtime : 1524532298
+         * uptime : 1524625215
+         * pid : 0
          * rules : null
          * share : 0
          * zhenti : 2

@@ -1,11 +1,11 @@
-package com.botian.yihu.data;
+package com.botian.yihu.beans;
 
-public class IdentifyBean {
+public class CollectionDellBean {
 
     /**
      * code : 1
-     * msg : 验证码已发送，请注意查收!
-     * data : 638716
+     * msg : 删除成功!
+     * data : 4
      */
 
     private int code;

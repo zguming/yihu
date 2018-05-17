@@ -2,7 +2,7 @@ package com.botian.yihu.presenter;
 
 import android.content.Context;
 
-import com.botian.yihu.data.SubjectBean;
+import com.botian.yihu.beans.SubjectBean;
 import com.botian.yihu.contranct.SubjectContranct;
 import com.botian.yihu.model.SubjectModel;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;

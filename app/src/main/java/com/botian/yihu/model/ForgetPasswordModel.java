@@ -6,7 +6,7 @@ import com.botian.yihu.ObserverOnNextListener;
 import com.botian.yihu.ProgressObserver;
 import com.botian.yihu.api.ApiMethods;
 import com.botian.yihu.contranct.ForgetPasswordContranct;
-import com.botian.yihu.data.RegisterBean;
+import com.botian.yihu.beans.RegisterBean;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 /**

@@ -2,7 +2,6 @@ package com.botian.yihu.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -10,7 +9,7 @@ import com.botian.yihu.ObserverOnNextListener;
 import com.botian.yihu.ProgressObserver;
 import com.botian.yihu.R;
 import com.botian.yihu.api.ApiMethods;
-import com.botian.yihu.data.MistakeBean;
+import com.botian.yihu.beans.MistakeBean;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import butterknife.BindView;

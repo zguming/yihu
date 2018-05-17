@@ -2,8 +2,10 @@ package com.botian.yihu.contranct;
 
 import android.content.Context;
 
-import com.botian.yihu.data.LoginBean;
+import com.botian.yihu.beans.LoginBean;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+
+import org.json.JSONException;
 
 /**
  * Created by Administrator on 2018/3/28 0028.
@@ -18,7 +20,7 @@ public class LoginContranct {
         //M层获取到数据之后 存入这个接口的方法然后把数据回调给P层
         interface CallBack {
             //方法的参数保存m层获取到的数据 然后回调给P层
-            void callData(LoginBean data);
+            void callData(LoginBean data) ;
         }
     }
 
@@ -30,6 +32,6 @@ public class LoginContranct {
     //V层接口 ：接收数据 显示数据
     public interface LoginView {
         //方法的参数用于接收在P层里通过M层获取到的数据
-        void view(LoginBean data);
+        void view(LoginBean data) ;
     }
 }

@@ -1,4 +1,4 @@
-package com.botian.yihu.data;
+package com.botian.yihu.beans;
 
 import android.os.Parcel;
 import android.os.Parcelable;

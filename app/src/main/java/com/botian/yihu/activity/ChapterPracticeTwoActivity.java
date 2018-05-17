@@ -10,8 +10,8 @@ import com.botian.yihu.ProgressObserver;
 import com.botian.yihu.R;
 import com.botian.yihu.adapter.ChapterPracticeTwoAdapter;
 import com.botian.yihu.api.ApiMethods;
-import com.botian.yihu.data.ChapterPracticeIdParcel;
-import com.botian.yihu.data.ChapterPracticeTwoBean;
+import com.botian.yihu.beans.ChapterPracticeIdParcel;
+import com.botian.yihu.beans.ChapterPracticeTwoBean;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 

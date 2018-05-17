@@ -1,26 +1,27 @@
 package com.botian.yihu.api;
 
-import android.util.Log;
-
 import com.botian.yihu.MyObserver;
 import com.botian.yihu.ProgressObserver;
-import com.botian.yihu.data.ChapterPracticeListBean;
-import com.botian.yihu.data.ChapterPracticeOneBean;
-import com.botian.yihu.data.ChapterPracticeTwoBean;
-import com.botian.yihu.data.CollectionBean;
-import com.botian.yihu.data.CollectionDellBean;
-import com.botian.yihu.data.CollectionRecordsBean;
-import com.botian.yihu.data.LoginBean;
-import com.botian.yihu.data.Material;
-import com.botian.yihu.data.MistakeBean;
-import com.botian.yihu.data.OtherCommentBean;
-import com.botian.yihu.data.PracticeAnswer;
-import com.botian.yihu.data.PracticeBean;
-import com.botian.yihu.data.RegisterBean;
-import com.botian.yihu.data.SendCommentBean;
-import com.botian.yihu.data.SubjectBean;
-import com.botian.yihu.data.VideoListBean;
-import com.botian.yihu.data.ZanBean;
+import com.botian.yihu.beans.ChapterPracticeListBean;
+import com.botian.yihu.beans.ChapterPracticeOneBean;
+import com.botian.yihu.beans.ChapterPracticeTwoBean;
+import com.botian.yihu.beans.CollectionBean;
+import com.botian.yihu.beans.CollectionDellBean;
+import com.botian.yihu.beans.CollectionRecordsBean;
+import com.botian.yihu.beans.LoginBean;
+import com.botian.yihu.beans.Material;
+import com.botian.yihu.beans.MistakeBean;
+import com.botian.yihu.beans.MyCollection;
+import com.botian.yihu.beans.No;
+import com.botian.yihu.beans.OtherCommentBean;
+import com.botian.yihu.beans.PracticeAnswer;
+import com.botian.yihu.beans.PracticeBean;
+import com.botian.yihu.beans.RegisterBean;
+import com.botian.yihu.beans.SendCommentBean;
+import com.botian.yihu.beans.SubjectBean;
+import com.botian.yihu.beans.Version;
+import com.botian.yihu.beans.VideoListBean;
+import com.botian.yihu.beans.ZanBean;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import java.util.ArrayList;
@@ -56,8 +57,8 @@ public class ApiMethods {
             public List<Material.DataBean> apply(PracticeAnswer practiceAnswer, Material material) throws Exception {
                 practiceList.addAll(practiceAnswer.getData());
                 practiceAns.setData(practiceList);
-                /*List<Material.DataBean> list = new ArrayList<>();
-                Material.DataBean aaa = new Material.DataBean();
+                List<Material.DataBean> list = new ArrayList<>();
+                /*Material.DataBean aaa = new Material.DataBean();
                 aaa.setId(22);
                 aaa.setTitle("你好啊啊 啊啊啊 啊");
                 Material.DataBean aaa1 = new Material.DataBean();
@@ -75,36 +76,41 @@ public class ApiMethods {
                 Log.d("所在的线程99：",Thread.currentThread().getName());
                 material.setData(list);*/
                 return material.getData();
+                //return list;
             }
         })
                 .flatMap(new Function<List<Material.DataBean>, ObservableSource<Material.DataBean>>() {
 
                     @Override
                     public ObservableSource<Material.DataBean> apply(List<Material.DataBean> material) throws Exception {
-                        Log.d("TAG", "apply:鱼和团额网站虾 ");
-                        Log.d("所在的线程0：",Thread.currentThread().getName());
+                        //Log.d("TAG", "apply:鱼和团额网站虾 ");
+                        //Log.d("所在的线程0：",Thread.currentThread().getName());
                         return Observable.fromIterable(material);
                     }
                 }).subscribeOn(Schedulers.io())
                 .flatMap(new Function<Material.DataBean, ObservableSource<PracticeAnswer>>() {
                     @Override
                     public ObservableSource<PracticeAnswer> apply(Material.DataBean material) throws Exception {
-                        final String gcailiao = material.getTitle();
-                        Log.d("所在的线程1：",Thread.currentThread().getName());
+                        final String cailiao = material.getTitle();
+                        final int cl = material.getCl();
+                        final int mid = material.getId();
+                        //Log.d("所在的线程1：",Thread.currentThread().getName());
                         return Api.getApiService().getPracticeStuff("", material.getTypeid() + "")
                                 .subscribeOn(Schedulers.io())
                                 .map(new Function<PracticeAnswer, PracticeAnswer>() {
                                     @Override
                                     public PracticeAnswer apply(PracticeAnswer practiceAnswer) throws Exception {
-                                        Log.d("TAG", "apply:和 "+"");
+                                        //Log.d("TAG", "apply:和 "+"");
                                         List<PracticeAnswer.DataBean> list = new ArrayList<>();
                                         list.addAll(practiceAnswer.getData());
                                         for (int i = 0; i < list.size(); i++) {
-                                            list.get(i).setMaterial(gcailiao);
+                                            list.get(i).setMaterial(cailiao);
+                                            list.get(i).setCl(cl);
+                                            list.get(i).setId(mid);
                                         }
                                         practiceList.addAll(list);
                                         practiceAns.setData(practiceList);
-                                        Log.d("所在的线程2：",Thread.currentThread().getName());
+                                        //Log.d("所在的线程2：",Thread.currentThread().getName());
                                         return practiceAns;
 
                                     }
@@ -145,7 +151,12 @@ public class ApiMethods {
     public static void forget(ProgressObserver<RegisterBean> observer, String phone, String mobilelz, String pwd, String pwd2, RxAppCompatActivity yy) {
         ApiSubscribe(Api.getApiService().forget(phone, mobilelz, pwd, pwd2), observer, yy);
     }
-
+    /**
+     * 用于更新版本信息
+     */
+    public static void getVersion(MyObserver<Version> observer, String id, String version, RxAppCompatActivity yy) {
+        ApiSubscribe(Api.getApiService().getVersion(id, version), observer, yy);
+    }
     /**
      * 用于请求科目
      */
@@ -178,7 +189,7 @@ public class ApiMethods {
      * 用于请求章节练习题&章节练习材料标题
      */
     public static void getPracticeAnswer(ProgressObserver<PracticeAnswer> observer, String typeid, RxAppCompatActivity rxApp) {
-        ApiSubscribeZip(Api.getApiService().getPracticeAnswer("", typeid), Api.getApiService().getPracticeMterial("", typeid), observer, rxApp);
+        ApiSubscribeZip(Api.getApiService().getPracticeAnswer("", typeid).subscribeOn(Schedulers.io()), Api.getApiService().getPracticeMterial("", typeid).subscribeOn(Schedulers.io()), observer, rxApp);
     }
 
     /**
@@ -212,24 +223,35 @@ public class ApiMethods {
     /**
      * 用于发表评论
      */
-    public static void getSendComment(ProgressObserver<SendCommentBean> observer, String user_id, String topic_id, String content, RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getSendComment(user_id, topic_id, content), observer, yy);
+    public static void getSendComment(ProgressObserver<SendCommentBean> observer, String user_id, String topic_id, String content, String cl,RxAppCompatActivity yy) {
+        ApiSubscribe(Api.getApiService().getSendComment(user_id, topic_id, content,cl), observer, yy);
     }
 
     /**
      * 用于显示评论
      */
-    public static void getComment(ProgressObserver<OtherCommentBean> observer, String topic_id, String page, String limit, RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getComment(topic_id, page, limit), observer, yy);
+    public static void getComment(ProgressObserver<OtherCommentBean> observer, String filter1, String page, String limit, RxAppCompatActivity yy) {
+        ApiSubscribe(Api.getApiService().getComment( filter1, "usres",page, limit), observer, yy);
     }
 
     /**
-     * 用于显示评论赞
+     * 用于评论赞
      */
-    public static void getCommentZan(MyObserver<ZanBean> observer, String Comment, RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getCommentZan(Comment), observer, yy);
+    public static void getCommentZan(MyObserver<ZanBean> observer, String mid,String userid,String typeid,String iscai, RxAppCompatActivity yy) {
+        ApiSubscribe(Api.getApiService().getCommentZan(mid,userid,typeid,iscai), observer, yy);
     }
-
+    /**
+     * 用于题赞
+     */
+    public static void getTiZan(MyObserver<ZanBean> observer, String mid,String userid,String cl,String iscai, RxAppCompatActivity yy) {
+        ApiSubscribe(Api.getApiService().getTiZan(mid,userid,cl,iscai), observer, yy);
+    }
+    /**
+     * 用于题赞
+     */
+    public static void addNote(MyObserver<No> observer, String mid, String userid, String content,String cl, RxAppCompatActivity yy) {
+        ApiSubscribe(Api.getApiService().addNote(mid,userid,content,cl), observer, yy);
+    }
     /**
      * 用于报告错题
      */
@@ -240,15 +262,15 @@ public class ApiMethods {
     /**
      * 收藏
      */
-    public static void getCollection(MyObserver<CollectionBean> observer, String user_id, String topic_id, RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getCollection(user_id, topic_id), observer, yy);
+    public static void getCollection(MyObserver<CollectionBean> observer, String mid, String userid, String cl,RxAppCompatActivity yy) {
+        ApiSubscribe(Api.getApiService().getCollection(mid, userid,cl), observer, yy);
     }
 
     /**
      * 查看收藏
      */
-    public static void getCollectionRecords(ProgressObserver<CollectionRecordsBean> observer, String user_id, RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getCollectionRecords(user_id), observer, yy);
+    public static void getCollectionRecords(ProgressObserver<MyCollection> observer, String filter, RxAppCompatActivity yy) {
+        ApiSubscribe(Api.getApiService().getCollectionRecords("noPage","section",filter), observer, yy);
     }
 
     /**

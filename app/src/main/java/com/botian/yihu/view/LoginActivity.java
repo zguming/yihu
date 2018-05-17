@@ -3,7 +3,6 @@ package com.botian.yihu.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
 import android.view.View;
 import android.widget.Button;
@@ -13,9 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.botian.yihu.R;
-import com.botian.yihu.data.LoginBean;
+import com.botian.yihu.beans.UserInfo;
 import com.botian.yihu.contranct.LoginContranct;
+import com.botian.yihu.beans.LoginBean;
 import com.botian.yihu.presenter.LoginPresenter;
+import com.botian.yihu.util.ACache;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import java.util.regex.Matcher;
@@ -48,14 +49,15 @@ public class LoginActivity extends RxAppCompatActivity implements LoginContranct
     TextInputLayout tilPassword;
     @BindView(R.id.ll_login_table)
     LinearLayout llLoginTable;
-
+    private ACache mCache;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        //setTheme(R.style.dialog);
+        setTheme(R.style.dialog);
         ButterKnife.bind(this);
+        mCache= ACache.get(this);
 
     }
 
@@ -153,6 +155,18 @@ public class LoginActivity extends RxAppCompatActivity implements LoginContranct
     @Override
     public void view(LoginBean data) {
         String d = data.getMsg();
-        Toast.makeText(this, d, Toast.LENGTH_SHORT).show();
+        if(data.getCode()==200){
+            //如果登录成功缓存用户信息
+            UserInfo userInfo=new UserInfo();
+            userInfo.setId(data.getData().getId());
+            userInfo.setToken(data.getData().getToken());
+            userInfo.setUsername(data.getData().getUsername());
+            userInfo.setMoblie(data.getData().getMoblie());
+            mCache.put("userInfo", userInfo,  120 * ACache.TIME_DAY);
+            Toast.makeText(this, d, Toast.LENGTH_SHORT).show();
+            finish();
+        }else {
+            Toast.makeText(this, d, Toast.LENGTH_SHORT).show();
+        }
     }
 }

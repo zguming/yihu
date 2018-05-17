@@ -10,8 +10,9 @@ import android.widget.TextView;
 
 import com.botian.yihu.R;
 import com.botian.yihu.activity.MyCollectionPracticeActivity;
-import com.botian.yihu.data.CollectionRecordsBean;
-import com.botian.yihu.data.CollectionRecordsParcel;
+import com.botian.yihu.beans.CollectionRecordsBean;
+import com.botian.yihu.beans.CollectionRecordsParcel;
+import com.botian.yihu.beans.MyCollection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2018/2/23 0023.
  */
 public class MyCollectAdapter extends RecyclerView.Adapter<MyCollectAdapter.MyViewHolder> {
-    private List<CollectionRecordsBean.DataBean> data;
+    private List<MyCollection.DataBean> data;
     private Context mContext;
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -45,7 +46,7 @@ public class MyCollectAdapter extends RecyclerView.Adapter<MyCollectAdapter.MyVi
         }
     }
 
-    public MyCollectAdapter(Context mContext, List<CollectionRecordsBean.DataBean> data) {
+    public MyCollectAdapter(Context mContext, List<MyCollection.DataBean> data) {
         this.mContext = mContext;
         this.data = data;
     }
@@ -64,17 +65,17 @@ public class MyCollectAdapter extends RecyclerView.Adapter<MyCollectAdapter.MyVi
                 List<CollectionRecordsParcel.DataBean> dataBeanList=new ArrayList<>();
                 for (int i=0;i<data.size();i++){
                     CollectionRecordsParcel.DataBean dataBean1 = new CollectionRecordsParcel.DataBean();
-                    dataBean1.setTopic_id(data.get(i).getTopic_id());
-                    dataBean1.setUser_id(data.get(i).getUser_id());
-                    dataBean1.setName(data.get(i).getName());
-                    dataBean1.setA(data.get(i).getA());
-                    dataBean1.setB(data.get(i).getB());
-                    dataBean1.setC(data.get(i).getC());
-                    dataBean1.setD(data.get(i).getD());
-                    dataBean1.setE(data.get(i).getE());
-                    dataBean1.setCorrect(data.get(i).getCorrect());
-                    dataBean1.setImage(data.get(i).getImage());
-                    dataBean1.setAnalysis(data.get(i).getAnalysis());
+                    dataBean1.setTopic_id(data.get(i).getId());
+                    dataBean1.setUser_id(data.get(i).getUserid());
+                    dataBean1.setName(data.get(i).getSection().getTitle());
+                    dataBean1.setA(data.get(i).getSection().getA());
+                    dataBean1.setB(data.get(i).getSection().getB());
+                    dataBean1.setC(data.get(i).getSection().getC());
+                    dataBean1.setD(data.get(i).getSection().getD());
+                    dataBean1.setE(data.get(i).getSection().getE());
+                    dataBean1.setCorrect(data.get(i).getSection().getCorrect());
+                    dataBean1.setImage(data.get(i).getSection().getLitpic());
+                    dataBean1.setAnalysis(data.get(i).getSection().getAnalysis());
                     dataBeanList.add(dataBean1);
                 }
                 collectionRecordsParcel.setData(dataBeanList);
@@ -92,30 +93,30 @@ public class MyCollectAdapter extends RecyclerView.Adapter<MyCollectAdapter.MyVi
     public void onBindViewHolder(MyViewHolder holder, int position) {
         String num=position+1+".";
         holder.num.setText(num);
-        String name = data.get(position).getName();
+        String name = data.get(position).getSection().getTitle();
         holder.title.setText(name);
         if (position==0){
             holder.topLine.setVisibility(View.VISIBLE);
         }
         String answer;
-        switch (data.get(position).getCorrect()) {
+        switch (data.get(position).getSection().getA()) {
             case "A":
-                answer = data.get(position).getA();
+                answer = data.get(position).getSection().getA();
                 break;
             case "B":
-                answer = data.get(position).getB();
+                answer = data.get(position).getSection().getA();
                 break;
             case "C":
-                answer = data.get(position).getC();
+                answer = data.get(position).getSection().getA();
                 break;
             case "D":
-                answer = data.get(position).getD();
+                answer = data.get(position).getSection().getA();
                 break;
             default:
-                answer = data.get(position).getE();
+                answer = data.get(position).getSection().getA();
                 break;
         }
-        String content = "答案: "+data.get(position).getCorrect()+"."+answer;
+        String content = "答案: "+data.get(position).getSection().getCorrect()+"."+answer;
         holder.content.setText(content);
     }
 

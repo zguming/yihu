@@ -2,7 +2,7 @@ package com.botian.yihu.contranct;
 
 import android.content.Context;
 
-import com.botian.yihu.data.RegisterBean;
+import com.botian.yihu.beans.RegisterBean;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 /**

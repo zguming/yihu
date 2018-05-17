@@ -1,16 +1,15 @@
-package com.botian.yihu.data;
+package com.botian.yihu.beans;
 
-public class CollectionBean {
+public class SendCommentBean {
 
     /**
      * code : 1
-     * msg : 收藏成功!
+     * msg : 评论成功!
      * data : 1
      */
 
     private int code;
     private String msg;
-    private int data;
 
     public int getCode() {
         return code;
@@ -28,11 +27,4 @@ public class CollectionBean {
         this.msg = msg;
     }
 
-    public int getData() {
-        return data;
-    }
-
-    public void setData(int data) {
-        this.data = data;
-    }
 }

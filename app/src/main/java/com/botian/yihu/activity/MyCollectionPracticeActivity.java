@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -17,10 +16,10 @@ import com.botian.yihu.ObserverOnNextListener;
 import com.botian.yihu.R;
 import com.botian.yihu.adapter.MyPagerAdapter;
 import com.botian.yihu.api.ApiMethods;
-import com.botian.yihu.data.CollectionBean;
-import com.botian.yihu.data.CollectionRecordsParcel;
-import com.botian.yihu.data.CommentParcel;
-import com.botian.yihu.data.PracticeData;
+import com.botian.yihu.beans.CollectionBean;
+import com.botian.yihu.beans.CollectionRecordsParcel;
+import com.botian.yihu.beans.CommentParcel;
+import com.botian.yihu.beans.PracticeData;
 import com.bumptech.glide.Glide;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
@@ -350,19 +349,7 @@ public class MyCollectionPracticeActivity extends RxAppCompatActivity {
             case R.id.tv_topic_card:
                 break;
             case R.id.tv_collect:
-                int a=viewPager.getCurrentItem();
-                ObserverOnNextListener<CollectionBean> listener = new ObserverOnNextListener<CollectionBean>() {
-                    @Override
-                    public void onNext(CollectionBean data) {
-                        if(data.getCode()==0){
-                            Toast.makeText(MyCollectionPracticeActivity.this, data.getMsg(), Toast.LENGTH_SHORT).show();
-                        }
-                        Drawable collect = getResources().getDrawable(R.drawable.ic_collect_press);
-                        collect.setBounds(0, 0, 100, 100);
-                        tvCollect.setCompoundDrawables(null, collect, null, null);
-                    }
-                };
-                ApiMethods.getCollection(new MyObserver<CollectionBean>( listener), "2656",practiceList.get(a).getId()+"",this);
+
                 break;
             case R.id.tv_answer:
 

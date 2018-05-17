@@ -1,15 +1,14 @@
-package com.botian.yihu.data;
+package com.botian.yihu.beans;
 
 import java.util.List;
 
-public class SubjectBean {
-
+public class Material {
 
     /**
      * code : 200
      * msg : 操作成功
      * invalidFilter : []
-     * data : [{"id":1,"name":"护士执业","sorts":1,"status":1,"create_time":"2018-05-04 08:50:08","update_time":"2018-05-07 15:54:00"},{"id":2,"name":"护师执业","sorts":2,"status":1,"create_time":"2018-05-04 08:50:49","update_time":"2018-05-04 08:50:49"},{"id":3,"name":"主管护师","sorts":3,"status":1,"create_time":"2018-05-04 08:50:57","update_time":"2018-05-04 08:50:57"}]
+     * data : [{"id":17,"typeid":22,"title":"测试材料分析题","litpic":"","status":1,"create_time":"2018-05-08 15:07:17","update_time":"2018-05-08 15:07:28"}]
      */
 
     private int code;
@@ -51,18 +50,21 @@ public class SubjectBean {
 
     public static class DataBean {
         /**
-         * id : 1
-         * name : 护士执业
-         * sorts : 1
+         * id : 17
+         * typeid : 22
+         * title : 测试材料分析题
+         * litpic :
          * status : 1
-         * create_time : 2018-05-04 08:50:08
-         * update_time : 2018-05-07 15:54:00
+         * create_time : 2018-05-08 15:07:17
+         * update_time : 2018-05-08 15:07:28
          */
 
         private int id;
-        private String name;
-        private int sorts;
+        private int typeid;
+        private String title;
+        private String litpic;
         private int status;
+        private int cl;
         private String create_time;
         private String update_time;
 
@@ -74,20 +76,28 @@ public class SubjectBean {
             this.id = id;
         }
 
-        public String getName() {
-            return name;
+        public int getTypeid() {
+            return typeid;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public void setTypeid(int typeid) {
+            this.typeid = typeid;
         }
 
-        public int getSorts() {
-            return sorts;
+        public String getTitle() {
+            return title;
         }
 
-        public void setSorts(int sorts) {
-            this.sorts = sorts;
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public String getLitpic() {
+            return litpic;
+        }
+
+        public void setLitpic(String litpic) {
+            this.litpic = litpic;
         }
 
         public int getStatus() {
@@ -112,6 +122,14 @@ public class SubjectBean {
 
         public void setUpdate_time(String update_time) {
             this.update_time = update_time;
+        }
+
+        public int getCl() {
+            return cl;
+        }
+
+        public void setCl(int cl) {
+            this.cl = cl;
         }
     }
 }

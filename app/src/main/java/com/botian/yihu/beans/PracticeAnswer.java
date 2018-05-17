@@ -1,10 +1,44 @@
-package com.botian.yihu.data;
+package com.botian.yihu.beans;
 
 import java.util.List;
 
-public class Tid {
+public class PracticeAnswer {
 
+    /**
+     * code : 200
+     * msg : 操作成功
+     * invalidFilter : []
+     * data : [{"id":1,"typeid":22,"title":"关于护理程序的概念，描述正}]
+     */
+
+    private int code;
+    private String msg;
+    private List<?> invalidFilter;
     private List<DataBean> data;
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public List<?> getInvalidFilter() {
+        return invalidFilter;
+    }
+
+    public void setInvalidFilter(List<?> invalidFilter) {
+        this.invalidFilter = invalidFilter;
+    }
 
     public List<DataBean> getData() {
         return data;
@@ -17,29 +51,30 @@ public class Tid {
     public static class DataBean {
         /**
          * id : 1
-         * typeid : 17
-         * title : 测试名称
-         * A : 答案a
-         * B : 答案a
-         * C : 答案a
-         * D : 答案a
-         * E : 答案a
-         * correct : A
-         * analysis : 答案a
-         * flag : p
-         * jumplink :
-         * litpic : /uploads/image/20180508/30fceba887047b1ff440ac9dee6c6d5d.jpg
-         * writer : 1
-         * keywords :
-         * description :
+         * typeid : 22
+         * title : 关于护理程序的概念，描述正确的是
+         * A : 一种护理工作的分工类型
+         * B : 一种护理工作的简化形式
+         * C : 一种系统的解决问题的方法
+         * D : 一种护理操作的模式
+         * E : 一种护理操作的模式
+         * correct : C
+         * analysis : 护理程序是护士对护理对象进行护理时所应用的工作程序，是一种系统解决问题的方法，是一个持续、循环、动态变化的过程。故答案选C。
+         * flag : null
+         * jumplink : null
+         * litpic : null
+         * writer : null
+         * keywords : null
+         * description : null
          * click : 0
          * status : 1
-         * create_time : 2018-05-08 15:08:45
-         * update_time : 2018-05-08 15:33:44
+         * create_time : 2018-05-08 14:48:05
+         * update_time : 1970-01-01 08:00:00
          */
 
         private int id;
         private int typeid;
+        private String material;
         private String title;
         private String A;
         private String B;
@@ -48,14 +83,15 @@ public class Tid {
         private String E;
         private String correct;
         private String analysis;
-        private String flag;
-        private String jumplink;
+        private Object flag;
+        private Object jumplink;
         private String litpic;
-        private int writer;
-        private String keywords;
-        private String description;
+        private Object writer;
+        private Object keywords;
+        private Object description;
         private int click;
         private int status;
+        private int cl;
         private String create_time;
         private String update_time;
 
@@ -65,6 +101,14 @@ public class Tid {
 
         public void setId(int id) {
             this.id = id;
+        }
+
+        public String getMaterial() {
+            return material;
+        }
+
+        public void setMaterial(String material) {
+            this.material = material;
         }
 
         public int getTypeid() {
@@ -139,19 +183,19 @@ public class Tid {
             this.analysis = analysis;
         }
 
-        public String getFlag() {
+        public Object getFlag() {
             return flag;
         }
 
-        public void setFlag(String flag) {
+        public void setFlag(Object flag) {
             this.flag = flag;
         }
 
-        public String getJumplink() {
+        public Object getJumplink() {
             return jumplink;
         }
 
-        public void setJumplink(String jumplink) {
+        public void setJumplink(Object jumplink) {
             this.jumplink = jumplink;
         }
 
@@ -163,27 +207,27 @@ public class Tid {
             this.litpic = litpic;
         }
 
-        public int getWriter() {
+        public Object getWriter() {
             return writer;
         }
 
-        public void setWriter(int writer) {
+        public void setWriter(Object writer) {
             this.writer = writer;
         }
 
-        public String getKeywords() {
+        public Object getKeywords() {
             return keywords;
         }
 
-        public void setKeywords(String keywords) {
+        public void setKeywords(Object keywords) {
             this.keywords = keywords;
         }
 
-        public String getDescription() {
+        public Object getDescription() {
             return description;
         }
 
-        public void setDescription(String description) {
+        public void setDescription(Object description) {
             this.description = description;
         }
 
@@ -217,6 +261,14 @@ public class Tid {
 
         public void setUpdate_time(String update_time) {
             this.update_time = update_time;
+        }
+
+        public int getCl() {
+            return cl;
+        }
+
+        public void setCl(int cl) {
+            this.cl = cl;
         }
     }
 }

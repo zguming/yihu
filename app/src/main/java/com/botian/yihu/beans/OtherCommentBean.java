@@ -1,0 +1,251 @@
+package com.botian.yihu.beans;
+
+import java.util.List;
+
+public class OtherCommentBean {
+
+
+    /**
+     * code : 200
+     * msg : 操作成功
+     * invalidFilter : []
+     * data : {"total":7,"per_page":20,"current_page":1,"last_page":1,"data":[{"id":39,"mid":17,"userid":14,"sorts":0,"status":0,"create_time":"2018-05-16 12:02:48","update_time":"2018-05-16 12:02:48","cl":0,"content":"frewtgdrsgsfd45645","cai_num":0,"usres":{"id":14,"username":"聊","avatar":null}},{"id":40,"mid":17,"userid":14,"sorts":0,"status":0,"create_time":"2018-05-16 12:02:48","update_time":"2018-05-16 12:02:48","cl":0,"content":"frewtgdrsgsfd45645","cai_num":0,"usres":{"id":14,"username":"聊","avatar":null}},{"id":41,"mid":17,"userid":14,"sorts":0,"status":0,"create_time":"2018-05-16 12:02:49","update_time":"2018-05-16 12:02:49","cl":0,"content":"frewtgdrsgsfd45645","cai_num":0,"usres":{"id":14,"username":"聊","avatar":null}},{"id":42,"mid":17,"userid":14,"sorts":0,"status":0,"create_time":"2018-05-16 12:02:50","update_time":"2018-05-16 12:02:50","cl":0,"content":"frewtgdrsgsfd45645","cai_num":0,"usres":{"id":14,"username":"聊","avatar":null}},{"id":43,"mid":17,"userid":14,"sorts":0,"status":0,"create_time":"2018-05-16 12:02:50","update_time":"2018-05-16 12:02:50","cl":0,"content":"frewtgdrsgsfd45645","cai_num":0,"usres":{"id":14,"username":"聊","avatar":null}},{"id":44,"mid":17,"userid":14,"sorts":0,"status":0,"create_time":"2018-05-16 12:02:51","update_time":"2018-05-16 12:02:51","cl":0,"content":"frewtgdrsgsfd45645","cai_num":0,"usres":{"id":14,"username":"聊","avatar":null}}]}
+     */
+
+    private int code;
+    private String msg;
+    private DataBeanX data;
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public DataBeanX getData() {
+        return data;
+    }
+
+    public void setData(DataBeanX data) {
+        this.data = data;
+    }
+
+
+    public static class DataBeanX {
+        /**
+         * total : 7
+         * per_page : 20
+         * current_page : 1
+         * last_page : 1
+         * data : [{"id":39,"mid":17,"userid":14,"sorts":0,"status":0,"create_time":"2018-05-16 12:02:48","update_time":"2018-05-16 12:02:48","cl":0,"content":"frewtgdrsgsfd45645","cai_num":0,"usres":{"id":14,"username":"聊","avatar":null}},{"id":40,"mid":17,"userid":14,"sorts":0,"status":0,"create_time":"2018-05-16 12:02:48","update_time":"2018-05-16 12:02:48","cl":0,"content":"frewtgdrsgsfd45645","cai_num":0,"usres":{"id":14,"username":"聊","avatar":null}},{"id":41,"mid":17,"userid":14,"sorts":0,"status":0,"create_time":"2018-05-16 12:02:49","update_time":"2018-05-16 12:02:49","cl":0,"content":"frewtgdrsgsfd45645","cai_num":0,"usres":{"id":14,"username":"聊","avatar":null}},{"id":42,"mid":17,"userid":14,"sorts":0,"status":0,"create_time":"2018-05-16 12:02:50","update_time":"2018-05-16 12:02:50","cl":0,"content":"frewtgdrsgsfd45645","cai_num":0,"usres":{"id":14,"username":"聊","avatar":null}},{"id":43,"mid":17,"userid":14,"sorts":0,"status":0,"create_time":"2018-05-16 12:02:50","update_time":"2018-05-16 12:02:50","cl":0,"content":"frewtgdrsgsfd45645","cai_num":0,"usres":{"id":14,"username":"聊","avatar":null}},{"id":44,"mid":17,"userid":14,"sorts":0,"status":0,"create_time":"2018-05-16 12:02:51","update_time":"2018-05-16 12:02:51","cl":0,"content":"frewtgdrsgsfd45645","cai_num":0,"usres":{"id":14,"username":"聊","avatar":null}}]
+         */
+
+        private int total;
+        private int per_page;
+        private int current_page;
+        private int last_page;
+        private List<DataBean> data;
+
+        public int getTotal() {
+            return total;
+        }
+
+        public void setTotal(int total) {
+            this.total = total;
+        }
+
+        public int getPer_page() {
+            return per_page;
+        }
+
+        public void setPer_page(int per_page) {
+            this.per_page = per_page;
+        }
+
+        public int getCurrent_page() {
+            return current_page;
+        }
+
+        public void setCurrent_page(int current_page) {
+            this.current_page = current_page;
+        }
+
+        public int getLast_page() {
+            return last_page;
+        }
+
+        public void setLast_page(int last_page) {
+            this.last_page = last_page;
+        }
+
+        public List<DataBean> getData() {
+            return data;
+        }
+
+        public void setData(List<DataBean> data) {
+            this.data = data;
+        }
+
+        public static class DataBean {
+            /**
+             * id : 39
+             * mid : 17
+             * userid : 14
+             * sorts : 0
+             * status : 0
+             * create_time : 2018-05-16 12:02:48
+             * update_time : 2018-05-16 12:02:48
+             * cl : 0
+             * content : frewtgdrsgsfd45645
+             * cai_num : 0
+             * usres : {"id":14,"username":"聊","avatar":null}
+             */
+
+            private int id;
+            private int mid;
+            private int userid;
+            private int sorts;
+            private int status;
+            private String create_time;
+            private String update_time;
+            private int cl;
+            private String content;
+            private int cai_num;
+            private UsresBean usres;
+
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
+            }
+
+            public int getMid() {
+                return mid;
+            }
+
+            public void setMid(int mid) {
+                this.mid = mid;
+            }
+
+            public int getUserid() {
+                return userid;
+            }
+
+            public void setUserid(int userid) {
+                this.userid = userid;
+            }
+
+            public int getSorts() {
+                return sorts;
+            }
+
+            public void setSorts(int sorts) {
+                this.sorts = sorts;
+            }
+
+            public int getStatus() {
+                return status;
+            }
+
+            public void setStatus(int status) {
+                this.status = status;
+            }
+
+            public String getCreate_time() {
+                return create_time;
+            }
+
+            public void setCreate_time(String create_time) {
+                this.create_time = create_time;
+            }
+
+            public String getUpdate_time() {
+                return update_time;
+            }
+
+            public void setUpdate_time(String update_time) {
+                this.update_time = update_time;
+            }
+
+            public int getCl() {
+                return cl;
+            }
+
+            public void setCl(int cl) {
+                this.cl = cl;
+            }
+
+            public String getContent() {
+                return content;
+            }
+
+            public void setContent(String content) {
+                this.content = content;
+            }
+
+            public int getCai_num() {
+                return cai_num;
+            }
+
+            public void setCai_num(int cai_num) {
+                this.cai_num = cai_num;
+            }
+
+            public UsresBean getUsres() {
+                return usres;
+            }
+
+            public void setUsres(UsresBean usres) {
+                this.usres = usres;
+            }
+
+            public static class UsresBean {
+                /**
+                 * id : 14
+                 * username : 聊
+                 * avatar : null
+                 */
+
+                private int id;
+                private String username;
+                private Object avatar;
+
+                public int getId() {
+                    return id;
+                }
+
+                public void setId(int id) {
+                    this.id = id;
+                }
+
+                public String getUsername() {
+                    return username;
+                }
+
+                public void setUsername(String username) {
+                    this.username = username;
+                }
+
+                public Object getAvatar() {
+                    return avatar;
+                }
+
+                public void setAvatar(Object avatar) {
+                    this.avatar = avatar;
+                }
+            }
+        }
+    }
+}

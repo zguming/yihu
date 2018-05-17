@@ -1,11 +1,11 @@
-package com.botian.yihu.data;
-//赞
-public class ZanBean {
+package com.botian.yihu.beans;
+
+public class IdentifyBean {
 
     /**
      * code : 1
-     * msg : 点赞成功!
-     * data : 1
+     * msg : 验证码已发送，请注意查收!
+     * data : 638716
      */
 
     private int code;

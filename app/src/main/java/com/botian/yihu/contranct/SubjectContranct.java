@@ -1,7 +1,7 @@
 package com.botian.yihu.contranct;
 
 import android.content.Context;
-import com.botian.yihu.data.SubjectBean;
+import com.botian.yihu.beans.SubjectBean;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 /**

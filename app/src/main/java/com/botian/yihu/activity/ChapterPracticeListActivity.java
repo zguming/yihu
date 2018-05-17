@@ -2,7 +2,6 @@ package com.botian.yihu.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.LinearLayout;
 import com.botian.yihu.ObserverOnNextListener;
 import com.botian.yihu.ProgressObserver;
@@ -10,7 +9,7 @@ import com.botian.yihu.R;
 import com.botian.yihu.androidTreeListView.ChapterPracticeChild;
 import com.botian.yihu.androidTreeListView.ChapterPracticeParent;
 import com.botian.yihu.api.ApiMethods;
-import com.botian.yihu.data.ChapterPracticeListBean;
+import com.botian.yihu.beans.ChapterPracticeListBean;
 import com.botian.yihu.database.ChapterPracticeList;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 import com.unnamed.b.atv.model.TreeNode;
@@ -28,6 +27,7 @@ public class ChapterPracticeListActivity extends RxAppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chapter_practice_list);
+        setTheme(R.style.dialog);
         ButterKnife.bind(this);
         //查询列表数据，优先从数据库查询，如果没有查询到再去服务器上查询
         List<ChapterPracticeList> chapterPracticeListData;

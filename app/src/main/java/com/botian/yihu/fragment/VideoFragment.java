@@ -15,7 +15,7 @@ import com.botian.yihu.activity.PlayVideoActivity;
 import com.botian.yihu.androidTreeListView.SelectableHeaderHolder;
 import com.botian.yihu.androidTreeListView.SelectableItemHolder;
 import com.botian.yihu.api.ApiMethods;
-import com.botian.yihu.data.VideoListBean;
+import com.botian.yihu.beans.VideoListBean;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 import com.unnamed.b.atv.model.TreeNode;

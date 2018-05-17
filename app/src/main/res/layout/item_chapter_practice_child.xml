@@ -8,7 +8,7 @@
     <LinearLayout
         android:id="@+id/picture_wrapper"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="45dp"
         android:layout_marginLeft="17dp"
         android:orientation="vertical">
 
@@ -35,14 +35,29 @@
             android:layout_gravity="center_horizontal"
             android:background="@color/bottom_line_blue" />
     </LinearLayout>
-
-    <TextView
-        android:layout_centerVertical="true"
-        android:textSize="16sp"
-        android:layout_marginLeft="35dp"
-        android:id="@+id/node_value"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:orientation="horizontal">
+        <TextView
+            android:textSize="16sp"
+            android:layout_marginLeft="35dp"
+            android:id="@+id/node_value"
+            android:textColor="@color/textColorBlack"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/tb_right"
+            android:layout_width="@dimen/dp25"
+            android:layout_height="@dimen/dp25"
+            android:layout_marginRight="12.0dip"
+            android:gravity="center_vertical"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_topic_donot" />
+    </LinearLayout>
+
     <View
         android:layout_width="fill_parent"
         android:layout_height="1px"

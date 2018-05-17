@@ -11,7 +11,7 @@ import com.botian.yihu.ProgressObserver;
 import com.botian.yihu.R;
 import com.botian.yihu.adapter.ChapterPracticeOneAdapter;
 import com.botian.yihu.api.ApiMethods;
-import com.botian.yihu.data.ChapterPracticeOneBean;
+import com.botian.yihu.beans.ChapterPracticeOneBean;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 

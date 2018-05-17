@@ -15,8 +15,7 @@ import android.widget.TextView;
 import com.botian.yihu.GlideImageLoader;
 import com.botian.yihu.R;
 import com.botian.yihu.activity.ChapterPracticeListActivity;
-import com.botian.yihu.activity.ChapterPracticeOneActivity;
-import com.botian.yihu.activity.MyCollectActivity;
+import com.botian.yihu.activity.MyCollectionActivity;
 import com.botian.yihu.activity.WrongActivity;
 import com.botian.yihu.view.SubjectSelectActivity;
 import com.youth.banner.Banner;
@@ -157,7 +156,7 @@ public class PracticeFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_collect:
-                Intent intent2=new Intent(getActivity(), MyCollectActivity.class);
+                Intent intent2=new Intent(getActivity(), MyCollectionActivity.class);
                 startActivity(intent2);
                 break;
             case R.id.tv_wrong:

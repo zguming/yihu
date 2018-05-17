@@ -1,6 +1,4 @@
-package com.botian.yihu.data;
-
-import java.util.List;
+package com.botian.yihu.beans;
 
 /**
  * Created by Administrator on 2018/3/28 0028.

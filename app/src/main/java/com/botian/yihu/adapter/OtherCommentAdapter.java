@@ -12,17 +12,16 @@ import android.widget.Toast;
 
 import com.botian.yihu.MyObserver;
 import com.botian.yihu.ObserverOnNextListener;
-import com.botian.yihu.ProgressObserver;
 import com.botian.yihu.R;
-import com.botian.yihu.activity.FeedbackErrorActivity;
-import com.botian.yihu.activity.TimeDateUtil;
 import com.botian.yihu.api.ApiMethods;
-import com.botian.yihu.data.MistakeBean;
-import com.botian.yihu.data.OtherCommentBean;
-import com.botian.yihu.data.ZanBean;
+import com.botian.yihu.beans.OtherCommentBean;
+import com.botian.yihu.beans.UserInfo;
+import com.botian.yihu.beans.ZanBean;
+import com.botian.yihu.util.ACache;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -32,8 +31,11 @@ import butterknife.ButterKnife;
  */
 public class OtherCommentAdapter extends RecyclerView.Adapter<OtherCommentAdapter.MyViewHolder> {
     private List<OtherCommentBean.DataBeanX.DataBean> data;
+    private ACache mCache;
+    private UserInfo userInfo;
     private Context mContext;
     private RxAppCompatActivity yy;
+    private int iscai=1;//1点赞，0取消点赞
     static class MyViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.userface)
         ImageView userface;
@@ -73,17 +75,40 @@ public class OtherCommentAdapter extends RecyclerView.Adapter<OtherCommentAdapte
                 ObserverOnNextListener<ZanBean> listener = new ObserverOnNextListener<ZanBean>() {
                     @Override
                     public void onNext(ZanBean data1) {
-                    TextView textView=view.findViewById(R.id.commentList_item_tv_praise);
-                        Drawable mPraise = mContext.getResources().getDrawable(R.drawable.detail_like_p);
-                        mPraise.setBounds(0, 0, 40, 40);
-                        textView.setCompoundDrawables(mPraise, null, null, null);
-                        String str=data.get(position).getHits()+1+"";
-                        textView.setText(str);
-                        view.setClickable(false);
+                        String a=data1.getMsg();
+                        if(iscai==1){
+                            TextView textView=view.findViewById(R.id.commentList_item_tv_praise);
+                            Drawable mPraise = mContext.getResources().getDrawable(R.drawable.detail_like_p);
+                            mPraise.setBounds(0, 0, 40, 40);
+                            textView.setCompoundDrawables(mPraise, null, null, null);
+                            String str=data.get(position).getCai_num()+1+"";
+                            textView.setText(str);
+                            textView.setTextColor(mContext.getResources().getColor(R.color.blue));
+
+                            iscai=0;
+                        }else{
+                            TextView textView=view.findViewById(R.id.commentList_item_tv_praise);
+                            Drawable mPraise = mContext.getResources().getDrawable(R.drawable.detail_like);
+                            mPraise.setBounds(0, 0, 40, 40);
+                            textView.setCompoundDrawables(mPraise, null, null, null);
+                            String str=data.get(position).getCai_num()+"";
+                            textView.setText(str);
+                            textView.setTextColor(mContext.getResources().getColor(R.color.default_text));
+
+                            iscai=1;
+                        }
                     }
                 };
-                ApiMethods.getCommentZan(new MyObserver<ZanBean>( listener), data.get(position).getId()+"",yy);
-                //notifyDataSetChanged();//刷新
+                mCache= ACache.get(mContext);
+                //从缓存读取用户信息
+                userInfo = (UserInfo) mCache.getAsObject("userInfo");
+                if(userInfo==null){
+                    Toast.makeText(mContext, "请先登录", Toast.LENGTH_SHORT).show();
+                }else {
+                    String userid = userInfo.getId() + "";
+                    ApiMethods.getCommentZan(new MyObserver<ZanBean>(listener), data.get(position).getId() + "",userid,data.get(position).getMid()+"",iscai+"", yy);
+                    //notifyDataSetChanged();//刷新
+                }
             }
         });
         return myViewHolder;
@@ -94,14 +119,13 @@ public class OtherCommentAdapter extends RecyclerView.Adapter<OtherCommentAdapte
         Drawable mPraise = mContext.getResources().getDrawable(R.drawable.detail_like);
         mPraise.setBounds(0, 0, 40, 40);
         holder.commentListItemTvPraise.setCompoundDrawables(mPraise, null, null, null);
-        String name = data.get(position).getTel();
+        String name = data.get(position).getUsres().getUsername();
         holder.name.setText(name);
-        String date = data.get(position).getAddtime()+"";
-        String date1= TimeDateUtil.getDateToString(date,"yyyy-MM-dd");
-        holder.date.setText(date1);
+        String date = data.get(position).getCreate_time();
+        holder.date.setText(date);
         String content = data.get(position).getContent();
         holder.content.setText(content);
-        String commentListItemTvPraise = data.get(position).getHits()+"";
+        String commentListItemTvPraise = data.get(position).getCai_num()+"";
         holder.commentListItemTvPraise.setText(commentListItemTvPraise);
 
     }

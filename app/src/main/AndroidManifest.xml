@@ -33,7 +33,7 @@
         <activity android:name=".activity.ChapterPracticeSpecialActivity" />
         <activity android:name=".activity.ChapterPracticeTwoActivity" />
         <activity android:name=".activity.SendCommentActivity" />
-        <activity android:name=".activity.MyCollectActivity" />
+        <activity android:name=".activity.MyCollectionActivity" />
         <activity android:name=".activity.WrongActivity" />
         <activity android:name=".activity.WrongChapterPracticeActivity" />
         <activity android:name=".activity.FeedbackErrorActivity" />

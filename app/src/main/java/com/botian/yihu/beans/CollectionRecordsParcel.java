@@ -1,37 +1,20 @@
-package com.botian.yihu.data;
+package com.botian.yihu.beans;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.List;
 
-public class PracticeParcel implements Parcelable {
+public class CollectionRecordsParcel implements Parcelable {
+
 
     /**
      * code : 1
      * msg : 获取成功!
-     * data : [{"id":5077,"co_id":2,"ch_id":40,"zj_id":35,"bar_id":37,"name":"关于护理程序的概念，描述正确的是","A":"一种护理工作的分工类型","B":"一种护理工作的简化形式","C":"一种系统的解决问题的方法\t","D":"一种护理操作的模式","E":"一种护理操作的模式","correct":"B","analysis":"没有","image":"","sort":0,"open":1,"addtime":1523863201,"uptime":1523863802,"chaptername":"护士执业资格考试"},{"id":5078,"co_id":2,"ch_id":40,"zj_id":35,"bar_id":37,"name":"护理程序的理论基础不包括","A":"系统论","B":"解决问题论 ","C":"压力适应论","D":"信息交流论","E":"人的基本需要层次论","correct":"B","analysis":"没有","image":"","sort":0,"open":1,"addtime":1523863259,"uptime":1523863814,"chaptername":"护士执业资格考试"}]
+     * data : [{"id":7,"user_id":2646,"topic_id":5110,"zj":"","zhenti":"","sort":0,"open":0,"addtime":1525404962,"uptime":0,"name":"护士章节","A":"护士章节","B":"护士章节","C":"护士章节","D":"护士章节","E":"护士章节","correct":"A","analysis":"护士章节","image":""}]
      */
-
-    private int code;
-    private String msg;
+    private int position;
     private List<DataBean> data;
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
 
     public List<DataBean> getData() {
         return data;
@@ -41,30 +24,37 @@ public class PracticeParcel implements Parcelable {
         this.data = data;
     }
 
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
     public static class DataBean implements Parcelable {
         /**
-         * id : 5077
-         * co_id : 2
-         * ch_id : 40
-         * zj_id : 35
-         * bar_id : 37
-         * name : 关于护理程序的概念，描述正确的是
-         * A : 一种护理工作的分工类型
-         * B : 一种护理工作的简化形式
-         * C : 一种系统的解决问题的方法
-         * D : 一种护理操作的模式
-         * E : 一种护理操作的模式
-         * correct : B
-         * analysis : 没有
+         * id : 7
+         * user_id : 2646
+         * topic_id : 5110
+         * addtime : 1525404962
+         * uptime : 0
+         * name : 护士章节
+         * A : 护士章节
+         * B : 护士章节
+         * C : 护士章节
+         * D : 护士章节
+         * E : 护士章节
+         * correct : A
+         * analysis : 护士章节
          * image :
-         * sort : 0
-         * open : 1
-         * addtime : 1523863201
-         * uptime : 1523863802
-         * chaptername : 护士执业资格考试
          */
 
         private int id;
+        private int user_id;
+        private int topic_id;
+        private int addtime;
+        private int uptime;
         private String name;
         private String A;
         private String B;
@@ -75,12 +65,45 @@ public class PracticeParcel implements Parcelable {
         private String analysis;
         private String image;
 
+
         public int getId() {
             return id;
         }
 
         public void setId(int id) {
             this.id = id;
+        }
+
+        public int getUser_id() {
+            return user_id;
+        }
+
+        public void setUser_id(int user_id) {
+            this.user_id = user_id;
+        }
+
+        public int getTopic_id() {
+            return topic_id;
+        }
+
+        public void setTopic_id(int topic_id) {
+            this.topic_id = topic_id;
+        }
+
+        public int getAddtime() {
+            return addtime;
+        }
+
+        public void setAddtime(int addtime) {
+            this.addtime = addtime;
+        }
+
+        public int getUptime() {
+            return uptime;
+        }
+
+        public void setUptime(int uptime) {
+            this.uptime = uptime;
         }
 
         public String getName() {
@@ -163,6 +186,10 @@ public class PracticeParcel implements Parcelable {
         @Override
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeInt(this.id);
+            dest.writeInt(this.user_id);
+            dest.writeInt(this.topic_id);
+            dest.writeInt(this.addtime);
+            dest.writeInt(this.uptime);
             dest.writeString(this.name);
             dest.writeString(this.A);
             dest.writeString(this.B);
@@ -179,6 +206,10 @@ public class PracticeParcel implements Parcelable {
 
         protected DataBean(Parcel in) {
             this.id = in.readInt();
+            this.user_id = in.readInt();
+            this.topic_id = in.readInt();
+            this.addtime = in.readInt();
+            this.uptime = in.readInt();
             this.name = in.readString();
             this.A = in.readString();
             this.B = in.readString();
@@ -210,29 +241,27 @@ public class PracticeParcel implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.code);
-        dest.writeString(this.msg);
+        dest.writeInt(this.position);
         dest.writeTypedList(this.data);
     }
 
-    public PracticeParcel() {
+    public CollectionRecordsParcel() {
     }
 
-    protected PracticeParcel(Parcel in) {
-        this.code = in.readInt();
-        this.msg = in.readString();
+    protected CollectionRecordsParcel(Parcel in) {
+        this.position = in.readInt();
         this.data = in.createTypedArrayList(DataBean.CREATOR);
     }
 
-    public static final Parcelable.Creator<PracticeParcel> CREATOR = new Parcelable.Creator<PracticeParcel>() {
+    public static final Parcelable.Creator<CollectionRecordsParcel> CREATOR = new Parcelable.Creator<CollectionRecordsParcel>() {
         @Override
-        public PracticeParcel createFromParcel(Parcel source) {
-            return new PracticeParcel(source);
+        public CollectionRecordsParcel createFromParcel(Parcel source) {
+            return new CollectionRecordsParcel(source);
         }
 
         @Override
-        public PracticeParcel[] newArray(int size) {
-            return new PracticeParcel[size];
+        public CollectionRecordsParcel[] newArray(int size) {
+            return new CollectionRecordsParcel[size];
         }
     };
 }

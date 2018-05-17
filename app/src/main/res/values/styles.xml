@@ -39,16 +39,21 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">25.0dip</item>
     </style>
-    <style name="SmallRatingBar" parent="@style/Widget.AppCompat.RatingBar">
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:progressDrawable">@drawable/small_rating_bar</item>
-        <item name="android:numStars">5</item>
-        <item name="android:stepSize">0.5</item>
-        <item name="android:height">18.0dip</item>
+    <!--对话框的样式-->
+    <style name="NormalDialogStyle">
+        <!--对话框背景 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+
+        <!--没有标题 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 是否浮现在Activity之上 -->
+        <item name="android:windowIsFloating">true</item>
+
+        <!-- 是否有覆盖 -->
+        <item name="android:windowContentOverlay">@null</item>
+        <!--背景变暗-->
+        <item name="android:backgroundDimEnabled">true</item>
     </style>
-    <style name="Widget.AppCompat.RatingBar" parent="@style/Base.Widget.AppCompat.RatingBar" />
-    <style name="Base.Widget.AppCompat.RatingBar" parent="@android:style/Widget.RatingBar">
-        <item name="android:indeterminateDrawable">@drawable/abc_ratingbar_material</item>
-        <item name="android:progressDrawable">@drawable/abc_ratingbar_material</item>
-    </style>
+
+
 </resources>

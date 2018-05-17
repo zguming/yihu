@@ -13,9 +13,9 @@ import com.botian.yihu.ProgressObserver;
 import com.botian.yihu.R;
 import com.botian.yihu.activity.PracticeAnswerActivity;
 import com.botian.yihu.api.ApiMethods;
-import com.botian.yihu.data.ChapterPracticeTwoBean;
-import com.botian.yihu.data.PracticeBean;
-import com.botian.yihu.data.PracticeParcel;
+import com.botian.yihu.beans.ChapterPracticeTwoBean;
+import com.botian.yihu.beans.PracticeBean;
+import com.botian.yihu.beans.PracticeParcel;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import java.util.ArrayList;

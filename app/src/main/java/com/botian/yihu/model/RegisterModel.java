@@ -5,7 +5,7 @@ import android.content.Context;
 import com.botian.yihu.ObserverOnNextListener;
 import com.botian.yihu.ProgressObserver;
 import com.botian.yihu.api.ApiMethods;
-import com.botian.yihu.data.RegisterBean;
+import com.botian.yihu.beans.RegisterBean;
 import com.botian.yihu.contranct.RegisterContranct;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 

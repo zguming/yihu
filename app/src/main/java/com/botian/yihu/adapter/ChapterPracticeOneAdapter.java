@@ -6,14 +6,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.botian.yihu.R;
 import com.botian.yihu.activity.ChapterPracticeSpecialActivity;
 import com.botian.yihu.activity.ChapterPracticeTwoActivity;
-import com.botian.yihu.data.ChapterPracticeIdParcel;
-import com.botian.yihu.data.ChapterPracticeOneBean;
+import com.botian.yihu.beans.ChapterPracticeIdParcel;
+import com.botian.yihu.beans.ChapterPracticeOneBean;
 
 import java.util.List;
 

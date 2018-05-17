@@ -1,16 +1,15 @@
-package com.botian.yihu.data;
-
-public class CollectionDellBean {
+package com.botian.yihu.beans;
+//赞
+public class ZanBean {
 
     /**
      * code : 1
-     * msg : 删除成功!
-     * data : 4
+     * msg : 点赞成功!
+     * data : 1
      */
 
     private int code;
     private String msg;
-    private int data;
 
     public int getCode() {
         return code;
@@ -28,11 +27,4 @@ public class CollectionDellBean {
         this.msg = msg;
     }
 
-    public int getData() {
-        return data;
-    }
-
-    public void setData(int data) {
-        this.data = data;
-    }
 }

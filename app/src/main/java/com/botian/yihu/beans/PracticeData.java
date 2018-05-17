@@ -1,4 +1,4 @@
-package com.botian.yihu.data;
+package com.botian.yihu.beans;
 
 import org.litepal.crud.DataSupport;
 //litepal数据库关系模型对象

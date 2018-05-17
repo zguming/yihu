@@ -8,7 +8,7 @@
     <LinearLayout
         android:id="@+id/picture_wrapper"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="45dp"
         android:layout_marginLeft="12dp"
         android:orientation="vertical">
 
@@ -44,6 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="35dp"
+        android:textColor="@color/textColorBlack"
         android:textSize="16sp" />
     <View
         android:id="@+id/bottom_line3"

@@ -1,12 +1,18 @@
 package com.botian.yihu.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,12 +23,17 @@ import com.botian.yihu.MyObserver;
 import com.botian.yihu.ObserverOnNextListener;
 import com.botian.yihu.ProgressObserver;
 import com.botian.yihu.R;
+import com.botian.yihu.adapter.MyCollectAdapter;
 import com.botian.yihu.adapter.MyPagerAdapter;
 import com.botian.yihu.api.ApiMethods;
-import com.botian.yihu.data.CollectionBean;
-import com.botian.yihu.data.CommentParcel;
-import com.botian.yihu.data.PracticeAnswer;
-import com.botian.yihu.data.PracticeData;
+import com.botian.yihu.beans.CollectionBean;
+import com.botian.yihu.beans.CommentParcel;
+import com.botian.yihu.beans.MyCollection;
+import com.botian.yihu.beans.No;
+import com.botian.yihu.beans.PracticeAnswer;
+import com.botian.yihu.beans.PracticeData;
+import com.botian.yihu.beans.UserInfo;
+import com.botian.yihu.util.ACache;
 import com.bumptech.glide.Glide;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
@@ -61,18 +72,24 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
     private int position = 0;
     //用于判断背题
     private int answer666 = 0;
+    private ACache mCache;
+    private UserInfo userInfo;
+    private String hostUrl="http://btsc.botian120.com";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_practice_answer);
+        setTheme(R.style.dialog);
         ButterKnife.bind(this);
+        mCache= ACache.get(this);
+        //从缓存读取用户信息
+        userInfo = (UserInfo) mCache.getAsObject("userInfo");
         Intent intent = getIntent();
         String typeid = intent.getIntExtra("typeid", 0) + "";
         ObserverOnNextListener<PracticeAnswer> listener = new ObserverOnNextListener<PracticeAnswer>() {
             @Override
             public void onNext(PracticeAnswer data) {
-                Log.d("TAG", "onNext:；就as定了樊笼阿扥 ");
                 practiceList = data.getData();
                 viewsList = new ArrayList<View>();
                 initView();
@@ -137,6 +154,8 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
             final LinearLayout bottomHide = view.findViewById(R.id.bottom_hide);
             final TextView tvTipsYourChoose = view.findViewById(R.id.tv_tips_yourchoose);
             final TextView btnLookOtherNote = view.findViewById(R.id.btnLookOtherNote);
+            final TextView btnNoteEdit = view.findViewById(R.id.btnNoteEdit);
+            final TextView noteContent = view.findViewById(R.id.noteContent);
             final TextView btnFeedbackError = view.findViewById(R.id.btn_feedback_error);
             TextView check = view.findViewById(R.id.check);
             TextView analyse = view.findViewById(R.id.analyseinfo);
@@ -149,8 +168,9 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
             check.setText(practiceList.get(i).getCorrect());
             analyse.setText(practiceList.get(i).getAnalysis());
             final String correct = practiceList.get(i).getCorrect();
+            String picUrl=hostUrl+practiceList.get(i).getLitpic();
             Glide.with(this)
-                    .load(practiceList.get(i).getLitpic())
+                    .load(picUrl)
                     .into(imageView);
             final int finalI1 = i;
             linearAnswerA.setOnClickListener(new View.OnClickListener() {
@@ -342,11 +362,50 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
                     CommentParcel commentParcel = new CommentParcel();
                     String title = practiceList.get(finalI).getTitle();
                     int topic_id = practiceList.get(finalI).getId();
+                    String cl=practiceList.get(finalI).getCl()+"";
                     commentParcel.setId(topic_id);
                     commentParcel.setTitle(title);
+                    commentParcel.setCl(cl);
                     Intent intent = new Intent(PracticeAnswerActivity.this, OtherCommentActivity.class);
                     intent.putExtra("commentParcel", commentParcel);
                     startActivity(intent);
+                }
+            });
+            btnNoteEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    View view = getLayoutInflater().inflate(R.layout.edittext_note, null);
+                    final EditText editText =  view.findViewById(R.id.edit_text);
+                    AlertDialog dialog = new AlertDialog.Builder(PracticeAnswerActivity.this,R.style.NormalDialogStyle)
+                            //.setIcon(R.mipmap.icon)//设置标题的图片
+                            //.setTitle("半自定义对话框")//设置对话框的标题
+
+                            .setView(view)
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(final DialogInterface dialog, int which) {
+                                    final String content = editText.getText().toString();
+                                    ObserverOnNextListener<No> listener = new ObserverOnNextListener<No>() {
+                                        @Override
+                                        public void onNext(No data) {
+                                            noteContent.setText(content);
+                                            dialog.dismiss();
+                                        }
+                                    };
+                                    int userId=userInfo.getId();
+                                    ApiMethods.addNote(new MyObserver<No>( listener),practiceList.get(finalI).getId()+"", userId+"",content,practiceList.get(finalI).getCl()+"",PracticeAnswerActivity.this);
+                                }
+                            }).create();
+                    dialog.show();
+                    WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+                    lp.height = (400);
+                    dialog.getWindow().setAttributes(lp);
                 }
             });
             btnFeedbackError.setOnClickListener(new View.OnClickListener() {
@@ -441,19 +500,21 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
                     break;
             }
             final int finalI = i;
-            btnLookOtherNote.setOnClickListener(new View.OnClickListener() {
+            /*btnLookOtherNote.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     CommentParcel commentParcel = new CommentParcel();
                     String title = practiceList.get(finalI).getTitle();
                     int topic_id = practiceList.get(finalI).getId();
+                    String cl=practiceList.get(finalI).getCl()+"";
                     commentParcel.setId(topic_id);
                     commentParcel.setTitle(title);
+                    commentParcel.setCl(cl);
                     Intent intent = new Intent(PracticeAnswerActivity.this, OtherCommentActivity.class);
                     intent.putExtra("commentParcel", commentParcel);
                     startActivity(intent);
                 }
-            });
+            });*/
             btnFeedbackError.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -500,7 +561,7 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
                 ObserverOnNextListener<CollectionBean> listener = new ObserverOnNextListener<CollectionBean>() {
                     @Override
                     public void onNext(CollectionBean data) {
-                        if (data.getCode() == 0) {
+                        if (data.getCode() == 400) {
                             Toast.makeText(PracticeAnswerActivity.this, data.getMsg(), Toast.LENGTH_SHORT).show();
                         }
                         Drawable collect = getResources().getDrawable(R.drawable.ic_collect_press);
@@ -508,7 +569,7 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
                         tvCollect.setCompoundDrawables(null, collect, null, null);
                     }
                 };
-                ApiMethods.getCollection(new MyObserver<CollectionBean>(listener), "2656", practiceList.get(a).getId() + "", this);
+                ApiMethods.getCollection(new MyObserver<CollectionBean>(listener), practiceList.get(a).getId()+"", userInfo.getId() + "",practiceList.get(a).getCl() + "", this);
                 break;
             case R.id.tv_answer:
                 if (answer666 == 0) {

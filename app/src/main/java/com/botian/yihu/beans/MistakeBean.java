@@ -1,4 +1,4 @@
-package com.botian.yihu.data;
+package com.botian.yihu.beans;
 
 public class MistakeBean {
 
