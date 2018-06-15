@@ -1,29 +1,43 @@
 package com.botian.yihu.activity;
 
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import com.botian.yihu.R;
+import com.botian.yihu.util.JZMediaIjkplayer;
+import com.tencent.rtmp.TXVodPlayer;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
+import cn.jzvd.JZVideoPlayer;
+import cn.jzvd.JZVideoPlayerStandard;
+
 public class PlayVideoActivity extends RxAppCompatActivity {
-    //private TXVodPlayer mTXPlayerGetInfo;
+    private TXVodPlayer mTXPlayerGetInfo;
+String url;
+String title;
+String cover;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_video);
-
-        /*int appId = 1254402451;
+        Intent intent=getIntent();
+        url=intent.getStringExtra("url");
+        title=intent.getStringExtra("title");
+        cover=intent.getStringExtra("cover");
+        int appId = 1254402451;
         String fileId = "7447398155509167622";
-        mTXPlayerGetInfo = new TXVodPlayer(this);
+        //mTXPlayerGetInfo = new TXVodPlayer(this);
         //mTXPlayerGetInfo.setVodListener(mGetVodInfoListener);
 
-        TXPlayerAuthBuilder authBuilder = new TXPlayerAuthBuilder();
-            authBuilder.setAppId(appId);
-            authBuilder.setFileId(fileId);
-            mTXPlayerGetInfo.startPlay(authBuilder);
-        mTXPlayerGetInfo.setVodListener(mGetVodInfoListener);*/
+        //TXPlayerAuthBuilder authBuilder = new TXPlayerAuthBuilder();
+        //authBuilder.setAppId(appId);
+        //authBuilder.setFileId(fileId);
+        //mTXPlayerGetInfo.startPlay(authBuilder);
+        //mTXPlayerGetInfo.setVodListener(mGetVodInfoListener);
+        playVideo();
     }
+
     /*private ITXVodPlayListener mGetVodInfoListener = new ITXVodPlayListener() {
         @Override
         public void onPlayEvent(TXVodPlayer player, int event, Bundle param) {
@@ -36,13 +50,13 @@ public class PlayVideoActivity extends RxAppCompatActivity {
                 data.url = param.getString(TXLiveConstants.EVT_PLAY_URL);
                 data.title = param.getString(TXLiveConstants.EVT_PLAY_NAME);
 
-                String url=data.url;
-                String cover=data.cover;
-                String title=data.title;
+                String url = data.url;
+                String cover = data.cover;
+                String title = data.title;
                 if (data.title == null || data.title.length() == 0) {
                     data.title = param.getString(TXLiveConstants.EVT_PLAY_NAME);
                 }
-                playVideo(url,cover,title);
+                playVideo(url, cover, title);
             }
         }
 
@@ -50,8 +64,9 @@ public class PlayVideoActivity extends RxAppCompatActivity {
         public void onNetStatus(TXVodPlayer txVodPlayer, Bundle bundle) {
 
         }
-    };
-    public void playVideo(String url,String cover,String title){
+    };*/
+
+    public void playVideo() {
         JZVideoPlayerStandard jzVideoPlayerStandard = (JZVideoPlayerStandard) findViewById(R.id.videoplayer);
         JZVideoPlayer.setMediaInterface(new JZMediaIjkplayer());
         //jzVideoPlayerStandard.startFullscreen(this, JZVideoPlayerStandard.class, "http://2449.vod.myqcloud.com/2449_22ca37a6ea9011e5acaaf51d105342e3.f20.mp4", "嫂子辛苦了");
@@ -61,19 +76,21 @@ public class PlayVideoActivity extends RxAppCompatActivity {
         JZVideoPlayer.FULLSCREEN_ORIENTATION = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
         JZVideoPlayer.NORMAL_ORIENTATION = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
     }
+
     @Override
-public void onBackPressed() {
-    if (JZVideoPlayer.backPress()) {
-        return;
+    public void onBackPressed() {
+        if (JZVideoPlayer.backPress()) {
+            return;
+        }
+        super.onBackPressed();
     }
-    super.onBackPressed();
-}
-@Override
-protected void onPause() {
-    super.onPause();
-    JZVideoPlayer.releaseAllVideos();
-    //Change these two variables back
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        JZVideoPlayer.releaseAllVideos();
+        //Change these two variables back
         JZVideoPlayer.FULLSCREEN_ORIENTATION = ActivityInfo.SCREEN_ORIENTATION_SENSOR;
         JZVideoPlayer.NORMAL_ORIENTATION = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
-}*/
+    }
 }

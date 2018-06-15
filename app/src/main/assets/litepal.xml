@@ -5,7 +5,6 @@
     <version value="1" ></version>
 
     <list>
-        <mapping class="com.botian.yihu.beans.PracticeData"></mapping>
-        <mapping class="com.botian.yihu.database.ChapterPracticeList"></mapping>
+        <mapping class="com.botian.yihu.database.PracticeData"></mapping>
     </list>
 </litepal>

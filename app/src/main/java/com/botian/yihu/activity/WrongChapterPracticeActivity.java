@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.botian.yihu.R;
 import com.botian.yihu.adapter.MyPagerAdapter;
 import com.botian.yihu.beans.CommentParcel;
-import com.botian.yihu.beans.PracticeData;
+import com.botian.yihu.database.PracticeData;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import org.litepal.crud.DataSupport;

@@ -1,46 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="40dp"
-    android:background="@color/topcolor"
-    android:gravity="center_vertical">
-    <TextView
-        android:id="@+id/cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="取消"
-        android:layout_marginLeft="@dimen/dp10"
-        android:textSize="@dimen/sp16"/>
-    <View
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_weight="1"/>
-    <TextView
-        android:id="@+id/submit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="提交"
-        android:layout_marginRight="@dimen/dp10"
-        android:textSize="@dimen/sp16"/>
-</LinearLayout>
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="22dp"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_back" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:text="发表评论"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </android.support.v7.widget.Toolbar>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="@color/gray_line_color"/>
+        android:background="@color/gray_line_color" />
+
     <fj.edittextcount.lib.FJEditTextCount
         android:id="@+id/fjEdit"
         android:layout_width="match_parent"
-        android:layout_height="320dp"
+        android:layout_height="220dp"
         app:etMaxLength="140"
-        app:etPromptTextSize="14sp"
         app:etMinHeight="500dp"
-        app:etTextColor="@color/TextColorBlack"
         app:etPromptTextColor="@color/umeng_comm_text_default_color"
+        app:etPromptTextSize="14sp"
+        app:etTextColor="@color/TextColorBlack"
         app:etTextSize="18sp"
         app:etType="percentage" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/submit"
+            android:layout_width="@dimen/dp60"
+            android:layout_height="@dimen/dp30"
+            android:layout_marginRight="@dimen/dp10"
+            android:background="@drawable/selector_login_btn"
+            android:text="提交"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp18" />
+    </LinearLayout>
 </LinearLayout>

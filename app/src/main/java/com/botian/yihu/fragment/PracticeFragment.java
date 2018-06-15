@@ -7,21 +7,34 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.botian.yihu.GlideImageLoader;
+import com.botian.yihu.MyObserver;
+import com.botian.yihu.ObserverOnNextListener;
+import com.botian.yihu.ProgressObserver;
 import com.botian.yihu.R;
 import com.botian.yihu.activity.ChapterPracticeListActivity;
 import com.botian.yihu.activity.MyCollectionActivity;
 import com.botian.yihu.activity.WrongActivity;
+import com.botian.yihu.adapter.VideoClassAdapter;
+import com.botian.yihu.api.ApiMethods;
+import com.botian.yihu.beans.Adlist;
+import com.botian.yihu.beans.VideoClass;
 import com.botian.yihu.view.SubjectSelectActivity;
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
+import com.youth.banner.Transformer;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -76,6 +89,8 @@ public class PracticeFragment extends Fragment {
     RelativeLayout rlForecastExams;
     private View view;
     private SharedPreferences pref;
+    private String filter = "mid,eq,1";//首页轮播图mid==1
+    private List<String> images = new ArrayList<>();
 
     @Nullable
     @Override
@@ -89,18 +104,25 @@ public class PracticeFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initView();
-        List<String> imagesa = new ArrayList<>();
-        imagesa.add("http://img.zcool.cn/community/0166c756e1427432f875520f7cc838.jpg");
-        imagesa.add("http://img.zcool.cn/community/01c8dc56e1428e6ac72531cbaa5f2c.jpg");
-        imagesa.add("http://img.zcool.cn/community/01fd2756e142716ac72531cbf8bbbf.jpg");
-        imagesa.add("http://img.zcool.cn/community/0114a856640b6d32f87545731c076a.jpg");
-        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
-        //设置图片加载器
-        banner.setImageLoader(new GlideImageLoader());
-        //设置图片集合
-        banner.setImages(imagesa);
-        //banner设置方法全部调用完毕时最后调用
-        banner.start();
+        ObserverOnNextListener<Adlist> listener = new ObserverOnNextListener<Adlist>() {
+            @Override
+            public void onNext(Adlist data) {
+                for (int i = 0; i < data.getData().size(); i++) {
+                    images.add("http://btsc.botian120.com"+data.getData().get(i).getLitpic());
+                }
+                banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
+                //设置图片加载器
+                banner.setImageLoader(new GlideImageLoader());
+                //设置图片集合
+                banner.setImages(images);
+                banner.setDelayTime(4000);
+                //banner设置方法全部调用完毕时最后调用
+                banner.start();
+
+            }
+        };
+        ApiMethods.getAdlist(new MyObserver<Adlist>(listener), filter, (RxAppCompatActivity) getActivity());
+
     }
 
     public void initView() {
@@ -141,8 +163,8 @@ public class PracticeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        pref=this.getActivity().getSharedPreferences("subjectSelectData", Context.MODE_PRIVATE);
-        String subjectName=pref.getString("subjectName","护士执业");
+        pref = this.getActivity().getSharedPreferences("subjectSelectData", Context.MODE_PRIVATE);
+        String subjectName = pref.getString("subjectName", "护士执业");
         mySubject.setText(subjectName);
     }
 
@@ -156,11 +178,11 @@ public class PracticeFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_collect:
-                Intent intent2=new Intent(getActivity(), MyCollectionActivity.class);
+                Intent intent2 = new Intent(getActivity(), MyCollectionActivity.class);
                 startActivity(intent2);
                 break;
             case R.id.tv_wrong:
-                Intent intent1=new Intent(getActivity(), WrongActivity.class);
+                Intent intent1 = new Intent(getActivity(), WrongActivity.class);
                 startActivity(intent1);
                 break;
             case R.id.tv_notes:

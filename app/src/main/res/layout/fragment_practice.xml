@@ -56,7 +56,7 @@
         <com.youth.banner.Banner
             android:id="@+id/banner"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp105">
+            android:layout_height="120dp">
 
         </com.youth.banner.Banner>
 
@@ -148,8 +148,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
-                android:paddingTop="@dimen/dp10"
-                android:paddingBottom="@dimen/dp10"
+                android:paddingTop="@dimen/dp12"
+                android:paddingBottom="@dimen/dp12"
                 android:background="?selectableItemBackground"
                 android:orientation="vertical"
                 android:paddingLeft="@dimen/dp10">
@@ -160,7 +160,7 @@
                     android:layout_height="wrap_content"
                     android:text="章节练习"
                     android:textColor="@color/textColorBlack"
-                    android:textSize="@dimen/sp15" />
+                    android:textSize="@dimen/sp16" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -189,8 +189,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
-                android:paddingTop="@dimen/dp10"
-                android:paddingBottom="@dimen/dp10"
+                android:paddingTop="@dimen/dp12"
+                android:paddingBottom="@dimen/dp12"
                 android:background="?selectableItemBackground"
                 android:orientation="vertical"
                 android:paddingLeft="@dimen/dp10">
@@ -201,7 +201,7 @@
                     android:layout_height="wrap_content"
                     android:text="高频考点"
                     android:textColor="@color/textColorBlack"
-                    android:textSize="@dimen/sp15" />
+                    android:textSize="@dimen/sp16" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -250,7 +250,7 @@
                     android:layout_marginTop="@dimen/dp15"
                     android:text="模拟考试"
                     android:textColor="@color/textColorRed"
-                    android:textSize="15.0sp"
+                    android:textSize="16.0sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -289,7 +289,7 @@
                     android:layout_marginTop="@dimen/dp15"
                     android:text="历年精选"
                     android:textColor="@color/textColorLightGreen"
-                    android:textSize="15.0sp"
+                    android:textSize="16.0sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -329,7 +329,7 @@
                     android:layout_marginTop="@dimen/dp15"
                     android:text="靠前押题"
                     android:textColor="@color/textColorLightYellow"
-                    android:textSize="15.0sp"
+                    android:textSize="16.0sp"
                     android:textStyle="bold" />
 
                 <TextView

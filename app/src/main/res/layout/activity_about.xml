@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="35.0dip">
+
+        <TextView
+            android:id="@+id/tv_about_introduction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30.0dip"
+            android:drawablePadding="@dimen/dimen_5_dip"
+            android:drawableTop="@drawable/icon"
+            android:gravity="center_horizontal"
+            android:text="@string/app_name"
+            android:textColor="@color/regist_gray_black_color"
+            android:textSize="16.0sp" />
+
+        <TextView
+            android:id="@+id/tv_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_about_introduction"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dimen_5_dip"
+            android:text="3.3.50" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="0.0dip"
+        android:layout_marginBottom="30.0dip"
+        android:layout_marginTop="@dimen/dp40"
+        android:layout_weight="1.0">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <include layout="@layout/line_horizontal_layout" />
+
+            <RelativeLayout
+                android:id="@+id/rl_official_account"
+                android:layout_width="fill_parent"
+                android:layout_height="45.0dip"
+                android:background="?selectableItemBackground">
+
+                <TextView
+                    style="@style/mine_item_text_style"
+                    android:text="hdasfk" />
+
+                <TextView
+                    style="@style/setting_item_icon_style"
+                    android:text="dfas" />
+            </RelativeLayout>
+
+            <include layout="@layout/line_horizontal_layout" />
+
+            <RelativeLayout
+                android:id="@+id/rl_server_qq"
+                android:layout_width="fill_parent"
+                android:layout_height="45.0dip"
+                android:background="?selectableItemBackground">
+
+                <TextView
+                    style="@style/mine_item_text_style"
+                    android:text="dafs" />
+
+                <TextView
+                    android:id="@+id/tv_qq_server"
+                    style="@style/setting_item_icon_style"
+                    android:text="adsf" />
+            </RelativeLayout>
+
+            <include layout="@layout/line_horizontal_layout" />
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/sp8"
+        android:gravity="center"
+        android:text="dasf" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/spacePrimary"
+        android:gravity="center"
+        android:text="adsf" />
+</LinearLayout>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_bg"
+    android:orientation="vertical">
+
+    <TextView
+        android:paddingLeft="20dp"
+        android:paddingBottom="13dp"
+        android:paddingTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="性别"
+        android:textStyle="bold"
+        android:textColor="@color/textColorBlack"
+        android:textSize="18sp" />
+
+    <TextView
+        android:paddingLeft="@dimen/dp20"
+        android:paddingBottom="13dp"
+        android:paddingTop="13dp"
+        android:id="@+id/boy"
+        android:background="?selectableItemBackground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="男"
+        android:textColor="@color/textColorBlack"
+        android:textSize="16sp" />
+
+    <TextView
+        android:paddingLeft="@dimen/dp20"
+        android:paddingBottom="@dimen/dp20"
+        android:paddingTop="13dp"
+        android:id="@+id/girl"
+        android:background="?selectableItemBackground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="女"
+        android:textColor="@color/textColorBlack"
+        android:textSize="16sp" />
+
+
+</LinearLayout>

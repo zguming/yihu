@@ -21,17 +21,10 @@
             android:textColor="@color/white"
             android:textSize="20sp" />
     </android.support.v7.widget.Toolbar>
-    <View
-        android:id="@+id/bottom_line3"
-        android:layout_width="fill_parent"
-        android:layout_height="1px"
-        android:layout_marginLeft="@dimen/dp25"
-        android:background="@color/gray_line_color" />
-    <LinearLayout
+    <com.jcodecraeer.xrecyclerview.XRecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/container"
-        android:orientation="vertical">
-
-    </LinearLayout>
+        android:layout_gravity="center_horizontal"
+        android:overScrollMode="never" />
 </LinearLayout>

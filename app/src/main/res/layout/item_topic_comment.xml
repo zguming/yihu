@@ -9,10 +9,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:orientation="horizontal">
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/userface"
-            android:layout_width="50.0dip"
-            android:layout_height="50.0dip" />
+            android:layout_width="@dimen/dp45"
+            android:layout_height="@dimen/dp45"
+            android:layout_marginLeft="@dimen/dp3"/>
         <LinearLayout
             android:id="@+id/commentList_item_layout"
             android:layout_width="fill_parent"
@@ -28,7 +29,7 @@
                     android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#ffc8c8c8"
+                    android:textColor="@color/textColorBlack"
                     android:textSize="15.5sp" />
 
                 <View
@@ -51,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2013-10-11"
-                android:textColor="#ffc8c8c8"
+                android:textColor="@color/textColorBlack"
                 android:textSize="12.0sp" />
         </LinearLayout>
     </LinearLayout>

@@ -1,26 +1,32 @@
 package com.botian.yihu.activity;
 
-import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.view.KeyEvent;
+import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
+import com.botian.yihu.MyObserver;
+import com.botian.yihu.ObserverOnNextListener;
 import com.botian.yihu.R;
+import com.botian.yihu.api.ApiMethods;
+import com.botian.yihu.beans.Version;
 import com.botian.yihu.fragment.LiveFragment;
-import com.botian.yihu.fragment.MineFragment;
 import com.botian.yihu.fragment.NewsFragment;
 import com.botian.yihu.fragment.PracticeFragment;
+import com.botian.yihu.fragment.UserFragment;
 import com.botian.yihu.fragment.VideoFragment;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 //主界面
 public class MainActivity extends RxAppCompatActivity implements BottomNavigationBar.OnTabSelectedListener{
     private VideoFragment mVideoFragment;
-    private MineFragment mMineFragment;
+    private UserFragment mUserFragment;
     private NewsFragment mNewsFragment;
     private PracticeFragment mPracticeFragment;
     private LiveFragment mLiveFragment;
@@ -45,6 +51,25 @@ public class MainActivity extends RxAppCompatActivity implements BottomNavigatio
                 .initialise();
         setDefaultFragment();
         bottomNavigationBar.setTabSelectedListener(this);
+        ObserverOnNextListener<Version> listener = new ObserverOnNextListener<Version>() {
+            @Override
+            public void onNext(Version data) {
+                String versionCode="0";
+                PackageManager manager = getPackageManager();//获取包管理器
+                try {
+                    //通过当前的包名获取包的信息
+                    PackageInfo info = manager.getPackageInfo(getPackageName(),0);//获取包对象信息
+                    versionCode=info.versionCode+"";
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+              String version = data.getData().get(0).getName();
+                if (versionCode.equals(version)){
+
+                }
+            }
+        };
+        ApiMethods.getVersion(new MyObserver<Version>( listener),this);
     }
     /**
      * 设置默认的
@@ -101,11 +126,11 @@ public class MainActivity extends RxAppCompatActivity implements BottomNavigatio
                 }
                 break;
             case 4:
-                if (mMineFragment == null) {
-                    mMineFragment = MineFragment.newInstance("我的");
-                    transaction.add(R.id.layFrame, mMineFragment);
+                if (mUserFragment == null) {
+                    mUserFragment = UserFragment.newInstance("我的");
+                    transaction.add(R.id.layFrame, mUserFragment);
                 }else{
-                    transaction.show(mMineFragment);
+                    transaction.show(mUserFragment);
                 }
                 break;
             default:
@@ -132,8 +157,8 @@ public class MainActivity extends RxAppCompatActivity implements BottomNavigatio
         if (mNewsFragment != null){
             transaction.hide(mNewsFragment);
         }
-        if (mMineFragment != null){
-            transaction.hide(mMineFragment);
+        if (mUserFragment != null){
+            transaction.hide(mUserFragment);
         }
     }
 
@@ -145,5 +170,26 @@ public class MainActivity extends RxAppCompatActivity implements BottomNavigatio
     @Override
     public void onTabReselected(int position) {
 
+    }
+    //声明一个long类型变量：用于存放上一点击“返回键”的时刻
+    //再按一次退出程序
+    private long mExitTime;
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        //判断用户是否点击了“返回键”
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            //与上次点击返回键时刻作差
+            if ((System.currentTimeMillis() - mExitTime) > 2000) {
+                //大于2000ms则认为是误操作，使用Toast进行提示
+                Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                //并记录下本次点击“返回键”的时刻，以便下次进行判断
+                mExitTime = System.currentTimeMillis();
+            } else {
+                //小于2000ms则认为是用户确实希望退出程序-调用System.exit()方法进行退出
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

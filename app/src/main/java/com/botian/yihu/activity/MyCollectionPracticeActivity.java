@@ -10,16 +10,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-import com.botian.yihu.MyObserver;
-import com.botian.yihu.ObserverOnNextListener;
+
 import com.botian.yihu.R;
 import com.botian.yihu.adapter.MyPagerAdapter;
-import com.botian.yihu.api.ApiMethods;
-import com.botian.yihu.beans.CollectionBean;
 import com.botian.yihu.beans.CollectionRecordsParcel;
 import com.botian.yihu.beans.CommentParcel;
-import com.botian.yihu.beans.PracticeData;
+import com.botian.yihu.database.PracticeData;
 import com.bumptech.glide.Glide;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 

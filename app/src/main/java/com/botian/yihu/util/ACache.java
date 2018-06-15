@@ -50,6 +50,7 @@ import android.graphics.drawable.Drawable;
 /**
  * @author Michael Yang（www.yangfuhai.com） update at 2013.08.07
  */
+//A Simple Cache缓存机制
 public class ACache {
 	public static final int TIME_HOUR = 60 * 60;
 	public static final int TIME_DAY = TIME_HOUR * 24;

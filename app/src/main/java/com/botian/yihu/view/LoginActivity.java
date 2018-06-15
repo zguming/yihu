@@ -15,9 +15,13 @@ import com.botian.yihu.R;
 import com.botian.yihu.beans.UserInfo;
 import com.botian.yihu.contranct.LoginContranct;
 import com.botian.yihu.beans.LoginBean;
+import com.botian.yihu.eventbus.LoginEvent;
+import com.botian.yihu.eventbus.TopicCardEvent;
 import com.botian.yihu.presenter.LoginPresenter;
 import com.botian.yihu.util.ACache;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -162,8 +166,11 @@ public class LoginActivity extends RxAppCompatActivity implements LoginContranct
             userInfo.setToken(data.getData().getToken());
             userInfo.setUsername(data.getData().getUsername());
             userInfo.setMoblie(data.getData().getMoblie());
-            mCache.put("userInfo", userInfo,  120 * ACache.TIME_DAY);
+            userInfo.setAvatar(data.getData().getAvatar());
+            userInfo.setSex(data.getData().getSex());
+            mCache.put("userInfo", userInfo,  1200 * ACache.TIME_DAY);
             Toast.makeText(this, d, Toast.LENGTH_SHORT).show();
+            EventBus.getDefault().post(new LoginEvent(1));
             finish();
         }else {
             Toast.makeText(this, d, Toast.LENGTH_SHORT).show();

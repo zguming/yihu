@@ -88,7 +88,7 @@
                     android:layout_height="35dp"
                     android:background="@color/translucent_background"
                     android:digits="0123456789"
-                    android:hint="@string/input_return_code"
+                    android:hint="请输入验证码"
                     android:imeOptions="actionNext"
                     android:inputType="number"
                     android:maxLength="8"
@@ -106,7 +106,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="0.0dip"
                 android:background="@drawable/selector_login_btn"
-                android:text="@string/identify_btn_text"
+                android:text="获取验证码"
                 android:textColor="@color/white" />
         </RelativeLayout>
         <View
@@ -148,7 +148,7 @@
                 android:layout_height="35dp"
                 android:drawablePadding="8dip"
                 android:background="@color/translucent_background"
-                android:hint="@string/place_holder_register_password"
+                android:hint="请输入6-16位登录密码"
                 android:digits="0123456789abcdefghijklmnopqrstuvwxyz"
                 android:imeOptions="actionDone"
                 android:inputType="textPassword"

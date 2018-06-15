@@ -1,16 +1,14 @@
 package com.botian.yihu.activity;
 
-import android.content.DialogInterface;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
-import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -23,19 +21,23 @@ import com.botian.yihu.MyObserver;
 import com.botian.yihu.ObserverOnNextListener;
 import com.botian.yihu.ProgressObserver;
 import com.botian.yihu.R;
-import com.botian.yihu.adapter.MyCollectAdapter;
 import com.botian.yihu.adapter.MyPagerAdapter;
 import com.botian.yihu.api.ApiMethods;
 import com.botian.yihu.beans.CollectionBean;
 import com.botian.yihu.beans.CommentParcel;
-import com.botian.yihu.beans.MyCollection;
 import com.botian.yihu.beans.No;
 import com.botian.yihu.beans.PracticeAnswer;
-import com.botian.yihu.beans.PracticeData;
+import com.botian.yihu.database.PracticeData;
 import com.botian.yihu.beans.UserInfo;
 import com.botian.yihu.util.ACache;
+import com.botian.yihu.util.ScreenSizeUtils;
+import com.botian.yihu.eventbus.TopicCardEvent;
 import com.bumptech.glide.Glide;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,12 +71,16 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
     private ArrayList<View> viewsListAnswer;
     private MyPagerAdapter mAdapter;
     private List<PracticeAnswer.DataBean> practiceList = new ArrayList<>();
+    private ArrayList<Integer> topicCard =new ArrayList<>();//答对0，答错1，当前题2
+    private int already=0;//已答总数
+    private int correct1=0;//答对总数
+
     private int position = 0;
     //用于判断背题
     private int answer666 = 0;
     private ACache mCache;
     private UserInfo userInfo;
-    private String hostUrl="http://btsc.botian120.com";
+    private String hostUrl = "http://btsc.botian120.com";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +88,8 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
         setContentView(R.layout.activity_practice_answer);
         setTheme(R.style.dialog);
         ButterKnife.bind(this);
-        mCache= ACache.get(this);
+        EventBus.getDefault().register(this);
+        mCache = ACache.get(this);
         //从缓存读取用户信息
         userInfo = (UserInfo) mCache.getAsObject("userInfo");
         Intent intent = getIntent();
@@ -98,6 +105,9 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
                 tvTopicCard.setClickable(true);
                 tvCollect.setClickable(true);
                 tvAnswer.setClickable(true);
+                for (int i=0;i<practiceList.size();i++){
+                    topicCard.add(6);
+                }
             }
         };
         ApiMethods.getPracticeAnswer(new ProgressObserver<PracticeAnswer>(this, listener), typeid, this);
@@ -124,7 +134,7 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
         for (int i = 0; i < practiceList.size(); i++) {
             View view = LayoutInflater.from(this).inflate(R.layout.item_answer, null, false);
             TextView cailiao = view.findViewById(R.id.cailiao);
-            if(practiceList.get(i).getMaterial() != null){
+            if (practiceList.get(i).getMaterial() != null) {
                 cailiao.setText(practiceList.get(i).getMaterial());
                 cailiao.setVisibility(View.VISIBLE);
             }
@@ -168,7 +178,7 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
             check.setText(practiceList.get(i).getCorrect());
             analyse.setText(practiceList.get(i).getAnalysis());
             final String correct = practiceList.get(i).getCorrect();
-            String picUrl=hostUrl+practiceList.get(i).getLitpic();
+            String picUrl = hostUrl + practiceList.get(i).getLitpic();
             Glide.with(this)
                     .load(picUrl)
                     .into(imageView);
@@ -176,16 +186,20 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
             linearAnswerA.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    already=already+1;
                     linearAnswerA.setClickable(false);
                     linearAnswerB.setClickable(false);
                     linearAnswerC.setClickable(false);
                     linearAnswerD.setClickable(false);
                     linearAnswerE.setClickable(false);
                     if ("A".equals(correct)) {
+                        correct1=correct1+1;
+                        topicCard.set(finalI1,0);
                         answerA.setImageDrawable(getResources().getDrawable(R.drawable.r_1));
                         answerTextA.setTextColor(getResources().getColor(R.color.correct));
                         tvTipsYourChoose.setTextColor(getResources().getColor(R.color.correct));
                     } else {
+                        topicCard.set(finalI1,1);
                         answerA.setImageDrawable(getResources().getDrawable(R.drawable.w_1));
                         answerTextA.setTextColor(getResources().getColor(R.color.false1));
                         tvTipsYourChoose.setTextColor(getResources().getColor(R.color.false1));
@@ -212,16 +226,20 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
             linearAnswerB.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    already=already+1;
                     linearAnswerA.setClickable(false);
                     linearAnswerB.setClickable(false);
                     linearAnswerC.setClickable(false);
                     linearAnswerD.setClickable(false);
                     linearAnswerE.setClickable(false);
                     if ("B".equals(correct)) {
+                        correct1=correct1+1;
+                        topicCard.set(finalI1,0);
                         answerB.setImageDrawable(getResources().getDrawable(R.drawable.r_2));
                         answerTextB.setTextColor(getResources().getColor(R.color.correct));
                         tvTipsYourChoose.setTextColor(getResources().getColor(R.color.correct));
                     } else {
+                        topicCard.set(finalI1,1);
                         answerB.setImageDrawable(getResources().getDrawable(R.drawable.w_2));
                         answerTextB.setTextColor(getResources().getColor(R.color.false1));
                         tvTipsYourChoose.setTextColor(getResources().getColor(R.color.false1));
@@ -248,16 +266,20 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
             linearAnswerC.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    already=already+1;
                     linearAnswerA.setClickable(false);
                     linearAnswerB.setClickable(false);
                     linearAnswerC.setClickable(false);
                     linearAnswerD.setClickable(false);
                     linearAnswerE.setClickable(false);
                     if ("C".equals(correct)) {
+                        correct1=correct1+1;
+                        topicCard.set(finalI1,0);
                         answerC.setImageDrawable(getResources().getDrawable(R.drawable.r_3));
                         answerTextC.setTextColor(getResources().getColor(R.color.correct));
                         tvTipsYourChoose.setTextColor(getResources().getColor(R.color.correct));
                     } else {
+                        topicCard.set(finalI1,1);
                         answerC.setImageDrawable(getResources().getDrawable(R.drawable.w_3));
                         answerTextC.setTextColor(getResources().getColor(R.color.false1));
                         tvTipsYourChoose.setTextColor(getResources().getColor(R.color.false1));
@@ -284,17 +306,21 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
             linearAnswerD.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    already=already+1;
                     linearAnswerA.setClickable(false);
                     linearAnswerB.setClickable(false);
                     linearAnswerC.setClickable(false);
                     linearAnswerD.setClickable(false);
                     linearAnswerE.setClickable(false);
                     if ("D".equals(correct)) {
+                        correct1=correct1+1;
+                        topicCard.set(finalI1,0);
                         answerD.setImageDrawable(getResources().getDrawable(R.drawable.r_4));
                         bottomHide.setVisibility(View.VISIBLE);
                         answerTextD.setTextColor(getResources().getColor(R.color.correct));
                         tvTipsYourChoose.setTextColor(getResources().getColor(R.color.correct));
                     } else {
+                        topicCard.set(finalI1,1);
                         answerD.setImageDrawable(getResources().getDrawable(R.drawable.w_4));
                         answerTextD.setTextColor(getResources().getColor(R.color.false1));
                         tvTipsYourChoose.setTextColor(getResources().getColor(R.color.false1));
@@ -321,17 +347,21 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
             linearAnswerE.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    already=already+1;
                     linearAnswerA.setClickable(false);
                     linearAnswerB.setClickable(false);
                     linearAnswerC.setClickable(false);
                     linearAnswerD.setClickable(false);
                     linearAnswerE.setClickable(false);
                     if ("E".equals(correct)) {
+                        correct1=correct1+1;
+                        topicCard.set(finalI1,0);
                         answerE.setImageDrawable(getResources().getDrawable(R.drawable.r_5));
                         bottomHide.setVisibility(View.VISIBLE);
                         answerTextE.setTextColor(getResources().getColor(R.color.correct));
                         tvTipsYourChoose.setTextColor(getResources().getColor(R.color.correct));
                     } else {
+                        topicCard.set(finalI1,1);
                         answerE.setImageDrawable(getResources().getDrawable(R.drawable.w_5));
                         answerTextE.setTextColor(getResources().getColor(R.color.false1));
                         tvTipsYourChoose.setTextColor(getResources().getColor(R.color.false1));
@@ -362,7 +392,7 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
                     CommentParcel commentParcel = new CommentParcel();
                     String title = practiceList.get(finalI).getTitle();
                     int topic_id = practiceList.get(finalI).getId();
-                    String cl=practiceList.get(finalI).getCl()+"";
+                    String cl = practiceList.get(finalI).getCl() + "";
                     commentParcel.setId(topic_id);
                     commentParcel.setTitle(title);
                     commentParcel.setCl(cl);
@@ -374,38 +404,44 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
             btnNoteEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    View view = getLayoutInflater().inflate(R.layout.edittext_note, null);
-                    final EditText editText =  view.findViewById(R.id.edit_text);
-                    AlertDialog dialog = new AlertDialog.Builder(PracticeAnswerActivity.this,R.style.NormalDialogStyle)
-                            //.setIcon(R.mipmap.icon)//设置标题的图片
-                            //.setTitle("半自定义对话框")//设置对话框的标题
+                    final Dialog dialog = new Dialog(PracticeAnswerActivity.this, R.style.NormalDialogStyle);
+                    View view = View.inflate(PracticeAnswerActivity.this, R.layout.dialog_note, null);
+                    TextView cancel = view.findViewById(R.id.cancel);
+                    TextView confirm = view.findViewById(R.id.confirm);
+                    final EditText editText = view.findViewById(R.id.edit_text);
 
-                            .setView(view)
-                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    dialog.setContentView(view);
+                    //使得点击对话框外部不消失对话框
+                    dialog.setCanceledOnTouchOutside(false);
+                    //设置对话框的大小
+                    Window dialogWindow = dialog.getWindow();
+                    WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+                    lp.width = (int) (ScreenSizeUtils.getInstance(PracticeAnswerActivity.this).getScreenWidth() * 0.85f);
+                    lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+                    lp.gravity = Gravity.CENTER;
+                    dialogWindow.setAttributes(lp);
+                    cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                    confirm.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            final String content = editText.getText().toString();
+                            ObserverOnNextListener<No> listener = new ObserverOnNextListener<No>() {
                                 @Override
-                                public void onClick(DialogInterface dialog, int which) {
+                                public void onNext(No data) {
+                                    noteContent.setText(content);
                                     dialog.dismiss();
                                 }
-                            })
-                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(final DialogInterface dialog, int which) {
-                                    final String content = editText.getText().toString();
-                                    ObserverOnNextListener<No> listener = new ObserverOnNextListener<No>() {
-                                        @Override
-                                        public void onNext(No data) {
-                                            noteContent.setText(content);
-                                            dialog.dismiss();
-                                        }
-                                    };
-                                    int userId=userInfo.getId();
-                                    ApiMethods.addNote(new MyObserver<No>( listener),practiceList.get(finalI).getId()+"", userId+"",content,practiceList.get(finalI).getCl()+"",PracticeAnswerActivity.this);
-                                }
-                            }).create();
+                            };
+                            int userId=userInfo.getId();
+                            ApiMethods.addNote(new MyObserver<No>( listener),practiceList.get(finalI).getId()+"", userId+"",content,practiceList.get(finalI).getCl()+"",PracticeAnswerActivity.this);
+                        }
+                    });
                     dialog.show();
-                    WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
-                    lp.height = (400);
-                    dialog.getWindow().setAttributes(lp);
                 }
             });
             btnFeedbackError.setOnClickListener(new View.OnClickListener() {
@@ -446,6 +482,8 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
             final TextView answerTextD = view.findViewById(R.id.answer_text_d);
             final LinearLayout linearAnswerD = view.findViewById(R.id.linear_answer_d);
             final ImageView answerE = view.findViewById(R.id.answer_e);
+            final TextView noteContent = view.findViewById(R.id.noteContent);
+            final TextView btnNoteEdit = view.findViewById(R.id.btnNoteEdit);
             final TextView answerTextE = view.findViewById(R.id.answer_text_e);
             final LinearLayout linearAnswerE = view.findViewById(R.id.linear_answer_e);
             final LinearLayout bottomHide = view.findViewById(R.id.bottom_hide);
@@ -500,13 +538,13 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
                     break;
             }
             final int finalI = i;
-            /*btnLookOtherNote.setOnClickListener(new View.OnClickListener() {
+            btnLookOtherNote.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     CommentParcel commentParcel = new CommentParcel();
                     String title = practiceList.get(finalI).getTitle();
                     int topic_id = practiceList.get(finalI).getId();
-                    String cl=practiceList.get(finalI).getCl()+"";
+                    String cl = practiceList.get(finalI).getCl() + "";
                     commentParcel.setId(topic_id);
                     commentParcel.setTitle(title);
                     commentParcel.setCl(cl);
@@ -514,14 +552,48 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
                     intent.putExtra("commentParcel", commentParcel);
                     startActivity(intent);
                 }
-            });*/
-            btnFeedbackError.setOnClickListener(new View.OnClickListener() {
+            });
+            btnNoteEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String topicId = practiceList.get(finalI).getId() + "";
-                    Intent intent = new Intent(PracticeAnswerActivity.this, FeedbackErrorActivity.class);
-                    intent.putExtra("topicId", topicId);
-                    startActivity(intent);
+                    final Dialog dialog = new Dialog(PracticeAnswerActivity.this, R.style.NormalDialogStyle);
+                    View view = View.inflate(PracticeAnswerActivity.this, R.layout.dialog_note, null);
+                    TextView cancel = view.findViewById(R.id.cancel);
+                    TextView confirm = view.findViewById(R.id.confirm);
+                    final EditText editText = view.findViewById(R.id.edit_text);
+
+                    dialog.setContentView(view);
+                    //使得点击对话框外部不消失对话框
+                    dialog.setCanceledOnTouchOutside(false);
+                    //设置对话框的大小
+                    Window dialogWindow = dialog.getWindow();
+                    WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+                    lp.width = (int) (ScreenSizeUtils.getInstance(PracticeAnswerActivity.this).getScreenWidth() * 0.85f);
+                    lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+                    lp.gravity = Gravity.CENTER;
+                    dialogWindow.setAttributes(lp);
+                    cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                    confirm.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            final String content = editText.getText().toString();
+                            ObserverOnNextListener<No> listener = new ObserverOnNextListener<No>() {
+                                @Override
+                                public void onNext(No data) {
+                                    noteContent.setText(content);
+                                    dialog.dismiss();
+                                }
+                            };
+                            int userId=userInfo.getId();
+                            ApiMethods.addNote(new MyObserver<No>( listener),practiceList.get(finalI).getId()+"", userId+"",content,practiceList.get(finalI).getCl()+"",PracticeAnswerActivity.this);
+                        }
+                    });
+                    dialog.show();
                 }
             });
             viewsListAnswer.add(view);
@@ -554,6 +626,9 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
                 break;
             case R.id.tv_topic_card:
                 Intent intent = new Intent(this, TopicCardActivity.class);
+                intent.putIntegerArrayListExtra("topicCard",topicCard);
+                intent.putExtra("already",already);
+                intent.putExtra("correct",correct1);
                 startActivity(intent);
                 break;
             case R.id.tv_collect:
@@ -569,7 +644,7 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
                         tvCollect.setCompoundDrawables(null, collect, null, null);
                     }
                 };
-                ApiMethods.getCollection(new MyObserver<CollectionBean>(listener), practiceList.get(a).getId()+"", userInfo.getId() + "",practiceList.get(a).getCl() + "", this);
+                ApiMethods.getCollection(new MyObserver<CollectionBean>(listener), practiceList.get(a).getId() + "", userInfo.getId() + "", practiceList.get(a).getCl() + "", this);
                 break;
             case R.id.tv_answer:
                 if (answer666 == 0) {
@@ -604,4 +679,17 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
                 break;
         }
     }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(TopicCardEvent messageEvent) {
+        viewPager.setCurrentItem(messageEvent.getMessage());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
+
 }
