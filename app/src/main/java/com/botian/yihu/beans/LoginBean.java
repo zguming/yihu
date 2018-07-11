@@ -19,7 +19,7 @@ public class LoginBean {
     private int code;
     private String msg;
     private DataBean data;
-    private List<?> invalidFilter;
+    //private List<?> invalidFilter;
 
     public int getCode() {
         return code;
@@ -45,13 +45,13 @@ public class LoginBean {
         this.data = data;
     }
 
-    public List<?> getInvalidFilter() {
-        return invalidFilter;
-    }
+    //public List<?> getInvalidFilter() {
+        //return invalidFilter;
+    //}
 
-    public void setInvalidFilter(List<?> invalidFilter) {
-        this.invalidFilter = invalidFilter;
-    }
+    //public void setInvalidFilter(List<?> invalidFilter) {
+        //this.invalidFilter = invalidFilter;
+    //}
 
     public static class DataBean {
         /**
@@ -62,7 +62,7 @@ public class LoginBean {
          */
 
         private int id;
-        private String token;
+        //private String token;
         private String username;
         private String moblie;
         private String avatar;
@@ -92,13 +92,13 @@ public class LoginBean {
             this.id = id;
         }
 
-        public String getToken() {
-            return token;
-        }
+        //public String getToken() {
+            //return token;
+        //}
 
-        public void setToken(String token) {
-            this.token = token;
-        }
+        //public void setToken(String token) {
+            //this.token = token;
+        //}
 
         public String getUsername() {
             return username;

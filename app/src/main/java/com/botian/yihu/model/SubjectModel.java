@@ -1,7 +1,6 @@
 package com.botian.yihu.model;
 
 import android.content.Context;
-
 import com.botian.yihu.ObserverOnNextListener;
 import com.botian.yihu.ProgressObserver;
 import com.botian.yihu.api.ApiMethods;

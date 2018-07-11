@@ -21,14 +21,6 @@ public class TopicCardActivity extends AppCompatActivity {
 
     @BindView(R.id.all)
     TextView all;
-    @BindView(R.id.already)
-    TextView already;
-    @BindView(R.id.yet)
-    TextView yet;
-    @BindView(R.id.correct)
-    TextView correct;
-    @BindView(R.id.false1)
-    TextView false3;
     @BindView(R.id.recycler_view)
     XRecyclerView recyclerView;
     @BindView(R.id.back)
@@ -36,6 +28,7 @@ public class TopicCardActivity extends AppCompatActivity {
     private ArrayList<Integer> topicCard = new ArrayList<>();
     private int already1;//已答总数
     private int correct1;//答对总数
+    private String judge;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,28 +39,23 @@ public class TopicCardActivity extends AppCompatActivity {
         topicCard = intent.getIntegerArrayListExtra("topicCard");
         already1 = intent.getIntExtra("already", 9);
         correct1 = intent.getIntExtra("correct", 9);
+        judge = intent.getStringExtra("switch");
         initView();
         //禁用下拉刷新和加载更多功能
         recyclerView.setPullRefreshEnabled(false);
         recyclerView.setLoadingMoreEnabled(false);
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(6, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        TopicCardAdapter adapter = new TopicCardAdapter(this, topicCard);
+        TopicCardAdapter adapter = new TopicCardAdapter(this, topicCard, judge);
         recyclerView.setAdapter(adapter);
 
     }
 
     public void initView() {
-        String a = topicCard.size() + "";
-        all.setText(a);
-        String b = already1 + "";
-        already.setText(b);
-        String c = correct1 + "";
-        correct.setText(c);
-        String d = topicCard.size() - already1 + "";
-        yet.setText(d);
         String e = already1 - correct1 + "";
-        false3.setText(e);
+        String y=topicCard.size()-already1+"";
+        String a = "共" + topicCard.size() + "题，" + "已答" + already1 + "题，" + "未答"+y+"题，"+"答对" + correct1 + "题，" + "答错" + e + "题";
+        all.setText(a);
     }
 
     @OnClick(R.id.back)

@@ -4,17 +4,18 @@ import java.util.List;
 
 public class MyCollection {
 
+
     /**
      * code : 200
      * msg : 操作成功
      * invalidFilter : []
-     * data : [{"id":32,"mid":1,"userid":14,"sorts":0,"status":0,"create_time":"2018-05-15 16:02:07","update_time":"2018-05-15 16:02:07","cl":0,"section":{"id":1,"title":"关于护理程序的概念，描述正确的是","A":"一种护理工作的分工类型","B":"一种护理工作的简化形式","C":"一种系统的解决问题的方法","D":"一种护理操作的模式","E":"一种护理操作的模式","correct":"C","analysis":"护理程序是护士对护理对象进行护理时所应用的工作程序，是一种系统解决问题的方法，是一个持续、循环、动态变化的过程。故答案选C。"}},{"id":33,"mid":2,"userid":14,"sorts":0,"status":0,"create_time":"2018-05-15 16:02:40","update_time":"2018-05-15 16:02:40","cl":0,"section":{"id":2,"title":"护理程序的理论基础不包括","A":"系统论","B":"解决问题论","C":"压力适应论","D":"信息交流论","E":"人的基本需要层次论","correct":"C","analysis":"护理程序的理论基础来源于系统论、人的基本需要层次论、信息交流论、解决问题论等，不包括压力适应论。故答案选C。"}}]
+     * data : {"total":2,"per_page":20,"current_page":1,"last_page":1,"data":[{"id":50,"mid":1,"userid":14,"sorts":0,"status":0,"create_time":"2018-07-03 11:01:13","update_time":"2018-07-03 11:01:13","cl":0,"material":null},{"id":52,"mid":23,"userid":14,"sorts":0,"status":0,"create_time":"2018-07-03 11:01:33","update_time":"2018-07-03 11:01:33","cl":0,"material":null}]}
      */
 
     private int code;
     private String msg;
+    private DataBeanX data;
     private List<?> invalidFilter;
-    private List<DataBean> data;
 
     public int getCode() {
         return code;
@@ -32,6 +33,14 @@ public class MyCollection {
         this.msg = msg;
     }
 
+    public DataBeanX getData() {
+        return data;
+    }
+
+    public void setData(DataBeanX data) {
+        this.data = data;
+    }
+
     public List<?> getInvalidFilter() {
         return invalidFilter;
     }
@@ -40,133 +49,83 @@ public class MyCollection {
         this.invalidFilter = invalidFilter;
     }
 
-    public List<DataBean> getData() {
-        return data;
-    }
-
-    public void setData(List<DataBean> data) {
-        this.data = data;
-    }
-
-    public static class DataBean {
+    public static class DataBeanX {
         /**
-         * id : 32
-         * mid : 1
-         * userid : 14
-         * sorts : 0
-         * status : 0
-         * create_time : 2018-05-15 16:02:07
-         * update_time : 2018-05-15 16:02:07
-         * cl : 0
-         * section : {"id":1,"title":"关于护理程序的概念，描述正确的是","A":"一种护理工作的分工类型","B":"一种护理工作的简化形式","C":"一种系统的解决问题的方法","D":"一种护理操作的模式","E":"一种护理操作的模式","correct":"C","analysis":"护理程序是护士对护理对象进行护理时所应用的工作程序，是一种系统解决问题的方法，是一个持续、循环、动态变化的过程。故答案选C。"}
+         * total : 2
+         * per_page : 20
+         * current_page : 1
+         * last_page : 1
+         * data : [{"id":50,"mid":1,"userid":14,"sorts":0,"status":0,"create_time":"2018-07-03 11:01:13","update_time":"2018-07-03 11:01:13","cl":0,"material":null},{"id":52,"mid":23,"userid":14,"sorts":0,"status":0,"create_time":"2018-07-03 11:01:33","update_time":"2018-07-03 11:01:33","cl":0,"material":null}]
          */
 
-        private int id;
-        private int mid;
-        private int userid;
-        private int sorts;
-        private int status;
-        private String create_time;
-        private String update_time;
-        private int cl;
-        private SectionBean section;
+        private int total;
+        private int per_page;
+        private int current_page;
+        private int last_page;
+        private List<DataBean> data;
 
-        public int getId() {
-            return id;
+        public int getTotal() {
+            return total;
         }
 
-        public void setId(int id) {
-            this.id = id;
+        public void setTotal(int total) {
+            this.total = total;
         }
 
-        public int getMid() {
-            return mid;
+        public int getPer_page() {
+            return per_page;
         }
 
-        public void setMid(int mid) {
-            this.mid = mid;
+        public void setPer_page(int per_page) {
+            this.per_page = per_page;
         }
 
-        public int getUserid() {
-            return userid;
+        public int getCurrent_page() {
+            return current_page;
         }
 
-        public void setUserid(int userid) {
-            this.userid = userid;
+        public void setCurrent_page(int current_page) {
+            this.current_page = current_page;
         }
 
-        public int getSorts() {
-            return sorts;
+        public int getLast_page() {
+            return last_page;
         }
 
-        public void setSorts(int sorts) {
-            this.sorts = sorts;
+        public void setLast_page(int last_page) {
+            this.last_page = last_page;
         }
 
-        public int getStatus() {
-            return status;
+        public List<DataBean> getData() {
+            return data;
         }
 
-        public void setStatus(int status) {
-            this.status = status;
+        public void setData(List<DataBean> data) {
+            this.data = data;
         }
 
-        public String getCreate_time() {
-            return create_time;
-        }
-
-        public void setCreate_time(String create_time) {
-            this.create_time = create_time;
-        }
-
-        public String getUpdate_time() {
-            return update_time;
-        }
-
-        public void setUpdate_time(String update_time) {
-            this.update_time = update_time;
-        }
-
-        public int getCl() {
-            return cl;
-        }
-
-        public void setCl(int cl) {
-            this.cl = cl;
-        }
-
-        public SectionBean getSection() {
-            return section;
-        }
-
-        public void setSection(SectionBean section) {
-            this.section = section;
-        }
-
-        public static class SectionBean {
+        public static class DataBean {
             /**
-             * id : 1
-             * title : 关于护理程序的概念，描述正确的是
-             * A : 一种护理工作的分工类型
-             * B : 一种护理工作的简化形式
-             * C : 一种系统的解决问题的方法
-             * D : 一种护理操作的模式
-             * E : 一种护理操作的模式
-             * correct : C
-             * analysis : 护理程序是护士对护理对象进行护理时所应用的工作程序，是一种系统解决问题的方法，是一个持续、循环、动态变化的过程。故答案选C。
+             * id : 50
+             * mid : 1
+             * userid : 14
+             * sorts : 0
+             * status : 0
+             * create_time : 2018-07-03 11:01:13
+             * update_time : 2018-07-03 11:01:13
+             * cl : 0
+             * material : null
              */
 
             private int id;
-            private String title;
-            private String A;
-            private String B;
-            private String C;
-            private String D;
-            private String E;
-            private String correct;
-            private String analysis;
-            private String litpic;
-
+            private int mid;
+            private int userid;
+            private int sorts;
+            private int status;
+            private String create_time;
+            private String update_time;
+            private int cl;
+            private Object material;
 
             public int getId() {
                 return id;
@@ -176,76 +135,68 @@ public class MyCollection {
                 this.id = id;
             }
 
-            public String getTitle() {
-                return title;
+            public int getMid() {
+                return mid;
             }
 
-            public void setTitle(String title) {
-                this.title = title;
+            public void setMid(int mid) {
+                this.mid = mid;
             }
 
-            public String getA() {
-                return A;
+            public int getUserid() {
+                return userid;
             }
 
-            public void setA(String A) {
-                this.A = A;
+            public void setUserid(int userid) {
+                this.userid = userid;
             }
 
-            public String getB() {
-                return B;
+            public int getSorts() {
+                return sorts;
             }
 
-            public void setB(String B) {
-                this.B = B;
+            public void setSorts(int sorts) {
+                this.sorts = sorts;
             }
 
-            public String getC() {
-                return C;
+            public int getStatus() {
+                return status;
             }
 
-            public void setC(String C) {
-                this.C = C;
+            public void setStatus(int status) {
+                this.status = status;
             }
 
-            public String getD() {
-                return D;
+            public String getCreate_time() {
+                return create_time;
             }
 
-            public void setD(String D) {
-                this.D = D;
+            public void setCreate_time(String create_time) {
+                this.create_time = create_time;
             }
 
-            public String getE() {
-                return E;
+            public String getUpdate_time() {
+                return update_time;
             }
 
-            public void setE(String E) {
-                this.E = E;
+            public void setUpdate_time(String update_time) {
+                this.update_time = update_time;
             }
 
-            public String getCorrect() {
-                return correct;
+            public int getCl() {
+                return cl;
             }
 
-            public void setCorrect(String correct) {
-                this.correct = correct;
+            public void setCl(int cl) {
+                this.cl = cl;
             }
 
-            public String getAnalysis() {
-                return analysis;
+            public Object getMaterial() {
+                return material;
             }
 
-            public void setAnalysis(String analysis) {
-                this.analysis = analysis;
-            }
-
-            public String getLitpic() {
-                return litpic;
-            }
-
-            public void setLitpic(String litpic) {
-                this.litpic = litpic;
+            public void setMaterial(Object material) {
+                this.material = material;
             }
         }
     }

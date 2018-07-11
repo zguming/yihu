@@ -1,50 +1,46 @@
 package com.botian.yihu.activity;
 
-import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.botian.yihu.MyObserver;
 import com.botian.yihu.ObserverOnNextListener;
 import com.botian.yihu.ProgressObserver;
 import com.botian.yihu.R;
-import com.botian.yihu.adapter.MyPagerAdapter;
+import com.botian.yihu.adapter.MyFragmentPagerAdapter;
 import com.botian.yihu.api.ApiMethods;
-import com.botian.yihu.beans.CollectionBean;
-import com.botian.yihu.beans.CommentParcel;
-import com.botian.yihu.beans.No;
 import com.botian.yihu.beans.PracticeAnswer;
-import com.botian.yihu.database.PracticeData;
 import com.botian.yihu.beans.UserInfo;
-import com.botian.yihu.util.ACache;
-import com.botian.yihu.util.ScreenSizeUtils;
+import com.botian.yihu.database.CollectData;
+import com.botian.yihu.database.NoteData;
+import com.botian.yihu.database.PracticeData;
 import com.botian.yihu.eventbus.TopicCardEvent;
-import com.bumptech.glide.Glide;
+import com.botian.yihu.fragment.PracticeAnswerFragment;
+import com.botian.yihu.fragment.PracticeAnswerFragment2;
+import com.botian.yihu.util.ACache;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
+import org.litepal.crud.DataSupport;
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class PracticeAnswerActivity extends RxAppCompatActivity {
     @BindView(R.id.view_pager)
@@ -66,21 +62,39 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
     ImageView back;
     @BindView(R.id.bottom_tab)
     LinearLayout bottomTab;
+    @BindView(R.id.img_topic_card)
+    ImageView imgTopicCard;
+    @BindView(R.id.img_collect)
+    ImageView imgCollect;
+    @BindView(R.id.img_answer)
+    ImageView imgAnswer;
+    @BindView(R.id.ln_topic_card)
+    LinearLayout lnTopicCard;
+    @BindView(R.id.ln_collect)
+    LinearLayout lnCollect;
+    @BindView(R.id.ln_topic_answer)
+    LinearLayout lnTopicAnswer;
     private ArrayList<View> viewsList;
     //背题数据
     private ArrayList<View> viewsListAnswer;
-    private MyPagerAdapter mAdapter;
+    //private MyPagerAdapter mAdapter;
     private List<PracticeAnswer.DataBean> practiceList = new ArrayList<>();
-    private ArrayList<Integer> topicCard =new ArrayList<>();//答对0，答错1，当前题2
-    private int already=0;//已答总数
-    private int correct1=0;//答对总数
+    private ArrayList<Integer> topicCard = new ArrayList<>();//答对0，答错1，当前题2
+    private int already = 0;//已答总数
+    private int correct1 = 0;//答对总数
+    private static List<CollectData> practiceList9 = new ArrayList<>();
+    private static List<NoteData> noteList9 = new ArrayList<>();
 
     private int position = 0;
-    //用于判断背题
-    private int answer666 = 0;
+    private int answer666 = 0;//用于判断背题    ，0为非，1为是
     private ACache mCache;
     private UserInfo userInfo;
     private String hostUrl = "http://btsc.botian120.com";
+    private int isCollected = 0;//是否已经收藏，0已收藏，1未收藏
+    private List<Fragment> fragmentlist2 = new ArrayList<>();//背题
+    private List<Fragment> fragmentlist = new ArrayList<>();//无背题
+    private MyFragmentPagerAdapter mAdapter;
+    FragmentManager fm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,30 +114,69 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
                 practiceList = data.getData();
                 viewsList = new ArrayList<View>();
                 initView();
-                mAdapter = new MyPagerAdapter(viewsList);
-                viewPager.setAdapter(mAdapter);
-                tvTopicCard.setClickable(true);
-                tvCollect.setClickable(true);
-                tvAnswer.setClickable(true);
-                for (int i=0;i<practiceList.size();i++){
-                    topicCard.add(6);
+                //mAdapter = new MyPagerAdapter(viewsList);
+                //viewPager.setAdapter(mAdapter);
+                firstJudge();
+                for (int i = 0; i < practiceList.size(); i++) {
+                    topicCard.add(6);//6是初始默认数字，无意义
                 }
             }
         };
-        ApiMethods.getPracticeAnswer(new ProgressObserver<PracticeAnswer>(this, listener), typeid, this);
+        ApiMethods.getPracticeAnswer(new ProgressObserver<PracticeAnswer>(this, listener), "typeid,eq,"+typeid, this);
         initView1();
     }
 
+    public void firstJudge() {
+        Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
+                int position001 = viewPager.getCurrentItem();
+                int id1 = practiceList.get(position001).getId();
+                int cl1 = practiceList.get(position001).getCl();
+                practiceList9 = DataSupport.where("topicId=" + id1 + ";" + "cl=" + cl1).find(CollectData.class);
+                //noteList9 = DataSupport.where("topicId=" + id1 + ";" + "cl=" + cl1).find(NoteData.class);
+                emitter.onNext(1);
+
+                //emitter.onComplete();
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(PracticeAnswerActivity.this.<Integer>bindToLifecycle())
+                .subscribe(new Observer<Integer>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        //Log.d(TAG, "subscribe");
+                    }
+
+                    @Override
+                    public void onNext(Integer value) {
+                        if (practiceList9.size() > 0) {
+                            imgCollect.setImageResource(R.drawable.ic_collect_press);
+                            isCollected = 0;
+                        } else {
+                            imgCollect.setImageResource(R.drawable.ic_collect_normal);
+                            isCollected = 1;
+                        }
+                        tvTopicCard.setClickable(true);
+                        tvCollect.setClickable(true);
+                        tvAnswer.setClickable(true);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        //Log.d(TAG, "error");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        //Log.d(TAG, "complete");
+                    }
+                });
+
+
+    }
+
     public void initView1() {
-        Drawable topicCard = getResources().getDrawable(R.drawable.ic_topic_card_normal);
-        topicCard.setBounds(0, 0, 100, 100);
-        tvTopicCard.setCompoundDrawables(null, topicCard, null, null);
-        Drawable collect = getResources().getDrawable(R.drawable.ic_collect_normal);
-        collect.setBounds(0, 0, 100, 100);
-        tvCollect.setCompoundDrawables(null, collect, null, null);
-        Drawable answer = getResources().getDrawable(R.drawable.ic_answer_normal);
-        answer.setBounds(0, 0, 100, 100);
-        tvAnswer.setCompoundDrawables(null, answer, null, null);
         tvTopicCard.setClickable(false);
         tvCollect.setClickable(false);
         tvAnswer.setClickable(false);
@@ -132,477 +185,200 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
 
     public void initView() {
         for (int i = 0; i < practiceList.size(); i++) {
-            View view = LayoutInflater.from(this).inflate(R.layout.item_answer, null, false);
-            TextView cailiao = view.findViewById(R.id.cailiao);
-            if (practiceList.get(i).getMaterial() != null) {
-                cailiao.setText(practiceList.get(i).getMaterial());
-                cailiao.setVisibility(View.VISIBLE);
-            }
-            TextView timu = view.findViewById(R.id.timu);
-            ImageView imageView = view.findViewById(R.id.imageview);
-            TextView current = view.findViewById(R.id.current_num);
-            String currentNum = i + 1 + "";//当前数目
-            current.setText(currentNum);
-            TextView total = view.findViewById(R.id.total_num);
-            String totalNum = "/" + practiceList.size();//总数目
-            total.setText(totalNum);
-            final ImageView answerA = view.findViewById(R.id.answer_a);
-            final TextView answerTextA = view.findViewById(R.id.answer_text_a);
-            final LinearLayout linearAnswerA = view.findViewById(R.id.linear_answer_a);
-            final ImageView answerB = view.findViewById(R.id.answer_b);
-            final TextView answerTextB = view.findViewById(R.id.answer_text_b);
-            final LinearLayout linearAnswerB = view.findViewById(R.id.linear_answer_b);
-            final ImageView answerC = view.findViewById(R.id.answer_c);
-            final TextView answerTextC = view.findViewById(R.id.answer_text_c);
-            final LinearLayout linearAnswerC = view.findViewById(R.id.linear_answer_c);
-            final ImageView answerD = view.findViewById(R.id.answer_d);
-            final TextView answerTextD = view.findViewById(R.id.answer_text_d);
-            final LinearLayout linearAnswerD = view.findViewById(R.id.linear_answer_d);
-            final ImageView answerE = view.findViewById(R.id.answer_e);
-            final TextView answerTextE = view.findViewById(R.id.answer_text_e);
-            final LinearLayout linearAnswerE = view.findViewById(R.id.linear_answer_e);
-            final LinearLayout bottomHide = view.findViewById(R.id.bottom_hide);
-            final TextView tvTipsYourChoose = view.findViewById(R.id.tv_tips_yourchoose);
-            final TextView btnLookOtherNote = view.findViewById(R.id.btnLookOtherNote);
-            final TextView btnNoteEdit = view.findViewById(R.id.btnNoteEdit);
-            final TextView noteContent = view.findViewById(R.id.noteContent);
-            final TextView btnFeedbackError = view.findViewById(R.id.btn_feedback_error);
-            TextView check = view.findViewById(R.id.check);
-            TextView analyse = view.findViewById(R.id.analyseinfo);
-            timu.setText(practiceList.get(i).getTitle());
-            answerTextA.setText(practiceList.get(i).getA());
-            answerTextB.setText(practiceList.get(i).getB());
-            answerTextC.setText(practiceList.get(i).getC());
-            answerTextD.setText(practiceList.get(i).getD());
-            answerTextE.setText(practiceList.get(i).getE());
-            check.setText(practiceList.get(i).getCorrect());
-            analyse.setText(practiceList.get(i).getAnalysis());
-            final String correct = practiceList.get(i).getCorrect();
-            String picUrl = hostUrl + practiceList.get(i).getLitpic();
-            Glide.with(this)
-                    .load(picUrl)
-                    .into(imageView);
-            final int finalI1 = i;
-            linearAnswerA.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    already=already+1;
-                    linearAnswerA.setClickable(false);
-                    linearAnswerB.setClickable(false);
-                    linearAnswerC.setClickable(false);
-                    linearAnswerD.setClickable(false);
-                    linearAnswerE.setClickable(false);
-                    if ("A".equals(correct)) {
-                        correct1=correct1+1;
-                        topicCard.set(finalI1,0);
-                        answerA.setImageDrawable(getResources().getDrawable(R.drawable.r_1));
-                        answerTextA.setTextColor(getResources().getColor(R.color.correct));
-                        tvTipsYourChoose.setTextColor(getResources().getColor(R.color.correct));
-                    } else {
-                        topicCard.set(finalI1,1);
-                        answerA.setImageDrawable(getResources().getDrawable(R.drawable.w_1));
-                        answerTextA.setTextColor(getResources().getColor(R.color.false1));
-                        tvTipsYourChoose.setTextColor(getResources().getColor(R.color.false1));
-                        //把错题添加到数据库
-                        addDataBase(finalI1);
-                        if (correct.equals("B")) {
-                            answerB.setImageDrawable(getResources().getDrawable(R.drawable.r_2));
-                            answerTextB.setTextColor(getResources().getColor(R.color.correct));
-                        } else if (correct.equals("C")) {
-                            answerC.setImageDrawable(getResources().getDrawable(R.drawable.r_3));
-                            answerTextC.setTextColor(getResources().getColor(R.color.correct));
-                        } else if (correct.equals("D")) {
-                            answerD.setImageDrawable(getResources().getDrawable(R.drawable.r_4));
-                            answerTextD.setTextColor(getResources().getColor(R.color.correct));
-                        } else if (correct.equals("E")) {
-                            answerE.setImageDrawable(getResources().getDrawable(R.drawable.r_5));
-                            answerTextE.setTextColor(getResources().getColor(R.color.correct));
-                        }
-                    }
-                    tvTipsYourChoose.setText("A");
-                    bottomHide.setVisibility(View.VISIBLE);
-                }
-            });
-            linearAnswerB.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    already=already+1;
-                    linearAnswerA.setClickable(false);
-                    linearAnswerB.setClickable(false);
-                    linearAnswerC.setClickable(false);
-                    linearAnswerD.setClickable(false);
-                    linearAnswerE.setClickable(false);
-                    if ("B".equals(correct)) {
-                        correct1=correct1+1;
-                        topicCard.set(finalI1,0);
-                        answerB.setImageDrawable(getResources().getDrawable(R.drawable.r_2));
-                        answerTextB.setTextColor(getResources().getColor(R.color.correct));
-                        tvTipsYourChoose.setTextColor(getResources().getColor(R.color.correct));
-                    } else {
-                        topicCard.set(finalI1,1);
-                        answerB.setImageDrawable(getResources().getDrawable(R.drawable.w_2));
-                        answerTextB.setTextColor(getResources().getColor(R.color.false1));
-                        tvTipsYourChoose.setTextColor(getResources().getColor(R.color.false1));
-                        //把错题添加到数据库
-                        addDataBase(finalI1);
-                        if (correct.equals("A")) {
-                            answerA.setImageDrawable(getResources().getDrawable(R.drawable.r_1));
-                            answerTextA.setTextColor(getResources().getColor(R.color.correct));
-                        } else if (correct.equals("C")) {
-                            answerC.setImageDrawable(getResources().getDrawable(R.drawable.r_3));
-                            answerTextC.setTextColor(getResources().getColor(R.color.correct));
-                        } else if (correct.equals("D")) {
-                            answerD.setImageDrawable(getResources().getDrawable(R.drawable.r_4));
-                            answerTextD.setTextColor(getResources().getColor(R.color.correct));
-                        } else if (correct.equals("E")) {
-                            answerE.setImageDrawable(getResources().getDrawable(R.drawable.r_5));
-                            answerTextE.setTextColor(getResources().getColor(R.color.correct));
-                        }
-                    }
-                    tvTipsYourChoose.setText("B");
-                    bottomHide.setVisibility(View.VISIBLE);
-                }
-            });
-            linearAnswerC.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    already=already+1;
-                    linearAnswerA.setClickable(false);
-                    linearAnswerB.setClickable(false);
-                    linearAnswerC.setClickable(false);
-                    linearAnswerD.setClickable(false);
-                    linearAnswerE.setClickable(false);
-                    if ("C".equals(correct)) {
-                        correct1=correct1+1;
-                        topicCard.set(finalI1,0);
-                        answerC.setImageDrawable(getResources().getDrawable(R.drawable.r_3));
-                        answerTextC.setTextColor(getResources().getColor(R.color.correct));
-                        tvTipsYourChoose.setTextColor(getResources().getColor(R.color.correct));
-                    } else {
-                        topicCard.set(finalI1,1);
-                        answerC.setImageDrawable(getResources().getDrawable(R.drawable.w_3));
-                        answerTextC.setTextColor(getResources().getColor(R.color.false1));
-                        tvTipsYourChoose.setTextColor(getResources().getColor(R.color.false1));
-                        //把错题添加到数据库
-                        addDataBase(finalI1);
-                        if (correct.equals("A")) {
-                            answerA.setImageDrawable(getResources().getDrawable(R.drawable.r_1));
-                            answerTextA.setTextColor(getResources().getColor(R.color.correct));
-                        } else if (correct.equals("B")) {
-                            answerB.setImageDrawable(getResources().getDrawable(R.drawable.r_2));
-                            answerTextB.setTextColor(getResources().getColor(R.color.correct));
-                        } else if (correct.equals("D")) {
-                            answerD.setImageDrawable(getResources().getDrawable(R.drawable.r_4));
-                            answerTextD.setTextColor(getResources().getColor(R.color.correct));
-                        } else if (correct.equals("E")) {
-                            answerE.setImageDrawable(getResources().getDrawable(R.drawable.r_5));
-                            answerTextE.setTextColor(getResources().getColor(R.color.correct));
-                        }
-                    }
-                    tvTipsYourChoose.setText("C");
-                    bottomHide.setVisibility(View.VISIBLE);
-                }
-            });
-            linearAnswerD.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    already=already+1;
-                    linearAnswerA.setClickable(false);
-                    linearAnswerB.setClickable(false);
-                    linearAnswerC.setClickable(false);
-                    linearAnswerD.setClickable(false);
-                    linearAnswerE.setClickable(false);
-                    if ("D".equals(correct)) {
-                        correct1=correct1+1;
-                        topicCard.set(finalI1,0);
-                        answerD.setImageDrawable(getResources().getDrawable(R.drawable.r_4));
-                        bottomHide.setVisibility(View.VISIBLE);
-                        answerTextD.setTextColor(getResources().getColor(R.color.correct));
-                        tvTipsYourChoose.setTextColor(getResources().getColor(R.color.correct));
-                    } else {
-                        topicCard.set(finalI1,1);
-                        answerD.setImageDrawable(getResources().getDrawable(R.drawable.w_4));
-                        answerTextD.setTextColor(getResources().getColor(R.color.false1));
-                        tvTipsYourChoose.setTextColor(getResources().getColor(R.color.false1));
-                        //把错题添加到数据库
-                        addDataBase(finalI1);
-                        if (correct.equals("A")) {
-                            answerA.setImageDrawable(getResources().getDrawable(R.drawable.r_1));
-                            answerTextA.setTextColor(getResources().getColor(R.color.correct));
-                        } else if (correct.equals("B")) {
-                            answerB.setImageDrawable(getResources().getDrawable(R.drawable.r_2));
-                            answerTextB.setTextColor(getResources().getColor(R.color.correct));
-                        } else if (correct.equals("C")) {
-                            answerC.setImageDrawable(getResources().getDrawable(R.drawable.r_3));
-                            answerTextC.setTextColor(getResources().getColor(R.color.correct));
-                        } else if (correct.equals("E")) {
-                            answerE.setImageDrawable(getResources().getDrawable(R.drawable.r_5));
-                            answerTextE.setTextColor(getResources().getColor(R.color.correct));
-                        }
-                    }
-                    tvTipsYourChoose.setText("D");
-                    bottomHide.setVisibility(View.VISIBLE);
-                }
-            });
-            linearAnswerE.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    already=already+1;
-                    linearAnswerA.setClickable(false);
-                    linearAnswerB.setClickable(false);
-                    linearAnswerC.setClickable(false);
-                    linearAnswerD.setClickable(false);
-                    linearAnswerE.setClickable(false);
-                    if ("E".equals(correct)) {
-                        correct1=correct1+1;
-                        topicCard.set(finalI1,0);
-                        answerE.setImageDrawable(getResources().getDrawable(R.drawable.r_5));
-                        bottomHide.setVisibility(View.VISIBLE);
-                        answerTextE.setTextColor(getResources().getColor(R.color.correct));
-                        tvTipsYourChoose.setTextColor(getResources().getColor(R.color.correct));
-                    } else {
-                        topicCard.set(finalI1,1);
-                        answerE.setImageDrawable(getResources().getDrawable(R.drawable.w_5));
-                        answerTextE.setTextColor(getResources().getColor(R.color.false1));
-                        tvTipsYourChoose.setTextColor(getResources().getColor(R.color.false1));
-                        //把错题添加到数据库
-                        addDataBase(finalI1);
-                        if (correct.equals("A")) {
-                            answerA.setImageDrawable(getResources().getDrawable(R.drawable.r_1));
-                            answerTextA.setTextColor(getResources().getColor(R.color.correct));
-                        } else if (correct.equals("B")) {
-                            answerB.setImageDrawable(getResources().getDrawable(R.drawable.r_2));
-                            answerTextB.setTextColor(getResources().getColor(R.color.correct));
-                        } else if (correct.equals("C")) {
-                            answerC.setImageDrawable(getResources().getDrawable(R.drawable.r_3));
-                            answerTextC.setTextColor(getResources().getColor(R.color.correct));
-                        } else if (correct.equals("D")) {
-                            answerD.setImageDrawable(getResources().getDrawable(R.drawable.r_4));
-                            answerTextD.setTextColor(getResources().getColor(R.color.correct));
-                        }
-                    }
-                    tvTipsYourChoose.setText("E");
-                    bottomHide.setVisibility(View.VISIBLE);
-                }
-            });
-            final int finalI = i;
-            btnLookOtherNote.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    CommentParcel commentParcel = new CommentParcel();
-                    String title = practiceList.get(finalI).getTitle();
-                    int topic_id = practiceList.get(finalI).getId();
-                    String cl = practiceList.get(finalI).getCl() + "";
-                    commentParcel.setId(topic_id);
-                    commentParcel.setTitle(title);
-                    commentParcel.setCl(cl);
-                    Intent intent = new Intent(PracticeAnswerActivity.this, OtherCommentActivity.class);
-                    intent.putExtra("commentParcel", commentParcel);
-                    startActivity(intent);
-                }
-            });
-            btnNoteEdit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    final Dialog dialog = new Dialog(PracticeAnswerActivity.this, R.style.NormalDialogStyle);
-                    View view = View.inflate(PracticeAnswerActivity.this, R.layout.dialog_note, null);
-                    TextView cancel = view.findViewById(R.id.cancel);
-                    TextView confirm = view.findViewById(R.id.confirm);
-                    final EditText editText = view.findViewById(R.id.edit_text);
-
-                    dialog.setContentView(view);
-                    //使得点击对话框外部不消失对话框
-                    dialog.setCanceledOnTouchOutside(false);
-                    //设置对话框的大小
-                    Window dialogWindow = dialog.getWindow();
-                    WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-                    lp.width = (int) (ScreenSizeUtils.getInstance(PracticeAnswerActivity.this).getScreenWidth() * 0.85f);
-                    lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-                    lp.gravity = Gravity.CENTER;
-                    dialogWindow.setAttributes(lp);
-                    cancel.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-                        }
-                    });
-                    confirm.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            final String content = editText.getText().toString();
-                            ObserverOnNextListener<No> listener = new ObserverOnNextListener<No>() {
-                                @Override
-                                public void onNext(No data) {
-                                    noteContent.setText(content);
-                                    dialog.dismiss();
-                                }
-                            };
-                            int userId=userInfo.getId();
-                            ApiMethods.addNote(new MyObserver<No>( listener),practiceList.get(finalI).getId()+"", userId+"",content,practiceList.get(finalI).getCl()+"",PracticeAnswerActivity.this);
-                        }
-                    });
-                    dialog.show();
-                }
-            });
-            btnFeedbackError.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String topicId = practiceList.get(finalI).getId() + "";
-                    Intent intent = new Intent(PracticeAnswerActivity.this, FeedbackErrorActivity.class);
-                    intent.putExtra("topicId", topicId);
-                    startActivity(intent);
-                }
-            });
-            viewsList.add(view);
+            Fragment fragment2 = PracticeAnswerFragment2.newInstance(practiceList.get(i), i, practiceList.size());
+            Fragment fragment = PracticeAnswerFragment.newInstance(practiceList.get(i), i, practiceList.size());
+            fragmentlist2.add(fragment2);
+            fragmentlist.add(fragment);
         }
+        init();
     }
 
-    //背题
-    public void initViewAnswer() {
-        for (int i = 0; i < practiceList.size(); i++) {
-            View view = LayoutInflater.from(this).inflate(R.layout.item_answer, null, false);
-            TextView timu = view.findViewById(R.id.timu);
-            ImageView imageView = view.findViewById(R.id.imageview);
-            TextView current = view.findViewById(R.id.current_num);
-            String currentNum = i + 1 + "";//当前数目
-            current.setText(currentNum);
-            TextView total = view.findViewById(R.id.total_num);
-            String totalNum = "/" + practiceList.size();//总数目
-            total.setText(totalNum);
-            final ImageView answerA = view.findViewById(R.id.answer_a);
-            final TextView answerTextA = view.findViewById(R.id.answer_text_a);
-            final LinearLayout linearAnswerA = view.findViewById(R.id.linear_answer_a);
-            final ImageView answerB = view.findViewById(R.id.answer_b);
-            final TextView answerTextB = view.findViewById(R.id.answer_text_b);
-            final LinearLayout linearAnswerB = view.findViewById(R.id.linear_answer_b);
-            final ImageView answerC = view.findViewById(R.id.answer_c);
-            final TextView answerTextC = view.findViewById(R.id.answer_text_c);
-            final LinearLayout linearAnswerC = view.findViewById(R.id.linear_answer_c);
-            final ImageView answerD = view.findViewById(R.id.answer_d);
-            final TextView answerTextD = view.findViewById(R.id.answer_text_d);
-            final LinearLayout linearAnswerD = view.findViewById(R.id.linear_answer_d);
-            final ImageView answerE = view.findViewById(R.id.answer_e);
-            final TextView noteContent = view.findViewById(R.id.noteContent);
-            final TextView btnNoteEdit = view.findViewById(R.id.btnNoteEdit);
-            final TextView answerTextE = view.findViewById(R.id.answer_text_e);
-            final LinearLayout linearAnswerE = view.findViewById(R.id.linear_answer_e);
-            final LinearLayout bottomHide = view.findViewById(R.id.bottom_hide);
-            final TextView tvTipsYourChoose = view.findViewById(R.id.tv_tips_yourchoose);
-            final TextView btnLookOtherNote = view.findViewById(R.id.btnLookOtherNote);
-            final TextView btnFeedbackError = view.findViewById(R.id.btn_feedback_error);
-            TextView check = view.findViewById(R.id.check);
-            TextView analyse = view.findViewById(R.id.analyseinfo);
-            timu.setText(practiceList.get(i).getTitle());
-            answerTextA.setText(practiceList.get(i).getA());
-            answerTextB.setText(practiceList.get(i).getB());
-            answerTextC.setText(practiceList.get(i).getC());
-            answerTextD.setText(practiceList.get(i).getD());
-            answerTextE.setText(practiceList.get(i).getE());
-            check.setText(practiceList.get(i).getCorrect());
-            analyse.setText(practiceList.get(i).getAnalysis());
-            Glide.with(this)
-                    .load(practiceList.get(i).getLitpic())
-                    .into(imageView);
-            final String correct = practiceList.get(i).getCorrect();
-            bottomHide.setVisibility(View.VISIBLE);
-            switch (correct) {
-                case "A":
-                    answerA.setImageDrawable(getResources().getDrawable(R.drawable.r_1));
-                    answerTextA.setTextColor(getResources().getColor(R.color.correct));
-                    tvTipsYourChoose.setText("A");
-                    tvTipsYourChoose.setTextColor(getResources().getColor(R.color.correct));
-                    break;
-                case "B":
-                    answerB.setImageDrawable(getResources().getDrawable(R.drawable.r_2));
-                    answerTextB.setTextColor(getResources().getColor(R.color.correct));
-                    tvTipsYourChoose.setText("B");
-                    tvTipsYourChoose.setTextColor(getResources().getColor(R.color.correct));
-                    break;
-                case "C":
-                    answerC.setImageDrawable(getResources().getDrawable(R.drawable.r_3));
-                    answerTextC.setTextColor(getResources().getColor(R.color.correct));
-                    tvTipsYourChoose.setText("C");
-                    tvTipsYourChoose.setTextColor(getResources().getColor(R.color.correct));
-                    break;
-                case "D":
-                    answerD.setImageDrawable(getResources().getDrawable(R.drawable.r_4));
-                    answerTextD.setTextColor(getResources().getColor(R.color.correct));
-                    tvTipsYourChoose.setText("D");
-                    tvTipsYourChoose.setTextColor(getResources().getColor(R.color.correct));
-                    break;
-                case "E":
-                    answerE.setImageDrawable(getResources().getDrawable(R.drawable.r_5));
-                    answerTextE.setTextColor(getResources().getColor(R.color.correct));
-                    tvTipsYourChoose.setText("E");
-                    tvTipsYourChoose.setTextColor(getResources().getColor(R.color.correct));
-                    break;
-            }
-            final int finalI = i;
-            btnLookOtherNote.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    CommentParcel commentParcel = new CommentParcel();
-                    String title = practiceList.get(finalI).getTitle();
-                    int topic_id = practiceList.get(finalI).getId();
-                    String cl = practiceList.get(finalI).getCl() + "";
-                    commentParcel.setId(topic_id);
-                    commentParcel.setTitle(title);
-                    commentParcel.setCl(cl);
-                    Intent intent = new Intent(PracticeAnswerActivity.this, OtherCommentActivity.class);
-                    intent.putExtra("commentParcel", commentParcel);
-                    startActivity(intent);
-                }
-            });
-            btnNoteEdit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    final Dialog dialog = new Dialog(PracticeAnswerActivity.this, R.style.NormalDialogStyle);
-                    View view = View.inflate(PracticeAnswerActivity.this, R.layout.dialog_note, null);
-                    TextView cancel = view.findViewById(R.id.cancel);
-                    TextView confirm = view.findViewById(R.id.confirm);
-                    final EditText editText = view.findViewById(R.id.edit_text);
+    public void init() {
+        //initViewAnswer();
+        //viewPagerAnswer.setOffscreenPageLimit(2);
+        fm = getSupportFragmentManager();
+        mAdapter = new MyFragmentPagerAdapter(fm, fragmentlist2);
+        viewPagerAnswer.setAdapter(mAdapter);
+        mAdapter = new MyFragmentPagerAdapter(fm, fragmentlist);
+        viewPager.setAdapter(mAdapter);
+        viewPagerAnswer.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-                    dialog.setContentView(view);
-                    //使得点击对话框外部不消失对话框
-                    dialog.setCanceledOnTouchOutside(false);
-                    //设置对话框的大小
-                    Window dialogWindow = dialog.getWindow();
-                    WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-                    lp.width = (int) (ScreenSizeUtils.getInstance(PracticeAnswerActivity.this).getScreenWidth() * 0.85f);
-                    lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-                    lp.gravity = Gravity.CENTER;
-                    dialogWindow.setAttributes(lp);
-                    cancel.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-                        }
-                    });
-                    confirm.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            final String content = editText.getText().toString();
-                            ObserverOnNextListener<No> listener = new ObserverOnNextListener<No>() {
-                                @Override
-                                public void onNext(No data) {
-                                    noteContent.setText(content);
-                                    dialog.dismiss();
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                Observable.create(new ObservableOnSubscribe<Integer>() {
+                    @Override
+                    public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
+                        //practiceList = DataSupport.order("id desc").find(CollectData.class);
+                        //String a=Thread.currentThread().getName();
+                        int position00 = viewPagerAnswer.getCurrentItem();
+                        int id = practiceList.get(position00).getId();
+                        int cl = practiceList.get(position00).getCl();
+                        //practiceList9.clear();
+                        practiceList9 = DataSupport.where("topicId=" + id + ";" + "cl=" + cl).find(CollectData.class);
+                        emitter.onNext(1);
+
+                        //emitter.onComplete();
+                    }
+                }).subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .compose(PracticeAnswerActivity.this.<Integer>bindToLifecycle())
+                        .subscribe(new Observer<Integer>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+                                //Log.d(TAG, "subscribe");
+                            }
+
+                            @Override
+                            public void onNext(Integer value) {
+                                //int v=value;
+                                if (practiceList9.size() > 0) {
+                                    imgCollect.setImageResource(R.drawable.ic_collect_press);
+                                    isCollected = 0;
+                                } else {
+                                    imgCollect.setImageResource(R.drawable.ic_collect_normal);
+                                    isCollected = 1;
                                 }
-                            };
-                            int userId=userInfo.getId();
-                            ApiMethods.addNote(new MyObserver<No>( listener),practiceList.get(finalI).getId()+"", userId+"",content,practiceList.get(finalI).getCl()+"",PracticeAnswerActivity.this);
+                                //init();
+                                //Log.d(TAG, "" + value);
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                //Log.d(TAG, "error");
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                //Log.d(TAG, "complete");
+                            }
+                        });
+            }
+        });
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                Observable.create(new ObservableOnSubscribe<Integer>() {
+                    @Override
+                    public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
+                        int position00 = viewPager.getCurrentItem();
+                        int id = practiceList.get(position00).getId();
+                        int cl = practiceList.get(position00).getCl();
+                        practiceList9 = DataSupport.where("topicId=" + id + ";" + "cl=" + cl).find(CollectData.class);
+                        emitter.onNext(1);
+
+                        //emitter.onComplete();
+                    }
+                }).subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .compose(PracticeAnswerActivity.this.<Integer>bindToLifecycle())
+                        .subscribe(new Observer<Integer>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+                                //Log.d(TAG, "subscribe");
+                            }
+
+                            @Override
+                            public void onNext(Integer value) {
+                                //int v=value;
+                                if (practiceList9.size() > 0) {
+                                    imgCollect.setImageResource(R.drawable.ic_collect_press);
+                                    isCollected = 0;
+                                } else {
+                                    imgCollect.setImageResource(R.drawable.ic_collect_normal);
+                                    isCollected = 1;
+                                }
+                                //init();
+                                //Log.d(TAG, "" + value);
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                //Log.d(TAG, "error");
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                //Log.d(TAG, "complete");
+                            }
+                        });
+            }
+        });
+
+        //practiceList9.clear();
+        Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
+                int position00 = viewPagerAnswer.getCurrentItem();
+                int id = practiceList.get(position00).getId();
+                int cl = practiceList.get(position00).getCl();
+                practiceList9 = DataSupport.where("topicId=" + id + ";" + "cl=" + cl).find(CollectData.class);
+
+                emitter.onNext(1);
+
+                //emitter.onComplete();
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(PracticeAnswerActivity.this.<Integer>bindToLifecycle())
+                .subscribe(new Observer<Integer>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        //Log.d(TAG, "subscribe");
+                    }
+
+                    @Override
+                    public void onNext(Integer value) {
+                        //int v=value;
+                        if (practiceList9.size() > 0) {
+                            imgCollect.setImageResource(R.drawable.ic_collect_press);
+
+                            isCollected = 0;
+                        } else {
+                            imgCollect.setImageResource(R.drawable.ic_collect_normal);
+
+                            isCollected = 1;
                         }
-                    });
-                    dialog.show();
-                }
-            });
-            viewsListAnswer.add(view);
-        }
+                        //init();
+                        //Log.d(TAG, "" + value);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        //Log.d(TAG, "error");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        //Log.d(TAG, "complete");
+                    }
+                });
+        tvTopicCard.setClickable(true);
+        tvAnswer.setClickable(true);
+
     }
 
     public void addDataBase(int finalI1) {
         PracticeData practiceData = new PracticeData();
-        practiceData.setId(practiceList.get(finalI1).getId());
+        practiceData.setTopicId(practiceList.get(finalI1).getId());
         practiceData.setName(practiceList.get(finalI1).getTitle());
         practiceData.setA(practiceList.get(finalI1).getA());
         practiceData.setB(practiceList.get(finalI1).getB());
@@ -611,67 +387,238 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
         practiceData.setE(practiceList.get(finalI1).getE());
         practiceData.setCorrect(practiceList.get(finalI1).getCorrect());
         practiceData.setAnalysis(practiceList.get(finalI1).getAnalysis());
+        practiceData.setMaterial(practiceList.get(finalI1).getMaterial());
+        practiceData.setImage(practiceList.get(finalI1).getLitpic());
         practiceData.save();
     }
 
-    @OnClick({R.id.ib_left, R.id.tv_topic_card, R.id.tv_collect, R.id.tv_answer, R.id.ib_right, R.id.back})
+    public void addCollectDataBase(final int finalI1) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                CollectData collectData = new CollectData();
+                collectData.setTopicId(practiceList.get(finalI1).getId());
+                collectData.setName(practiceList.get(finalI1).getTitle());
+                collectData.setA(practiceList.get(finalI1).getA());
+                collectData.setB(practiceList.get(finalI1).getB());
+                collectData.setC(practiceList.get(finalI1).getC());
+                collectData.setD(practiceList.get(finalI1).getD());
+                collectData.setE(practiceList.get(finalI1).getE());
+                collectData.setCorrect(practiceList.get(finalI1).getCorrect());
+                collectData.setAnalysis(practiceList.get(finalI1).getAnalysis());
+                collectData.setTypeid(practiceList.get(finalI1).getTypeid());
+                collectData.setCl(practiceList.get(finalI1).getCl());
+                collectData.setMaterial(practiceList.get(finalI1).getMaterial());
+                collectData.setImage(practiceList.get(finalI1).getLitpic());
+                collectData.save();
+            }
+        }).start();
+    }
+
+    public void delleteCollectDataBase(final int finalI1) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int id98 = practiceList.get(finalI1).getId();
+                int cl98 = practiceList.get(finalI1).getCl();
+                DataSupport.deleteAll(CollectData.class, "topicId=" + id98 + ";" + "cl=" + cl98);
+            }
+        }).start();
+
+    }
+
+    public void addNoteDataBase(final int finalI1, final String note) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int id1 = practiceList.get(finalI1).getId();
+                int cl1 = practiceList.get(finalI1).getCl();
+                noteList9 = DataSupport.where("topicId=" + id1 + ";" + "cl=" + cl1).find(NoteData.class);
+                if (noteList9.size() > 0) {
+                    NoteData noteData = new NoteData();
+                    noteData.setNote(note);
+                    noteData.updateAll("topicId=" + id1 + ";" + "cl=" + cl1);
+                } else {
+                    NoteData noteData = new NoteData();
+                    noteData.setTopicId(practiceList.get(finalI1).getId());
+                    noteData.setName(practiceList.get(finalI1).getTitle());
+                    noteData.setA(practiceList.get(finalI1).getA());
+                    noteData.setB(practiceList.get(finalI1).getB());
+                    noteData.setC(practiceList.get(finalI1).getC());
+                    noteData.setD(practiceList.get(finalI1).getD());
+                    noteData.setE(practiceList.get(finalI1).getE());
+                    noteData.setCorrect(practiceList.get(finalI1).getCorrect());
+                    noteData.setAnalysis(practiceList.get(finalI1).getAnalysis());
+                    noteData.setTypeid(practiceList.get(finalI1).getTypeid());
+                    noteData.setCl(practiceList.get(finalI1).getCl());
+                    noteData.setMaterial(practiceList.get(finalI1).getMaterial());
+                    noteData.setImage(practiceList.get(finalI1).getLitpic());
+                    noteData.setNote(note);
+                    noteData.save();
+                }
+
+            }
+        }).start();
+    }
+
+    @OnClick({R.id.ib_left, R.id.ln_topic_card, R.id.ln_collect, R.id.ln_topic_answer, R.id.ib_right, R.id.back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ib_left:
-                position = viewPager.getCurrentItem();
-                if (position > 0) {
-                    viewPager.setCurrentItem(position - 1);
-                    position = position - 1;
-                }
-                break;
-            case R.id.tv_topic_card:
-                Intent intent = new Intent(this, TopicCardActivity.class);
-                intent.putIntegerArrayListExtra("topicCard",topicCard);
-                intent.putExtra("already",already);
-                intent.putExtra("correct",correct1);
-                startActivity(intent);
-                break;
-            case R.id.tv_collect:
-                int a = viewPager.getCurrentItem();
-                ObserverOnNextListener<CollectionBean> listener = new ObserverOnNextListener<CollectionBean>() {
-                    @Override
-                    public void onNext(CollectionBean data) {
-                        if (data.getCode() == 400) {
-                            Toast.makeText(PracticeAnswerActivity.this, data.getMsg(), Toast.LENGTH_SHORT).show();
-                        }
-                        Drawable collect = getResources().getDrawable(R.drawable.ic_collect_press);
-                        collect.setBounds(0, 0, 100, 100);
-                        tvCollect.setCompoundDrawables(null, collect, null, null);
-                    }
-                };
-                ApiMethods.getCollection(new MyObserver<CollectionBean>(listener), practiceList.get(a).getId() + "", userInfo.getId() + "", practiceList.get(a).getCl() + "", this);
-                break;
-            case R.id.tv_answer:
                 if (answer666 == 0) {
                     position = viewPager.getCurrentItem();
-                    if (viewsListAnswer == null) {
-                        viewsListAnswer = new ArrayList<View>();
-                        initViewAnswer();
-                        mAdapter = new MyPagerAdapter(viewsListAnswer);
-                        viewPagerAnswer.setAdapter(mAdapter);
+                    if (position > 0) {
+                        viewPager.setCurrentItem(position - 1);
+                        position = position - 1;
                     }
-                    viewPagerAnswer.setCurrentItem(position);
+                } else if (answer666 == 1) {
+                    position = viewPagerAnswer.getCurrentItem();
+                    if (position > 0) {
+                        viewPagerAnswer.setCurrentItem(position - 1);
+                        position = position - 1;
+                    }
+                }
+                break;
+            case R.id.ln_topic_card:
+                Intent intent = new Intent(this, TopicCardActivity.class);
+                intent.putIntegerArrayListExtra("topicCard", topicCard);
+                intent.putExtra("already", already);
+                intent.putExtra("correct", correct1);
+                intent.putExtra("switch", "0");
+                startActivity(intent);
+                break;
+            case R.id.ln_collect:
+                if (isCollected == 1) {
+                    if (answer666 == 0) {
+                        int a = viewPager.getCurrentItem();
+                        addCollectDataBase(a);
+                        imgCollect.setImageResource(R.drawable.ic_collect_press);
+
+                    } else if (answer666 == 1) {
+                        int a = viewPagerAnswer.getCurrentItem();
+                        addCollectDataBase(a);
+                        imgCollect.setImageResource(R.drawable.ic_collect_press);
+
+                    }
+                    isCollected = 0;
+                } else if (isCollected == 0) {
+                    if (answer666 == 0) {
+                        int a18 = viewPager.getCurrentItem();
+                        delleteCollectDataBase(a18);
+                        imgCollect.setImageResource(R.drawable.ic_collect_normal);
+
+                    } else if (answer666 == 1) {
+                        int a18 = viewPagerAnswer.getCurrentItem();
+                        delleteCollectDataBase(a18);
+                        imgCollect.setImageResource(R.drawable.ic_collect_normal);
+                    }
+                    isCollected = 1;
+
+                }
+
+                /*ObserverOnNextListener<CollectionBean> listener = new ObserverOnNextListener<CollectionBean>() {
+                    @Override
+                    public void onNext(CollectionBean data) {
+                        //if (data.getCode() == 400) {
+                            Toast.makeText(PracticeAnswerActivity.this, data.getMsg(), Toast.LENGTH_SHORT).show();
+                        //}
+                        //Drawable collect = getResources().getDrawable(R.drawable.ic_collect_press);
+                        //collect.setBounds(0, 0, 100, 100);
+                        //tvCollect.setCompoundDrawables(null, collect, null, null);
+                    }
+                };
+                if(userInfo!=null){
+                    ApiMethods.getCollection(new MyObserver<CollectionBean>(listener), practiceList.get(a).getId() + "", userInfo.getId() + "", practiceList.get(a).getCl() + "", this);
+                }else{
+                    Toast.makeText(PracticeAnswerActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
+                }*/
+                break;
+            case R.id.ln_topic_answer:
+                if (answer666 == 0) {
+                    position = viewPager.getCurrentItem();
+                    int position00 = position;
+                    int id = practiceList.get(position00).getId();
+                    int cl = practiceList.get(position00).getCl();
+                    //practiceList9.clear();
+                    practiceList9 = DataSupport.where("topicId=" + id + ";" + "cl=" + cl).find(CollectData.class);
+                    if (practiceList9.size() > 0) {
+                        imgCollect.setImageResource(R.drawable.ic_collect_press);
+
+                        isCollected = 0;
+                    } else {
+                        imgCollect.setImageResource(R.drawable.ic_collect_normal);
+
+                        isCollected = 1;
+                    }
+                    viewPagerAnswer.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                        @Override
+                        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                        }
+
+                        @Override
+                        public void onPageSelected(int position) {
+
+                        }
+
+                        @Override
+                        public void onPageScrollStateChanged(int state) {
+                            int position00 = viewPagerAnswer.getCurrentItem();
+                            int id = practiceList.get(position00).getId();
+                            int cl = practiceList.get(position00).getCl();
+                            //practiceList9.clear();
+                            practiceList9 = DataSupport.where("topicId=" + id + ";" + "cl=" + cl).find(CollectData.class);
+                            if (practiceList9.size() > 0) {
+                                imgCollect.setImageResource(R.drawable.ic_collect_press);
+
+                                isCollected = 0;
+                            } else {
+                                imgCollect.setImageResource(R.drawable.ic_collect_normal);
+
+                                isCollected = 1;
+                            }
+                        }
+                    });
+                    viewPagerAnswer.setCurrentItem(position, false);
                     viewPager.setVisibility(View.GONE);
                     viewPagerAnswer.setVisibility(View.VISIBLE);
                     answer666 = 1;
+                    imgAnswer.setImageResource(R.drawable.ic_answer_press);
+
                 } else if (answer666 == 1) {
                     position = viewPagerAnswer.getCurrentItem();
-                    viewPager.setCurrentItem(position);
+                    viewPager.setCurrentItem(position, false);
                     viewPager.setVisibility(View.VISIBLE);
                     viewPagerAnswer.setVisibility(View.GONE);
                     answer666 = 0;
+                    imgAnswer.setImageResource(R.drawable.ic_answer_normal);
+                    int position00 = position;
+                    int id = practiceList.get(position00).getId();
+                    int cl = practiceList.get(position00).getCl();
+                    //practiceList9.clear();
+                    practiceList9 = DataSupport.where("topicId=" + id + ";" + "cl=" + cl).find(CollectData.class);
+                    if (practiceList9.size() > 0) {
+                        imgCollect.setImageResource(R.drawable.ic_collect_press);
+                        isCollected = 0;
+                    } else {
+                        imgCollect.setImageResource(R.drawable.ic_collect_normal);
+                        isCollected = 1;
+                    }
                 }
                 break;
             case R.id.ib_right:
-                position = viewPager.getCurrentItem();
-                if (position < practiceList.size() - 1) {
-                    viewPager.setCurrentItem(position + 1);
-                    position = position + 1;
+                if (answer666 == 0) {
+                    position = viewPager.getCurrentItem();
+                    if (position < practiceList.size() - 1) {
+                        viewPager.setCurrentItem(position + 1);
+                        position = position + 1;
+                    }
+                } else if (answer666 == 1) {
+                    position = viewPagerAnswer.getCurrentItem();
+                    if (position < practiceList.size() - 1) {
+                        viewPagerAnswer.setCurrentItem(position + 1);
+                        position = position + 1;
+                    }
                 }
                 break;
             case R.id.back:
@@ -679,17 +626,36 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
                 break;
         }
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(TopicCardEvent messageEvent) {
-        viewPager.setCurrentItem(messageEvent.getMessage());
+        if (answer666 == 0) {
+            viewPager.setCurrentItem(messageEvent.getMessage(), false);
+        } else if (answer666 == 1) {
+            viewPagerAnswer.setCurrentItem(messageEvent.getMessage(), false);
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(EventBus.getDefault().isRegistered(this)) {
+        if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+    }
+
+    public void test(int i, int j) {
+        //AnswerFragment会调用此方法
+        correct1 = correct1 + 1;
+        topicCard.set(i, j);
+
+    }
+
+    public void test2() {
+        //AnswerFragment会调用此方法
+        already = already + 1;
+
+
     }
 
 }

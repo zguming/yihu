@@ -29,7 +29,7 @@ public class MainActivity extends RxAppCompatActivity implements BottomNavigatio
     private UserFragment mUserFragment;
     private NewsFragment mNewsFragment;
     private PracticeFragment mPracticeFragment;
-    private LiveFragment mLiveFragment;
+    //private LiveFragment mLiveFragment;
     private FragmentManager mFragmentManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,7 @@ public class MainActivity extends RxAppCompatActivity implements BottomNavigatio
         bottomNavigationBar.setActiveColor(R.color.Main_text_click);
         bottomNavigationBar.addItem(new BottomNavigationItem(R.drawable.nav_1_active, "练习").setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.nav_1)))
                 .addItem(new BottomNavigationItem(R.drawable.nav_2_active, "课程").setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.nav_2)))
-                .addItem(new BottomNavigationItem(R.drawable.main_live_focus, "直播").setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.main_live)))
+                //.addItem(new BottomNavigationItem(R.drawable.main_live_focus, "直播").setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.main_live)))
                 .addItem(new BottomNavigationItem(R.drawable.nav_3_active, "资讯").setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.nav_3)))
                 .addItem(new BottomNavigationItem(R.drawable.nav_4_active, "我的").setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.nav_4)))
                 .setFirstSelectedPosition(0)
@@ -109,15 +109,15 @@ public class MainActivity extends RxAppCompatActivity implements BottomNavigatio
                     transaction.show(mVideoFragment);
                 }
                 break;
-            case 2:
+            /*case 2:
                 if (mLiveFragment == null) {
                     mLiveFragment = LiveFragment.newInstance("直播");
                     transaction.add(R.id.layFrame, mLiveFragment);
                 }else{
                     transaction.show(mLiveFragment);
                 }
-                break;
-            case 3:
+                break;*/
+            case 2:
                 if (mNewsFragment == null) {
                     mNewsFragment = NewsFragment.newInstance("资讯");
                     transaction.add(R.id.layFrame, mNewsFragment);
@@ -125,7 +125,7 @@ public class MainActivity extends RxAppCompatActivity implements BottomNavigatio
                     transaction.show(mNewsFragment);
                 }
                 break;
-            case 4:
+            case 3:
                 if (mUserFragment == null) {
                     mUserFragment = UserFragment.newInstance("我的");
                     transaction.add(R.id.layFrame, mUserFragment);
@@ -151,9 +151,9 @@ public class MainActivity extends RxAppCompatActivity implements BottomNavigatio
         if (mVideoFragment != null){
             transaction.hide(mVideoFragment);
         }
-        if (mLiveFragment != null){
-            transaction.hide(mLiveFragment);
-        }
+        //if (mLiveFragment != null){
+        //    transaction.hide(mLiveFragment);
+        //}
         if (mNewsFragment != null){
             transaction.hide(mNewsFragment);
         }

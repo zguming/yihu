@@ -16,6 +16,7 @@ import com.unnamed.b.atv.model.TreeNode;
 public class ChapterPracticeParent extends TreeNode.BaseNodeViewHolder<ChapterPracticeParent.IconTreeItem> {
     private TextView tvValue;
     private ImageView arrowView;
+    private ImageView arrowIcon;
     private View bottomLine;
     private View bottomLine2;
     private View bottomLine3;
@@ -35,6 +36,7 @@ public class ChapterPracticeParent extends TreeNode.BaseNodeViewHolder<ChapterPr
         bottomLine=view.findViewById(R.id.bot_line);
         bottomLine2=view.findViewById(R.id.bottom_line);
         bottomLine3=view.findViewById(R.id.bottom_line3);
+        arrowIcon = view.findViewById(R.id.arrow);
 
         return view;
     }
@@ -44,6 +46,7 @@ public class ChapterPracticeParent extends TreeNode.BaseNodeViewHolder<ChapterPr
     public void toggle(boolean active) {
         super.toggle(active);
         arrowView.setImageResource(active ? R.drawable.iconfont_jianhao : R.drawable.iconfont_jiahao);
+        arrowIcon.setImageResource(active ? R.drawable.ic_arrow_down : R.drawable.ic_arrow_right_small);
         bottomLine.setVisibility(active ?View.VISIBLE:View.INVISIBLE);
         bottomLine2.setVisibility(active ?View.GONE:View.VISIBLE);
         bottomLine3.setVisibility(active ?View.VISIBLE:View.GONE);

@@ -5,21 +5,22 @@ import com.botian.yihu.ProgressObserver;
 import com.botian.yihu.beans.Adlist;
 import com.botian.yihu.beans.ChangeUserInfo;
 import com.botian.yihu.beans.ChapterPracticeListBean;
-import com.botian.yihu.beans.CollectionBean;
-import com.botian.yihu.beans.CollectionDellBean;
+import com.botian.yihu.beans.GetNewsComment;
 import com.botian.yihu.beans.LoginBean;
 import com.botian.yihu.beans.Material;
 import com.botian.yihu.beans.MistakeBean;
-import com.botian.yihu.beans.MyCollection;
+import com.botian.yihu.beans.MoniCl;
+import com.botian.yihu.beans.MoniTest;
+import com.botian.yihu.beans.MoniTopic;
 import com.botian.yihu.beans.NewsLable;
 import com.botian.yihu.beans.NewsList;
 import com.botian.yihu.beans.NewsZip;
 import com.botian.yihu.beans.No;
 import com.botian.yihu.beans.OtherCommentBean;
 import com.botian.yihu.beans.PracticeAnswer;
-import com.botian.yihu.beans.PracticeBean;
 import com.botian.yihu.beans.RegisterBean;
 import com.botian.yihu.beans.SendCommentBean;
+import com.botian.yihu.beans.SendNewsComment;
 import com.botian.yihu.beans.SubjectBean;
 import com.botian.yihu.beans.TopicCommentZip;
 import com.botian.yihu.beans.UploadPhoto;
@@ -46,22 +47,21 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MultipartBody;
 import retrofit2.http.Part;
-import retrofit2.http.Query;
 
 public class ApiMethods {
 
     /**
      * 封装线程管理和订阅的过程 通用
      */
-    private static void ApiSubscribe(Observable observable, Observer observer, RxAppCompatActivity rxApp) {
+    private static void ApiSubscribe(Observable observable, Observer observer, io.reactivex.ObservableTransformer style) {
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(rxApp.<Long>bindToLifecycle())
+                .compose(style)
                 .subscribe(observer);
     }
 
     //zip 操作符，实现多个接口数据共同更新 UI,PracticeAnswerActivity专用
-    private static void ApiSubscribeZip(Observable observable1, Observable observable2, final Observer observer, RxAppCompatActivity rxApp) {
+    private static void ApiSubscribeZip(Observable observable1, Observable observable2, final Observer observer, io.reactivex.ObservableTransformer style) {
         final String[] cailiao = new String[1];
         final PracticeAnswer practiceAns = new PracticeAnswer();
         final List<PracticeAnswer.DataBean> practiceList = new ArrayList<>();
@@ -92,7 +92,7 @@ public class ApiMethods {
                         final int cl = material.getCl();
                         final int mid = material.getId();
                         //Log.d("所在的线程1：",Thread.currentThread().getName());
-                        return Api.getApiService().getPracticeStuff("", material.getTypeid() + "","daff8a9e40d2e3909e6987fa3d3d4ee0")
+                        return Api.getApiService().getPracticeStuff("", material.getTypeid() + "")
                                 .subscribeOn(Schedulers.io())
                                 .map(new Function<PracticeAnswer, PracticeAnswer>() {
                                     @Override
@@ -115,12 +115,12 @@ public class ApiMethods {
                     }
                 })
                 .defaultIfEmpty(practiceAns)
-                .compose(rxApp.<Long>bindToLifecycle())
+                .compose(style)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }
     //zip 操作符，实现多个接口数据共同更新 UI,VideoFragment专用
-    private static void ApiVideoClassZip(Observable observable1, Observable observable2, final Observer observer, RxAppCompatActivity rxApp) {
+    private static void ApiVideoClassZip(Observable observable1, Observable observable2, final Observer observer, io.reactivex.ObservableTransformer style) {
         Observable.zip(observable1, observable2, new BiFunction<Adlist, VideoClass, VideoClassZip>() {
             @Override
             public VideoClassZip apply(Adlist adlist, VideoClass videoClass) throws Exception {
@@ -133,13 +133,13 @@ public class ApiMethods {
             }
         })
                .subscribeOn(Schedulers.io())
-                .compose(rxApp.<Long>bindToLifecycle())
+                .compose(style)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }
 
     //NewsFragment专用
-    private static void ApiNews(Observable observable, Observer observer, RxAppCompatActivity rxApp) {
+    private static void ApiNews(Observable observable, Observer observer, io.reactivex.ObservableTransformer style, final String filter, final String filter2) {
         final NewsLable[] newsLable3 = new NewsLable[1];
         observable.subscribeOn(Schedulers.io())
                 .flatMap(new Function< NewsLable, ObservableSource<NewsList>>() {
@@ -148,7 +148,7 @@ public class ApiMethods {
                     public ObservableSource<NewsList> apply(NewsLable newsLable) throws Exception {
                         newsLable3[0] =newsLable;
                         String typeid=newsLable.getData().get(0).getId()+"";
-                        return Api.getApiService().getNewsList("typeid,eq,"+typeid,"1","20","5a2f871f6c5bc206a7cac5bc81724d3a");
+                        return Api.getApiService().getNewsList("typeid,eq,"+typeid,filter,filter2,"1","20","id,desc");
                     }
                 })
                 .map(new Function<NewsList, NewsZip>() {
@@ -163,11 +163,11 @@ public class ApiMethods {
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(rxApp.<Long>bindToLifecycle())
+                .compose(style)
                 .subscribe(observer);
     }
     //题评论专用
-    private static void ApiTopicZip(Observable observable1, Observable observable2, final Observer observer, RxAppCompatActivity rxApp) {
+    private static void ApiTopicZip(Observable observable1, Observable observable2, final Observer observer, io.reactivex.ObservableTransformer style) {
         Observable.zip(observable1, observable2, new BiFunction<ZanNum, OtherCommentBean, TopicCommentZip>() {
             @Override
             public TopicCommentZip apply(ZanNum zanNum, OtherCommentBean otherCommentBean) throws Exception {
@@ -180,12 +180,12 @@ public class ApiMethods {
             }
         })
                 .subscribeOn(Schedulers.io())
-                .compose(rxApp.<Long>bindToLifecycle())
+                .compose(style)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }
     //ActivityVideo专用
-    private static void ApiVideo(Observable observable, Observer observer, RxAppCompatActivity rxApp) {
+    private static void ApiVideo(Observable observable, Observer observer, io.reactivex.ObservableTransformer style) {
         observable.subscribeOn(Schedulers.io())
                 .flatMap(new Function<VideoCatalog2, ObservableSource<VideoInfo>>() {
 
@@ -196,212 +196,303 @@ public class ApiMethods {
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(rxApp.<Long>bindToLifecycle())
+                .compose(style)
+                .subscribe(observer);
+    }
+    //zip 操作符，实现多个接口数据共同更新 UI,SimulationTestActivity2专用
+    private static void ApiSubscribeZip2(final String filter, Observable observable1, Observable observable2, final Observer observer, io.reactivex.ObservableTransformer style) {
+        final MoniTopic[] moniTopic1 = {new MoniTopic()};
+        final List<PracticeAnswer.DataBean> practiceList = new ArrayList<>();
+        Observable.zip(observable1, observable2, new BiFunction<MoniTopic, MoniCl, MoniCl>() {
+            @Override
+            public MoniCl apply(MoniTopic moniTopic, MoniCl moniCl) throws Exception {
+
+                List<Material.DataBean> list = new ArrayList<>();
+                moniTopic1[0] =moniTopic;
+                return moniCl;
+
+            }
+        })
+                .flatMap(new Function<MoniCl, ObservableSource<MoniCl.DataBean>>() {
+
+                    @Override
+                    public ObservableSource<MoniCl.DataBean> apply(MoniCl moniCl1) throws Exception {
+                        return Observable.fromIterable(moniCl1.getData());
+                    }
+                }).subscribeOn(Schedulers.io())
+                .flatMap(new Function<MoniCl.DataBean, ObservableSource<MoniTopic>>() {
+                    @Override
+                    public ObservableSource<MoniTopic> apply(MoniCl.DataBean material) throws Exception {
+                        final String cailiao = material.getTitle();
+                        //Log.d("所在的线程1：",Thread.currentThread().getName());
+                        return Api.getApiService().getMoniTestCl(filter, "typeid,eq,"+material.getId(),"noPage")
+                                .subscribeOn(Schedulers.io())
+                                .map(new Function<MoniTopic, MoniTopic>() {
+                                    @Override
+                                    public MoniTopic apply(MoniTopic moniTopic) throws Exception {
+                                        List<MoniTopic.DataBean> list = new ArrayList<>();
+                                        list.addAll(moniTopic.getData());
+                                        for (int i = 0; i < list.size(); i++) {
+                                            list.get(i).setTitlecl(cailiao);
+                                        }
+                                        List<MoniTopic.DataBean> list3=new ArrayList<>();
+                                        list3.addAll(moniTopic1[0].getData());
+                                        list3.addAll(list);
+                                        moniTopic1[0].setData(list3);
+                                        return moniTopic1[0];
+
+                                    }
+                                });
+                    }
+                })
+                .defaultIfEmpty(moniTopic1[0])
+                .compose(style)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }
     /**
      * 用于获取验证码
      */
     public static void getIdentify(ProgressObserver<RegisterBean> observer, String mobile, RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getIdentify(mobile,"ebd53693d99bd13db1764f521ded862c"), observer, yy);
+        ApiSubscribe(Api.getApiService().getIdentify(mobile), observer, yy.<RegisterBean>bindToLifecycle());
     }
 
     /**
      * 用于注册
      */
     public static void register(ProgressObserver<RegisterBean> observer, String username, String mobile, String pwd, String version, String code, RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().register(username, mobile, pwd, version, code,"7aa2d7a73be1b5b405a76af2fcae3a31"), observer, yy);
+        ApiSubscribe(Api.getApiService().register(username, mobile, pwd, version, code), observer, yy.<RegisterBean>bindToLifecycle());
     }
 
     /**
      * 用于登录
      */
     public static void login(ProgressObserver<LoginBean> observer, String phone, String pwd, RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().login(phone, pwd,"a0a45c28a0381be84fdcad6926a491ff"), observer, yy);
+        ApiSubscribe(Api.getApiService().login(phone, pwd), observer, yy.<LoginBean>bindToLifecycle());
     }
 
     /**
      * 用于修改密码
      */
     public static void forget(ProgressObserver<RegisterBean> observer, String phone, String mobilelz, String pwd, String pwd2, RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().forget(phone, mobilelz, pwd, pwd2,"66a44e4a40487d7b655ff68059f0c514"), observer, yy);
+        ApiSubscribe(Api.getApiService().forget(phone, mobilelz, pwd, pwd2), observer, yy.<RegisterBean>bindToLifecycle());
     }
     /**
      * 用于修改个人资料
      */
     public static void changeUserInfo(ProgressObserver<ChangeUserInfo> observer, String id, String username, String sex, RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().changeUserInfo(id,username,sex,"0fb78da35315fba465a38bf1e9b15f5a"), observer, yy);
+        ApiSubscribe(Api.getApiService().changeUserInfo(id,username,sex), observer, yy.<ChangeUserInfo>bindToLifecycle());
     }
     /**
      * 用于更新版本信息
      */
     public static void getVersion(MyObserver<Version> observer, RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getVersion(), observer, yy);
+        ApiSubscribe(Api.getApiService().getVersion(), observer, yy.<Version>bindToLifecycle());
     }
     /**
      * 用于上传用户头像
      */
     public static void getPhoto(ProgressObserver<UploadPhoto> observer, String id, @Part MultipartBody.Part file, RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getPhoto(id, file,"5350bed89146da3a27129aba7dd60225"), observer, yy);
+        ApiSubscribe(Api.getApiService().getPhoto(id, file), observer, yy.<UploadPhoto>bindToLifecycle());
     }
     /**
      * 用于请求科目
      */
     public static void getSubject(ProgressObserver<SubjectBean> observer, RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getSubject("","91061fa65235e0680394de963f2b9667"), observer, yy);
+        ApiSubscribe(Api.getApiService().getSubject(""), observer, yy.<SubjectBean>bindToLifecycle());
     }
 
     /**
      * 用于请求章节练习列表
      */
-    public static void getChapterPracticeList(ProgressObserver<ChapterPracticeListBean> observer, String mid, RxAppCompatActivity rxApp) {
-        ApiSubscribe(Api.getApiService().getChapterPracticeList("", mid,"ef973d8d40cc4b281026853531cb8cba"), observer, rxApp);
+    public static void getChapterPracticeList(ProgressObserver<ChapterPracticeListBean> observer, String mid, String mid2,RxAppCompatActivity yy) {
+        ApiSubscribe(Api.getApiService().getChapterPracticeList("", mid,mid2), observer,yy.<ChapterPracticeListBean>bindToLifecycle());
     }
 
     /**
      * 用于请求章节练习题&章节练习材料标题
      */
-    public static void getPracticeAnswer(ProgressObserver<PracticeAnswer> observer, String typeid, RxAppCompatActivity rxApp) {
-        ApiSubscribeZip(Api.getApiService().getPracticeAnswer("", typeid,"08d72f9928bf71e20f4f381bbb546d6d").subscribeOn(Schedulers.io()), Api.getApiService().getPracticeMterial("", typeid,"0bd09703be2012c15aad0f0411a3f593").subscribeOn(Schedulers.io()), observer, rxApp);
+    public static void getPracticeAnswer(ProgressObserver<PracticeAnswer> observer, String typeid, RxAppCompatActivity yy) {
+        ApiSubscribeZip(Api.getApiService().getPracticeAnswer("", typeid).subscribeOn(Schedulers.io()), Api.getApiService().getPracticeMterial("", typeid).subscribeOn(Schedulers.io()), observer, yy.<PracticeAnswer>bindToLifecycle());
     }
 
     /**
      * 用于发表评论
      */
     public static void getSendComment(ProgressObserver<SendCommentBean> observer, String user_id, String topic_id, String content, String cl,RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getSendComment(user_id, topic_id, content,cl,"077a50a8aeeadfbce2573555c562ce39"), observer, yy);
+        ApiSubscribe(Api.getApiService().getSendComment(user_id, topic_id, content,cl), observer, yy.<SendCommentBean>bindToLifecycle());
     }
 
     /**
      * 用于显示评论
      */
     public static void getComment(MyObserver<OtherCommentBean> observer, String filter1, String page, String limit, RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getComment( filter1, "usres",page, limit,"7045f7bff8b8e3fa23f45542583d6687"), observer, yy);
+        ApiSubscribe(Api.getApiService().getComment( filter1, "usres",page, limit,"id,desc"), observer, yy.<OtherCommentBean>bindToLifecycle());
     }
 
     /**
      * 用于评论赞
      */
     public static void getCommentZan(MyObserver<ZanBean> observer, String mid,String userid,String iscai, RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getCommentZan(mid,userid,iscai,"5a37764d4b252c720e013297dd2b5d63"), observer, yy);
+        ApiSubscribe(Api.getApiService().getCommentZan(mid,userid,iscai), observer, yy.<ZanBean>bindToLifecycle());
     }
     /**
      * 用于题赞
      */
     public static void getTiZan(MyObserver<ZanBean> observer, String mid,String userid,String cl,String iscai, RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getTiZan(mid,userid,cl,iscai,"0b4c8bed46cc52a3bbc28e792725cd8f"), observer, yy);
+        ApiSubscribe(Api.getApiService().getTiZan(mid,userid,cl,iscai), observer, yy.<ZanBean>bindToLifecycle());
     }
     /**
      * 用于请求题评论，赞的数量
      */
-    public static void getTopicCommentZip(ProgressObserver<TopicCommentZip> observer, String filter, RxAppCompatActivity rxApp) {
-        ApiTopicZip(Api.getApiService().getTiZanNum(filter,"b5496765c995964d6b78d145ed1687c7").subscribeOn(Schedulers.io()), Api.getApiService().getComment( filter, "usres","1", "30","7045f7bff8b8e3fa23f45542583d6687").subscribeOn(Schedulers.io()), observer, rxApp);
+    public static void getTopicCommentZip(ProgressObserver<TopicCommentZip> observer, String filter, RxAppCompatActivity yy) {
+        ApiTopicZip(Api.getApiService().getTiZanNum(filter).subscribeOn(Schedulers.io()), Api.getApiService().getComment( filter, "usres","1", "30","id,desc").subscribeOn(Schedulers.io()), observer, yy.<TopicCommentZip>bindToLifecycle());
     }
     /**
      * 用于增加笔记
      */
     public static void addNote(MyObserver<No> observer, String mid, String userid, String content,String cl, RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().addNote(mid,userid,content,cl,"5b1266b3d8c9c649773b09204ee03c04"), observer, yy);
+        ApiSubscribe(Api.getApiService().addNote(mid,userid,content,cl), observer, yy.<No>bindToLifecycle());
     }
     /**
-     * 用于报告错题
+     * 用于意见反馈
      */
-    public static void getMistake(ProgressObserver<MistakeBean> observer, String user_id, String topic_id, String content, RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getMistake(user_id, topic_id, content), observer, yy);
+    public static void getMistake(ProgressObserver<MistakeBean> observer, String user_id, String content, RxAppCompatActivity yy) {
+        ApiSubscribe(Api.getApiService().getMistake(user_id,  content), observer, yy.<MistakeBean>bindToLifecycle());
     }
 
     /**
      * 收藏
      */
-    public static void getCollection(MyObserver<CollectionBean> observer, String mid, String userid, String cl,RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getCollection(mid, userid,cl), observer, yy);
-    }
+    //public static void getCollection(MyObserver<CollectionBean> observer, String mid, String userid, String cl,RxAppCompatActivity yy) {
+        //ApiSubscribe(Api.getApiService().getCollection(mid, userid,cl), observer, yy);
+    //}
 
     /**
      * 查看收藏
      */
-    public static void getCollectionRecords(ProgressObserver<MyCollection> observer, String filter, RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getCollectionRecords("noPage","section",filter), observer, yy);
-    }
-
+    //public static void getCollectionRecords(ProgressObserver<MyCollection> observer, String filter, RxAppCompatActivity yy) {
+        //ApiSubscribe(Api.getApiService().getCollectionRecords("noPage","section",filter), observer, yy);
+    //}
+    /**
+     * 查看收藏材料标题
+     */
+    //public static void getCollectionMaterialTitle(ProgressObserver<MyCollection> observer, String filter2, String page,RxAppCompatActivity yy) {
+        //ApiSubscribe(Api.getApiService().getCollectionMaterialTitle("material","cl,eq,1",filter2,page,"5"), observer, yy);
+    //}
     /**
      * 清空收藏
      */
-    public static void getCollectionDell(ProgressObserver<CollectionDellBean> observer, String user_id, RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getCollectionDell(user_id), observer, yy);
-    }
+    //public static void getCollectionDell(ProgressObserver<CollectionDellBean> observer, String user_id, RxAppCompatActivity yy) {
+        //ApiSubscribe(Api.getApiService().getCollectionDell(user_id), observer, yy);
+    //}
     /**
      * 视频分类浏览次数
      */
     public static void getVideoClassNum(MyObserver<No> observer, String mid,String userid,RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getVideoClassNum(mid,userid), observer, yy);
+        ApiSubscribe(Api.getApiService().getVideoClassNum(mid,userid), observer, yy.<No>bindToLifecycle());
     }
     /**
      * 用于请求视频分类 轮播图
      */
-    public static void getVideoZip(ProgressObserver<VideoClassZip> observer, String filter, String filter2,RxAppCompatActivity rxApp) {
-        ApiVideoClassZip(Api.getApiService().getAdlist("noPage",filter,"b3fc52bcbe2442554fae731aad690197").subscribeOn(Schedulers.io()), Api.getApiService().getVideoClass("noPage",filter2).subscribeOn(Schedulers.io()), observer, rxApp);
+    public static void getVideoZip(ProgressObserver<VideoClassZip> observer, String filter, String filter2, String filter3,RxAppCompatActivity yy) {
+        ApiVideoClassZip(Api.getApiService().getAdlist("noPage",filter).subscribeOn(Schedulers.io()), Api.getApiService().getVideoClass("noPage",filter2,filter3).subscribeOn(Schedulers.io()), observer, yy.<VideoClassZip>bindToLifecycle());
     }
     /**
      * 视频目录
      */
     public static void getVideoDirectory(ProgressObserver<VideoCataLog> observer, String filter,RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getVideoDirectory("noPage",filter), observer, yy);
+        ApiSubscribe(Api.getApiService().getVideoDirectory("noPage",filter), observer, yy.<VideoCataLog>bindToLifecycle());
     }
     /**
      * 视频目录第一条
      */
     public static void getVideoDirectory1(ProgressObserver<VideoInfo> observer, String filter,String filter2, RxAppCompatActivity yy) {
-        ApiVideo(Api.getApiService().getVideoDirectory1(filter,filter2,"1","1"), observer, yy);
+        ApiVideo(Api.getApiService().getVideoDirectory1(filter,filter2,"1","1"), observer, yy.<VideoInfo>bindToLifecycle());
     }
     /**
      * 视频数据
      */
     public static void getVideoInfo(MyObserver<VideoInfo> observer, String filter, RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getVideoInfo(filter), observer, yy);
+        ApiSubscribe(Api.getApiService().getVideoInfo(filter), observer, yy.<VideoInfo>bindToLifecycle());
     }
     /**
      * 视频评论列表
      */
     public static void getVideoCommentList(ProgressObserver<VideoComment> observer, String filter, String page, String limit ,RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getVideoCommentList(filter,"usres",page,limit), observer, yy);
+        ApiSubscribe(Api.getApiService().getVideoCommentList(filter,"usres",page,limit,"id,desc"), observer, yy.<VideoComment>bindToLifecycle());
     }
     /**
      * 视频评论列表2
      */
     public static void getVideoCommentList2(MyObserver<VideoComment> observer, String filter, String page, String limit ,RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getVideoCommentList(filter,"usres",page,limit), observer, yy);
+        ApiSubscribe(Api.getApiService().getVideoCommentList(filter,"usres",page,limit,"id,desc"), observer, yy.<VideoComment>bindToLifecycle());
     }
     /**
      * 视频评论点赞
      */
     public static void getVideoCommentZan(MyObserver<ZanBean> observer, String mid,String userid,String iscai,RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getVideoCommentZan(mid,userid,iscai), observer, yy);
+        ApiSubscribe(Api.getApiService().getVideoCommentZan(mid,userid,iscai), observer, yy.<ZanBean>bindToLifecycle());
     }
     /**
      * 用于发表视频评论
      */
     public static void sendVideoComment(ProgressObserver<SendCommentBean> observer, String user_id, String topic_id, String content, RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().sendVideoComment(user_id, topic_id, content), observer, yy);
+        ApiSubscribe(Api.getApiService().sendVideoComment(user_id, topic_id, content), observer, yy.<SendCommentBean>bindToLifecycle());
     }
     /**
      * 轮播图
      */
     public static void getAdlist(MyObserver<Adlist> observer,String filter, RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getAdlist("noPage",filter,"b3fc52bcbe2442554fae731aad690197"), observer, yy);
+        ApiSubscribe(Api.getApiService().getAdlist("noPage",filter), observer, yy.<Adlist>bindToLifecycle());
     }
 
     /**
      * 资讯列表
      */
-    public static void getNewsList(ProgressObserver<NewsList> observer, String filter, String page, String limit , RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getNewsList(filter,page,limit,"5a2f871f6c5bc206a7cac5bc81724d3a"), observer, yy);
+    public static void getNewsList(ProgressObserver<NewsList> observer, String filter3,String filter,String filter2, String page, String limit , RxAppCompatActivity yy) {
+        ApiSubscribe(Api.getApiService().getNewsList(filter3,filter,filter2,page,limit,"id,desc"), observer, yy.<NewsList>bindToLifecycle());
+    }
+    /**
+     * 资讯评论列表
+     */
+    public static void getNewComment(ProgressObserver<GetNewsComment> observer, String filter, String page, String limit , RxAppCompatActivity yy) {
+        ApiSubscribe(Api.getApiService().getNewComment(filter,"usres",page,limit,"id,desc"), observer, yy.<GetNewsComment>bindToLifecycle());
+    }
+    /**
+     * 资讯评论列表2
+     */
+    public static void getNewComment2(MyObserver<GetNewsComment> observer, String filter, String page, String limit , RxAppCompatActivity yy) {
+        ApiSubscribe(Api.getApiService().getNewComment(filter,"usres",page,limit,"id,desc"), observer, yy.<GetNewsComment>bindToLifecycle());
+    }
+    /**
+     * 资讯发表评论
+     */
+    public static void sendNewComment(ProgressObserver<SendNewsComment> observer, String mid, String userid, String content , RxAppCompatActivity yy) {
+        ApiSubscribe(Api.getApiService().sendNewComment(mid,userid,content), observer, yy.<SendNewsComment>bindToLifecycle());
     }
     /**
      * 资讯标签
      */
-    public static void getNewsLable(ProgressObserver<NewsList> observer, String filter, RxAppCompatActivity yy) {
-        ApiNews(Api.getApiService().getNewsLable("noPage",filter,"b3a155f9e861ed65bf465d4d88217f92"), observer, yy);
+    public static void getNewsLable(ProgressObserver<NewsList> observer, String filter, String filter2,RxAppCompatActivity yy) {
+        ApiNews(Api.getApiService().getNewsLable("noPage",filter,filter2), observer, yy.<NewsList>bindToLifecycle(),filter,filter2);
     }
-
+    /**
+     * 模拟考试场地
+     */
+    public static void getMoniTestPlace(ProgressObserver<MoniTest> observer, String filter, RxAppCompatActivity yy) {
+        ApiSubscribe(Api.getApiService().getMoniTestPlace("noPage",filter), observer, yy.<MoniTest>bindToLifecycle());
+    }
+    /**
+     * 用于请求模拟机考练习题&材料标题
+     */
+    public static void getMoniTestTopic(ProgressObserver<MoniTopic> observer, String filter1, String filter2, RxAppCompatActivity yy) {
+        ApiSubscribeZip2(filter1,Api.getApiService().getMoniTest(filter1,filter2,"noPage").subscribeOn(Schedulers.io()), Api.getApiService().getMoniCl(filter1, filter2,"noPage").subscribeOn(Schedulers.io()), observer, yy.<MoniTopic>bindToLifecycle());
+    }
+    /**
+     * 视频分类浏览次数
+     */
+    public static void sendNewNum(MyObserver<No> observer, String mid,String userid,RxAppCompatActivity yy) {
+        ApiSubscribe(Api.getApiService().sendNewNum(mid,userid), observer, yy.<No>bindToLifecycle());
+    }
 }

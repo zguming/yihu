@@ -16,7 +16,7 @@ public class PracticeData extends DataSupport{
          * image :
          */
 
-        private int id;
+        private int topicId;
         private String name;
         private String A;
         private String B;
@@ -26,16 +26,25 @@ public class PracticeData extends DataSupport{
         private String correct;
         private String analysis;
         private String image;
+    private String material;
 
-        public int getId() {
-            return id;
-        }
+    public String getMaterial() {
+        return material;
+    }
 
-        public void setId(int id) {
-            this.id = id;
-        }
+    public void setMaterial(String material) {
+        this.material = material;
+    }
 
-        public String getName() {
+    public int getTopicId() {
+        return topicId;
+    }
+
+    public void setTopicId(int topicId) {
+        this.topicId = topicId;
+    }
+
+    public String getName() {
             return name;
         }
 

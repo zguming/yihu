@@ -21,9 +21,15 @@ import com.botian.yihu.adapter.VideoCommentAdapter;
 import com.botian.yihu.api.ApiMethods;
 import com.botian.yihu.beans.UserInfo;
 import com.botian.yihu.beans.VideoComment;
+import com.botian.yihu.eventbus.TopicCardEvent;
+import com.botian.yihu.eventbus.VideoCommentEvent;
 import com.botian.yihu.util.ACache;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +56,10 @@ public class VideoDisscussFragment extends Fragment {
     @BindView(R.id.rl_comment)
     RelativeLayout rlComment;
     String mid;//视频id
+    private int re=0;
     private ACache mCache;
     private UserInfo userInfo;
+    VideoCommentAdapter adapter;
 
     @Nullable
     @Override
@@ -65,6 +73,7 @@ public class VideoDisscussFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Bundle bundle = getArguments();
+        EventBus.getDefault().register(this);
         mCache = ACache.get(getActivity());
         //从缓存读取用户信息
         userInfo = (UserInfo) mCache.getAsObject("userInfo");
@@ -93,9 +102,12 @@ public class VideoDisscussFragment extends Fragment {
         if (current_page == 1) {//判断是否初次加载
             String a = "评价详情（" + data.getTotal() + "条评价）";
             text.setText(a);
-            recyclerView.addHeaderView(header);
-            VideoCommentAdapter adapter = new VideoCommentAdapter(getContext(), (RxAppCompatActivity) getActivity(), listData);
-            recyclerView.setAdapter(adapter);
+            if (re==1){
+                adapter.notifyDataSetChanged();
+            }else {
+                recyclerView.addHeaderView(header);
+                adapter = new VideoCommentAdapter(getContext(), (RxAppCompatActivity) getActivity(), listData);
+            recyclerView.setAdapter(adapter);}
         } else {
             recyclerView.loadMoreComplete();
         }
@@ -133,6 +145,9 @@ public class VideoDisscussFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     @OnClick(R.id.rl_comment)
@@ -145,4 +160,12 @@ public class VideoDisscussFragment extends Fragment {
             startActivity(intent);
         }
     }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(VideoCommentEvent messageEvent) {
+        listData.clear();
+        re=1;
+        ApiMethods.getVideoCommentList(new ProgressObserver<VideoComment>(getActivity(), listener), "mid,eq,"+mid, "1", "30", (RxAppCompatActivity) getActivity());
+    }
+
+
 }

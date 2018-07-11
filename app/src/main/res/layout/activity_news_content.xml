@@ -32,19 +32,28 @@
                 android:textSize="20sp" />
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
-    <TextView
-        android:id="@+id/title"
+    <WebView
+        android:id="@+id/show"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+    </WebView>
+    <RelativeLayout
+        android:id="@+id/rl_comment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/sp16"
-        android:textColor="@color/textColorBlack"
-        android:layout_marginBottom="@dimen/dp5"/>
-    <TextView
-        android:id="@+id/content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/textColorBlack"
-        android:textSize="@dimen/sp15"/>
+        android:layout_height="45dp">
+        <TextView
+            android:id="@+id/tv_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10.0dip"
+            android:drawableLeft="@drawable/item_comment"
+            android:text="评论"
+            android:layout_centerInParent="true"
+            android:textColor="#ffc8c8c8"
+            android:textSize="21sp"/>
+    </RelativeLayout>
 
 
 </LinearLayout>

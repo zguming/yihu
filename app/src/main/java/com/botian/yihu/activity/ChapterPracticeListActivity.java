@@ -11,6 +11,7 @@ import com.botian.yihu.androidTreeListView.ChapterPracticeChild;
 import com.botian.yihu.androidTreeListView.ChapterPracticeParent;
 import com.botian.yihu.api.ApiMethods;
 import com.botian.yihu.beans.ChapterPracticeListBean;
+import com.botian.yihu.util.SubjectUtil;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
@@ -56,7 +57,9 @@ public class ChapterPracticeListActivity extends RxAppCompatActivity {
                 setList();
             }
         };
-        ApiMethods.getChapterPracticeList(new ProgressObserver<ChapterPracticeListBean>(this, listener), "1", this);
+        String mid="mid,eq"+ SubjectUtil.getSubjectNo();
+        String mid2="mids,eq"+ SubjectUtil.getSubjectNo2();
+        ApiMethods.getChapterPracticeList(new ProgressObserver<ChapterPracticeListBean>(this, listener), mid,mid2, this);
     }
 
     public void setList() {

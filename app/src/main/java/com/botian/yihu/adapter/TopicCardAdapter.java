@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import com.botian.yihu.R;
 import com.botian.yihu.eventbus.TopicCardEvent;
+import com.botian.yihu.eventbus.TopicCardEvent1;
+import com.botian.yihu.eventbus.TopicCardEventCollect;
+import com.botian.yihu.eventbus.TopicCardEventNote;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -25,6 +28,7 @@ import butterknife.ButterKnife;
 public class TopicCardAdapter extends RecyclerView.Adapter<TopicCardAdapter.MyViewHolder> {
     private ArrayList<Integer> data;
     private Context mContext;
+    private String judge;
 
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -39,9 +43,10 @@ public class TopicCardAdapter extends RecyclerView.Adapter<TopicCardAdapter.MyVi
         }
     }
 
-    public TopicCardAdapter(Context mContext, ArrayList<Integer>  data) {
+    public TopicCardAdapter(Context mContext, ArrayList<Integer>  data,String judge) {
         this.mContext = mContext;
         this.data = data;
+        this.judge = judge;
     }
 
     @Override
@@ -54,9 +59,26 @@ public class TopicCardAdapter extends RecyclerView.Adapter<TopicCardAdapter.MyVi
             public void onClick(View view) {
                 //XRecyclerView默认添加了一个header，因此要得到正确的position,需减去1
                 int position = myViewHolder.getAdapterPosition() - 1;
-                EventBus.getDefault().post(new TopicCardEvent(position));
-                Activity activity = (Activity)mContext;
-                activity.finish();
+                if (judge.equals("0")){
+                    EventBus.getDefault().post(new TopicCardEvent(position));
+                    Activity activity = (Activity)mContext;
+                    activity.finish();
+                }else if(judge.equals("1")){
+                    EventBus.getDefault().post(new TopicCardEvent1(position));
+                    Activity activity = (Activity)mContext;
+                    activity.finish();
+                }else if(judge.equals("9")){
+                    EventBus.getDefault().post(new TopicCardEventCollect(position));
+                    Activity activity = (Activity)mContext;
+                    activity.finish();
+                }
+                //笔记
+                else if(judge.equals("2")){
+                    EventBus.getDefault().post(new TopicCardEventNote(position));
+                    Activity activity = (Activity)mContext;
+                    activity.finish();
+                }
+
                 //notifyDataSetChanged();//刷新
             }
         });
@@ -71,6 +93,8 @@ public class TopicCardAdapter extends RecyclerView.Adapter<TopicCardAdapter.MyVi
             holder.textView.setBackgroundResource(R.drawable.topic_cord_correct);
         }else if(data.get(position)==1){
             holder.textView.setBackgroundResource(R.drawable.topic_cord_false);
+        }else{
+            holder.textView.setBackgroundResource(R.drawable.topic_cord_normal);
         }
 
 

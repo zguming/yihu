@@ -20,6 +20,7 @@
             android:textSize="20sp" />
 
         <RelativeLayout
+            android:id="@+id/rl_title_switch"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginRight="@dimen/dp12"
@@ -30,10 +31,18 @@
                 android:id="@+id/title_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableEnd="@drawable/kk"
                 android:text="切换科目"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/title_switch1"
+                android:layout_width="@dimen/dp10"
+                android:layout_height="10dp"
+                android:layout_toRightOf="@+id/title_switch"
+                android:scaleType="fitXY"
+                android:layout_marginTop="@dimen/dp8"
+                android:src="@drawable/kk" />
 
             <TextView
                 android:id="@+id/my_subject"
@@ -48,307 +57,419 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <com.youth.banner.Banner
-            android:id="@+id/banner"
-            android:layout_width="match_parent"
-            android:layout_height="120dp">
-
-        </com.youth.banner.Banner>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="@dimen/dp8"
-            android:paddingBottom="@dimen/dp8">
-
-            <TextView
-                android:id="@+id/tv_collect"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.0"
-                android:background="?selectableItemBackgroundBorderless"
-                android:drawablePadding="@dimen/dp5"
-                android:drawableTop="@drawable/ic_main_collect"
-                android:gravity="center"
-                android:text="收藏"
-                android:textColor="@color/textColorBlack"
-                android:textSize="@dimen/sp12" />
-
-            <TextView
-                android:id="@+id/tv_wrong"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.0"
-                android:background="?selectableItemBackgroundBorderless"
-                android:drawablePadding="@dimen/dp5"
-                android:drawableTop="@drawable/ic_main_wrong"
-                android:gravity="center"
-                android:text="错题"
-                android:textColor="@color/textColorBlack"
-                android:textSize="@dimen/sp12" />
-
-            <TextView
-                android:id="@+id/tv_notes"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.0"
-                android:background="?selectableItemBackgroundBorderless"
-                android:drawablePadding="@dimen/dp5"
-                android:drawableTop="@drawable/ic_main_notes"
-                android:gravity="center"
-                android:text="笔记"
-                android:textColor="@color/textColorBlack"
-                android:textSize="@dimen/sp12" />
-
-            <TextView
-                android:id="@+id/tv_pay"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.0"
-                android:background="?selectableItemBackgroundBorderless"
-                android:drawablePadding="@dimen/dp5"
-                android:drawableTop="@drawable/ic_main_pay"
-                android:gravity="center"
-                android:text="题库充值"
-                android:textColor="@color/textColorBlack"
-                android:textSize="@dimen/sp12" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/gray_line_color"
-            android:visibility="@integer/agent_partner_visible" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_8_dip"
-            android:background="@color/GrayBackground"
-            android:visibility="@integer/agent_partner_visible" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/gray_line_color"
-            android:visibility="@integer/agent_partner_visible" />
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <RelativeLayout
-                android:id="@+id/rl_chapter_practice"
-                android:layout_width="0dp"
+            <com.youth.banner.Banner
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="120dp">
+
+            </com.youth.banner.Banner>
+            <LinearLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.0"
-                android:paddingTop="@dimen/dp12"
-                android:paddingBottom="@dimen/dp12"
-                android:background="?selectableItemBackground"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/dp10">
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/dp8"
+                android:paddingTop="@dimen/dp8">
 
-                <TextView
-                    android:id="@+id/tv_chapter_practice"
+                <LinearLayout
+                    android:id="@+id/ln_collect"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="章节练习"
-                    android:textColor="@color/textColorBlack"
-                    android:textSize="@dimen/sp16" />
+                    android:layout_weight="1.0"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-                <TextView
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:src="@drawable/ic_main_collect" />
+
+                    <TextView
+                        android:id="@+id/tv_collect"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:text="收藏"
+                        android:textColor="@color/textColorBlack"
+                        android:textSize="@dimen/sp12" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ln_wrong"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_chapter_practice"
-                    android:layout_marginTop="@dimen/dp3"
-                    android:text="高质量试题 覆盖各考点"
-                    android:textColor="@color/TextColorLightGray"
-                    android:textSize="@dimen/sp12" />
+                    android:layout_weight="1.0"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/dp5"
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:src="@drawable/ic_main_wrong" />
 
-                    android:src="@drawable/ic_main_chapter_test" />
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/tv_wrong"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:gravity="center"
+                        android:text="错题"
+                        android:textColor="@color/textColorBlack"
+                        android:textSize="@dimen/sp12" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ln_notes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:src="@drawable/ic_main_notes" />
+
+                    <TextView
+                        android:id="@+id/tv_notes"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:gravity="center"
+                        android:text="笔记"
+                        android:textColor="@color/textColorBlack"
+                        android:textSize="@dimen/sp12" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ln_pay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:src="@drawable/ic_main_pay" />
+
+                    <TextView
+                        android:id="@+id/tv_pay"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:gravity="center"
+                        android:text="题库充值"
+                        android:textColor="@color/textColorBlack"
+                        android:textSize="@dimen/sp12" />
+
+                </LinearLayout>
+
+            </LinearLayout>
             <View
-                android:layout_width="@dimen/dp1"
-                android:layout_height="match_parent"
-                android:background="@color/gray_line_color"/>
-            <RelativeLayout
-                android:id="@+id/rl_high_exams"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.0"
-                android:paddingTop="@dimen/dp12"
-                android:paddingBottom="@dimen/dp12"
-                android:background="?selectableItemBackground"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/dp10">
-
-                <TextView
-                    android:id="@+id/tv_high_test"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="高频考点"
-                    android:textColor="@color/textColorBlack"
-                    android:textSize="@dimen/sp16" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_high_test"
-                    android:layout_marginTop="@dimen/dp3"
-                    android:text="易错题 易考题 一网打尽"
-                    android:textColor="@color/TextColorLightGray"
-                    android:textSize="@dimen/sp12" />
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/dp5"
-
-                    android:src="@drawable/ic_main_high_test" />
-            </RelativeLayout>
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1.0px"
-            android:background="@color/gray_line_color" />
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1.2"
-            android:orientation="horizontal">
-
-            <RelativeLayout
-                android:id="@+id/rl_practice_exam"
-                android:layout_width="0.0dip"
-                android:layout_height="fill_parent"
-                android:layout_weight="1.0"
-                android:background="?selectableItemBackground">
-
-
-                <TextView
-                    android:id="@+id/tv_practice_exam"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/dp15"
-                    android:text="模拟考试"
-                    android:textColor="@color/textColorRed"
-                    android:textSize="16.0sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_practice_exam_sub"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_practice_exam"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/dp5"
-                    android:drawableBottom="@drawable/ic_main_pratice"
-                    android:drawablePadding="@dimen/dp5"
-                    android:maxLines="1"
-                    android:text="真实考试模拟场景"
-                    android:textColor="@color/textColorGray"
-                    android:textSize="13.0sp" />
-            </RelativeLayout>
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_line_color"
+                android:visibility="@integer/agent_partner_visible" />
 
             <View
-                android:layout_width="1.0px"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_8_dip"
+                android:background="@color/GrayBackground"
+                android:visibility="@integer/agent_partner_visible" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_line_color"
+                android:visibility="@integer/agent_partner_visible" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp">
+                <TextView
+                    android:id="@+id/tbtv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_centerVertical="true"
+                    android:textSize="22sp"
+                    android:textColor="@color/red"
+                    android:text="@string/taobao" />
+
+                <com.botian.yihu.myview.UPMarqueeView
+                    android:id="@+id/upview1"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_toRightOf="@+id/tbtv"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="match_parent">
+
+                </com.botian.yihu.myview.UPMarqueeView>
+            </RelativeLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_line_color"
+                android:visibility="@integer/agent_partner_visible" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:id="@+id/rl_chapter_practice"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:background="?selectableItemBackground"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/dp12"
+                    android:paddingLeft="@dimen/dp10"
+                    android:paddingTop="@dimen/dp12">
+
+                    <TextView
+                        android:id="@+id/tv_chapter_practice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="章节练习"
+                        android:textColor="@color/textColorBlack"
+                        android:textSize="@dimen/sp16" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_chapter_practice"
+                        android:layout_marginTop="@dimen/dp3"
+                        android:text="高质量试题 覆盖各考点"
+                        android:textColor="@color/TextColorLightGray"
+                        android:textSize="@dimen/sp12" />
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/dp5"
+
+                        android:src="@drawable/ic_main_chapter_test" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="@dimen/dp1"
+                    android:layout_height="match_parent"
+                    android:background="@color/gray_line_color" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_high_exams"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:background="?selectableItemBackground"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/dp12"
+                    android:paddingLeft="@dimen/dp10"
+                    android:paddingTop="@dimen/dp12">
+
+                    <TextView
+                        android:id="@+id/tv_high_test"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="高频考点"
+                        android:textColor="@color/textColorBlack"
+                        android:textSize="@dimen/sp16" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_high_test"
+                        android:layout_marginTop="@dimen/dp3"
+                        android:text="易错题 易考题 一网打尽"
+                        android:textColor="@color/TextColorLightGray"
+                        android:textSize="@dimen/sp12" />
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/dp5"
+
+                        android:src="@drawable/ic_main_high_test" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1.0px"
                 android:background="@color/gray_line_color" />
 
-            <RelativeLayout
-                android:id="@+id/rl_calendar_year_exams"
-                android:layout_width="0.0dip"
-                android:layout_height="fill_parent"
-                android:layout_weight="1.0"
-                android:background="?selectableItemBackground">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="120dp"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:id="@+id/rl_practice_exam"
+                    android:layout_width="0.0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1.0"
+                    android:background="?selectableItemBackground">
 
 
-                <TextView
-                    android:id="@+id/tv_calendar_years_exams"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/dp15"
-                    android:text="历年精选"
-                    android:textColor="@color/textColorLightGreen"
-                    android:textSize="16.0sp"
-                    android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/tv_practice_exam"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/dp15"
+                        android:text="模拟考试"
+                        android:textColor="@color/textColorRed"
+                        android:textSize="16.0sp"
+                        android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tv_calendar_years_exams_sub"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_calendar_years_exams"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/dp5"
-                    android:drawableBottom="@drawable/years_icon"
-                    android:drawablePadding="@dimen/dp5"
-                    android:maxLines="1"
-                    android:text="收录历年精选试题"
-                    android:textColor="@color/textColorGray"
-                    android:textSize="13.0sp" />
+                    <TextView
+                        android:id="@+id/tv_practice_exam_sub"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_practice_exam"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:drawablePadding="@dimen/dp5"
+                        android:maxLines="1"
+                        android:text="真实考试模拟场景"
+                        android:textColor="@color/textColorGray"
+                        android:textSize="13.0sp" />
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_below="@+id/tv_practice_exam_sub"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:src="@drawable/ic_main_pratice" />
+                </RelativeLayout>
 
                 <View
                     android:layout_width="1.0px"
-                    android:layout_height="fill_parent"
-                    android:layout_alignParentRight="true"
+                    android:layout_height="match_parent"
                     android:background="@color/gray_line_color" />
-            </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/rl_forecast_exams"
-                android:layout_width="0.0dip"
-                android:layout_height="fill_parent"
-                android:layout_weight="1.0"
-                android:background="?selectableItemBackground">
+                <RelativeLayout
+                    android:id="@+id/rl_calendar_year_exams"
+                    android:layout_width="0.0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1.0"
+                    android:background="?selectableItemBackground">
 
 
-                <TextView
-                    android:id="@+id/tv_forecast_exams"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/dp15"
-                    android:text="靠前押题"
-                    android:textColor="@color/textColorLightYellow"
-                    android:textSize="16.0sp"
-                    android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/tv_calendar_years_exams"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/dp15"
+                        android:text="历年精选"
+                        android:textColor="@color/textColorLightGreen"
+                        android:textSize="16.0sp"
+                        android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tv_forecast_exams_sub"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_forecast_exams"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/dp5"
-                    android:drawableBottom="@drawable/ic_main_exams"
-                    android:drawablePadding="@dimen/dp5"
-                    android:maxLines="1"
-                    android:text="真实考试模拟场景"
-                    android:textColor="@color/textColorGray"
-                    android:textSize="13.0sp" />
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/tv_calendar_years_exams_sub"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_calendar_years_exams"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:drawablePadding="@dimen/dp5"
+                        android:maxLines="1"
+                        android:text="收录历年精选试题"
+                        android:textColor="@color/textColorGray"
+                        android:textSize="13.0sp" />
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_below="@+id/tv_calendar_years_exams_sub"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:src="@drawable/years_icon" />
+
+                    <View
+                        android:layout_width="1.0px"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentRight="true"
+                        android:background="@color/gray_line_color" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_forecast_exams"
+                    android:layout_width="0.0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1.0"
+                    android:background="?selectableItemBackground">
+
+                    <TextView
+                        android:id="@+id/tv_forecast_exams"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/dp15"
+                        android:text="靠前押题"
+                        android:textColor="@color/textColorLightYellow"
+                        android:textSize="16.0sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_forecast_exams_sub"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_forecast_exams"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:maxLines="1"
+                        android:text="真实考试模拟场景"
+                        android:textColor="@color/textColorGray"
+                        android:textSize="13.0sp" />
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_below="@+id/tv_forecast_exams_sub"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:src="@drawable/ic_main_exams" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/gray_line_color" />
 
         </LinearLayout>
-
-    </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

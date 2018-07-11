@@ -161,7 +161,7 @@ public class NewsList {
             private String litpic;
             private int writer;
             private String keywords;
-            private String description;
+            private String content;
             private int click;
             private int status;
             private String create_time;
@@ -234,12 +234,12 @@ public class NewsList {
                 this.keywords = keywords;
             }
 
-            public String getDescription() {
-                return description;
+            public String getcontent() {
+                return content;
             }
 
-            public void setDescription(String description) {
-                this.description = description;
+            public void setcontent(String description) {
+                this.content = description;
             }
 
             public int getClick() {

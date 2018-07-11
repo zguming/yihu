@@ -44,8 +44,17 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="35dp"
+        android:layout_marginRight="25dp"
         android:textColor="@color/textColorBlack"
         android:textSize="16sp" />
+    <ImageView
+        android:id="@+id/arrow"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginRight="@dimen/dp6"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_arrow_right_small"/>
     <View
         android:id="@+id/bottom_line3"
         android:layout_width="fill_parent"

@@ -110,9 +110,9 @@ public class PersonInfoActivity extends RxAppCompatActivity {
         tvUsername.setText(userInfo.getUsername());
         String sex;
         if (userInfo.getSex() == 0) {
-            sex = "男";
-        } else {
             sex = "女";
+        } else {
+            sex = "男";
         }
         tvGender.setText(sex);
         tvUsername.setText(userInfo.getUsername());
@@ -269,7 +269,7 @@ public class PersonInfoActivity extends RxAppCompatActivity {
             case R.id.btn_submit:
                 final String username = tvUsername.getText().toString();
                 final int sex;
-                if (tvGender.getText().toString().equals("男")) {
+                if (tvGender.getText().toString().equals("女")) {
                     sex = 0;
                 } else {
                     sex = 1;
@@ -455,8 +455,10 @@ public class PersonInfoActivity extends RxAppCompatActivity {
         intent.putExtra("outputX", size);
         intent.putExtra("outputY", size);
         intent.putExtra("return-data", true);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        }
         startActivityForResult(intent, PHOTO_REQUEST_CUT);
     }
 

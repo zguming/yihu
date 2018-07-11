@@ -3,7 +3,6 @@ package com.botian.yihu;
 import android.app.Application;
 import android.content.Context;
 
-import com.squareup.leakcanary.LeakCanary;
 
 import org.litepal.LitePal;
 
@@ -15,7 +14,7 @@ public class MyApplication extends Application {
         super.onCreate();
         context = getApplicationContext();
         LitePal.initialize(this);
-        LeakCanary.install(this);
+        //LeakCanary.install(this);
     }
 
 

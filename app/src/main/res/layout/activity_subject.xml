@@ -33,11 +33,11 @@
                 android:textSize="20sp" />
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
-    <com.zhy.view.flowlayout.TagFlowLayout
-        android:id="@+id/id_flowlayout"
-        app:max_select="1"
-        android:layout_marginTop="@dimen/dp5"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-    </com.zhy.view.flowlayout.TagFlowLayout>
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    </LinearLayout>
 </LinearLayout>

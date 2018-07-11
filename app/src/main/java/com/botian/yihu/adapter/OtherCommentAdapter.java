@@ -128,7 +128,7 @@ public class OtherCommentAdapter extends RecyclerView.Adapter<OtherCommentAdapte
         holder.commentListItemTvPraise.setCompoundDrawables(mPraise, null, null, null);
         String name = data.get(position).getUsres().getUsername();
         holder.name.setText(name);
-        String date = data.get(position).getCreate_time().substring(2, 13);
+        String date = data.get(position).getCreate_time().substring(2, 16);
         holder.date.setText(date);
         String content = data.get(position).getContent();
         holder.content.setText(content);

@@ -17,7 +17,7 @@ import com.botian.yihu.api.ApiMethods;
 import com.botian.yihu.beans.VideoInfo;
 import com.botian.yihu.beans.VodRspData;
 import com.botian.yihu.eventbus.VideoEvent;
-import com.botian.yihu.fragment.IntroduceFragment;
+import com.botian.yihu.fragment.VideoIntroduceFragment;
 import com.botian.yihu.fragment.VideoCatalogFragment;
 import com.botian.yihu.fragment.VideoDisscussFragment;
 import com.botian.yihu.util.JZMediaIjkplayer;
@@ -56,11 +56,14 @@ public class VideoActivity extends RxAppCompatActivity {
     @BindView(R.id.videoplayer)
     JZVideoPlayerStandard videoplayer;
     private Fragment currentFragment;
-    private IntroduceFragment introduceFragment;
+    private VideoIntroduceFragment videoIntroduceFragment;
     private VideoCatalogFragment videoCatalogFragment;
     private VideoDisscussFragment videoDisscussFragment;
     private FragmentManager mFragmentManager = getSupportFragmentManager();
     String id;
+    String title;
+    String price;
+    String content;
     private TXVodPlayer mTXPlayerGetInfo;
     JZVideoPlayerStandard jzVideoPlayerStandard;
     String url;
@@ -73,7 +76,10 @@ public class VideoActivity extends RxAppCompatActivity {
         EventBus.getDefault().register(this);
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
-        introduceFragment = IntroduceFragment.newInstance(id);
+        title = intent.getStringExtra("title");
+        price = intent.getStringExtra("price");
+        content = intent.getStringExtra("content");
+        videoIntroduceFragment = VideoIntroduceFragment.newInstance(title,price,content);
         videoCatalogFragment = VideoCatalogFragment.newInstance(id);
         videoDisscussFragment = VideoDisscussFragment.newInstance(id);
         setDefaultFragment();
@@ -92,7 +98,8 @@ public class VideoActivity extends RxAppCompatActivity {
 
             }
         };
-        ApiMethods.getVideoDirectory1(new ProgressObserver<VideoInfo>(this, listener), "mid,eq," + id, "pid,eq,1", this);
+        //视频目录第一条数据
+        ApiMethods.getVideoDirectory1(new ProgressObserver<VideoInfo>(this, listener), "video_id,eq," + id, "pid,eq,1", this);
     }
 
     private ITXVodPlayListener mGetVodInfoListener = new ITXVodPlayListener() {
@@ -129,9 +136,9 @@ public class VideoActivity extends RxAppCompatActivity {
 
     private void setDefaultFragment() {
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        transaction.add(R.id.fragment_layout, introduceFragment);
+        transaction.add(R.id.fragment_layout, videoIntroduceFragment);
         transaction.commit();
-        currentFragment = introduceFragment;
+        currentFragment = videoIntroduceFragment;
     }
 
     //用add show hide方式切换fragment
@@ -154,8 +161,8 @@ public class VideoActivity extends RxAppCompatActivity {
                 view1.setVisibility(View.VISIBLE);
                 view2.setVisibility(View.INVISIBLE);
                 view3.setVisibility(View.INVISIBLE);
-                switchContent(currentFragment, introduceFragment);
-                currentFragment = introduceFragment;
+                switchContent(currentFragment, videoIntroduceFragment);
+                currentFragment = videoIntroduceFragment;
                 break;
             case R.id.directory:
                 introduce.setTextColor(getResources().getColor(R.color.default_text));
@@ -215,6 +222,13 @@ public class VideoActivity extends RxAppCompatActivity {
         if (!url.equals(videoEvent.getUrl())){
             jzVideoPlayerStandard.startButton.performClick();
 
+        }
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
         }
     }
 

@@ -1,7 +1,9 @@
 package com.botian.yihu.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,9 @@ import com.botian.yihu.activity.MyCollectionPracticeActivity;
 import com.botian.yihu.beans.CollectionRecordsBean;
 import com.botian.yihu.beans.CollectionRecordsParcel;
 import com.botian.yihu.beans.MyCollection;
+import com.botian.yihu.database.CollectData;
+
+import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,12 +30,10 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2018/2/23 0023.
  */
 public class MyCollectAdapter extends RecyclerView.Adapter<MyCollectAdapter.MyViewHolder> {
-    private List<MyCollection.DataBean> data;
+    private List<CollectData> data;
     private Context mContext;
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.num)
-        TextView num;
         @BindView(R.id.title)
         TextView title;
         @BindView(R.id.content)
@@ -46,7 +49,7 @@ public class MyCollectAdapter extends RecyclerView.Adapter<MyCollectAdapter.MyVi
         }
     }
 
-    public MyCollectAdapter(Context mContext, List<MyCollection.DataBean> data) {
+    public MyCollectAdapter(Context mContext, List<CollectData> data) {
         this.mContext = mContext;
         this.data = data;
     }
@@ -61,7 +64,7 @@ public class MyCollectAdapter extends RecyclerView.Adapter<MyCollectAdapter.MyVi
             public void onClick(View view) {
                 //XRecyclerView默认添加了一个header，因此要得到正确的position,需减去1
                 int position = myViewHolder.getAdapterPosition() - 1;
-                CollectionRecordsParcel collectionRecordsParcel = new CollectionRecordsParcel();
+                /*CollectionRecordsParcel collectionRecordsParcel = new CollectionRecordsParcel();
                 List<CollectionRecordsParcel.DataBean> dataBeanList=new ArrayList<>();
                 for (int i=0;i<data.size();i++){
                     CollectionRecordsParcel.DataBean dataBean1 = new CollectionRecordsParcel.DataBean();
@@ -79,11 +82,51 @@ public class MyCollectAdapter extends RecyclerView.Adapter<MyCollectAdapter.MyVi
                     dataBeanList.add(dataBean1);
                 }
                 collectionRecordsParcel.setData(dataBeanList);
-                collectionRecordsParcel.setPosition(position);
-                Intent intent=new Intent(mContext, MyCollectionPracticeActivity.class);
-                intent.putExtra("collectionRecordsParcel", collectionRecordsParcel);
+                collectionRecordsParcel.setPosition(position);*/
+                Intent intent = new Intent(mContext, MyCollectionPracticeActivity.class);
+                //intent.putExtra("collectionRecordsParcel", collectionRecordsParcel);
+                intent.putExtra("position", position);
                 mContext.startActivity(intent);
                 //notifyDataSetChanged();//刷新
+            }
+        });
+        myViewHolder.view.setOnLongClickListener(new View.OnLongClickListener() {
+
+            @Override
+            public boolean onLongClick(View v) {
+                //XRecyclerView默认添加了一个header，因此要得到正确的position,需减去1
+                final int position = myViewHolder.getAdapterPosition() - 1;
+                // 创建构建器
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                // 设置参数
+                builder.setTitle("删除收藏")
+                        .setMessage("是否确定删除此收藏")
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {// 积极
+
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which) {
+                                // TODO Auto-generated method stub
+                                //Toast.makeText(MainActivity.this, "恭喜你答对了", 0)
+                                // .show();
+                                int id=data.get(position).getTopicId();
+                                int cl=data.get(position).getCl();
+                                DataSupport.deleteAll(CollectData.class,"topicId="+id+";"+"cl="+cl);
+                                data.remove(position);
+                                notifyDataSetChanged();
+                            }
+                        }).setNegativeButton("取消", new DialogInterface.OnClickListener() {// 消极
+
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                                        int which) {
+                        // TODO Auto-generated method stub
+                        //Toast.makeText(MainActivity.this, "一点也不老实", 0)
+                        // .show();
+                    }
+                });
+                builder.create().show();
+                return true;
             }
         });
         return myViewHolder;
@@ -91,32 +134,32 @@ public class MyCollectAdapter extends RecyclerView.Adapter<MyCollectAdapter.MyVi
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        String num=position+1+".";
-        holder.num.setText(num);
-        String name = data.get(position).getSection().getTitle();
+        String num = position + 1 + ".";
+        //holder.num.setText(num);
+        String name = num+data.get(position).getName();
         holder.title.setText(name);
-        if (position==0){
+        if (position == 0) {
             holder.topLine.setVisibility(View.VISIBLE);
         }
         String answer;
-        switch (data.get(position).getSection().getA()) {
+        switch (data.get(position).getCorrect()) {
             case "A":
-                answer = data.get(position).getSection().getA();
+                answer = data.get(position).getA();
                 break;
             case "B":
-                answer = data.get(position).getSection().getA();
+                answer = data.get(position).getA();
                 break;
             case "C":
-                answer = data.get(position).getSection().getA();
+                answer = data.get(position).getA();
                 break;
             case "D":
-                answer = data.get(position).getSection().getA();
+                answer = data.get(position).getA();
                 break;
             default:
-                answer = data.get(position).getSection().getA();
+                answer = data.get(position).getA();
                 break;
         }
-        String content = "答案: "+data.get(position).getSection().getCorrect()+"."+answer;
+        String content = "答案: " + data.get(position).getCorrect() + "." + answer;
         holder.content.setText(content);
     }
 

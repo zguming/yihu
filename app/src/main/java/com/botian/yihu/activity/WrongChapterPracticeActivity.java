@@ -98,7 +98,7 @@ public class WrongChapterPracticeActivity extends RxAppCompatActivity {
                         answerTextA.setTextColor(getResources().getColor(R.color.false1));
                         tvTipsYourChoose.setTextColor(getResources().getColor(R.color.false1));
                         //把错题添加到数据库
-                        addDataBase(finalI1);
+                        //addDataBase(finalI1);
                         if (correct.equals("B")) {
                             answerB.setImageDrawable(getResources().getDrawable(R.drawable.r_2));
                             answerTextB.setTextColor(getResources().getColor(R.color.correct));
@@ -134,7 +134,7 @@ public class WrongChapterPracticeActivity extends RxAppCompatActivity {
                         answerTextB.setTextColor(getResources().getColor(R.color.false1));
                         tvTipsYourChoose.setTextColor(getResources().getColor(R.color.false1));
                         //把错题添加到数据库
-                        addDataBase(finalI1);
+                        //addDataBase(finalI1);
                         if (correct.equals("A")) {
                             answerA.setImageDrawable(getResources().getDrawable(R.drawable.r_1));
                             answerTextA.setTextColor(getResources().getColor(R.color.correct));
@@ -170,7 +170,7 @@ public class WrongChapterPracticeActivity extends RxAppCompatActivity {
                         answerTextC.setTextColor(getResources().getColor(R.color.false1));
                         tvTipsYourChoose.setTextColor(getResources().getColor(R.color.false1));
                         //把错题添加到数据库
-                        addDataBase(finalI1);
+                        //addDataBase(finalI1);
                         if (correct.equals("A")) {
                             answerA.setImageDrawable(getResources().getDrawable(R.drawable.r_1));
                             answerTextA.setTextColor(getResources().getColor(R.color.correct));
@@ -207,7 +207,7 @@ public class WrongChapterPracticeActivity extends RxAppCompatActivity {
                         answerTextD.setTextColor(getResources().getColor(R.color.false1));
                         tvTipsYourChoose.setTextColor(getResources().getColor(R.color.false1));
                         //把错题添加到数据库
-                        addDataBase(finalI1);
+                        //addDataBase(finalI1);
                         if (correct.equals("A")) {
                             answerA.setImageDrawable(getResources().getDrawable(R.drawable.r_1));
                             answerTextA.setTextColor(getResources().getColor(R.color.correct));
@@ -244,7 +244,7 @@ public class WrongChapterPracticeActivity extends RxAppCompatActivity {
                         answerTextE.setTextColor(getResources().getColor(R.color.false1));
                         tvTipsYourChoose.setTextColor(getResources().getColor(R.color.false1));
                         //把错题添加到数据库
-                        addDataBase(finalI1);
+                        //addDataBase(finalI1);
                         if (correct.equals("A")) {
                             answerA.setImageDrawable(getResources().getDrawable(R.drawable.r_1));
                             answerTextA.setTextColor(getResources().getColor(R.color.correct));
@@ -269,7 +269,7 @@ public class WrongChapterPracticeActivity extends RxAppCompatActivity {
                 public void onClick(View v) {
                     CommentParcel commentParcel = new CommentParcel();
                     String title=practiceList.get(finalI).getName();
-                    int topic_id=practiceList.get(finalI).getId();
+                    int topic_id=practiceList.get(finalI).getTopicId();
                     commentParcel.setId(topic_id);
                     commentParcel.setTitle(title);
                     Intent intent = new Intent(WrongChapterPracticeActivity.this, OtherCommentActivity.class);
@@ -279,18 +279,5 @@ public class WrongChapterPracticeActivity extends RxAppCompatActivity {
             });
             viewsList.add(view);
         }
-    }
-    public void addDataBase(int finalI1){
-        PracticeData practiceData=new PracticeData();
-        practiceData.setId(practiceList.get(finalI1).getId());
-        practiceData.setName(practiceList.get(finalI1).getName());
-        practiceData.setA(practiceList.get(finalI1).getA());
-        practiceData.setB(practiceList.get(finalI1).getB());
-        practiceData.setC(practiceList.get(finalI1).getC());
-        practiceData.setD(practiceList.get(finalI1).getD());
-        practiceData.setE(practiceList.get(finalI1).getE());
-        practiceData.setCorrect(practiceList.get(finalI1).getCorrect());
-        practiceData.setAnalysis(practiceList.get(finalI1).getAnalysis());
-        practiceData.save();
     }
 }

@@ -10,10 +10,12 @@
 
     </com.youth.banner.Banner>
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp3"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
         android:text="精选好课"
         android:textColor="@color/textColorBlack"
-        android:textSize="20sp"/>
+        android:textSize="16sp"/>
 </LinearLayout>

@@ -15,37 +15,77 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MainActivity">
+        <activity
+            android:name=".activity.SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.LoginActivity" />
-        <activity android:name=".view.RegisterActivity" />
-        <activity android:name=".view.SubjectSelectActivity" />
-        <activity android:name=".view.ForgetPasswordActivity" />
-        <activity android:name=".activity.PracticeAnswerActivity" />
+
+        <activity android:name=".activity.MainActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity android:name=".view.LoginActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".view.RegisterActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".view.SubjectSelectActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.ForgetPasswordActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.PracticeAnswerActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.PlayVideoActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.OtherCommentActivity" />
-        <activity android:name=".activity.SendCommentActivity" />
-        <activity android:name=".activity.MyCollectionActivity" />
-        <activity android:name=".activity.WrongActivity" />
-        <activity android:name=".activity.WrongChapterPracticeActivity" />
-        <activity android:name=".activity.FeedbackErrorActivity" />
-        <activity android:name=".activity.MyCollectionPracticeActivity" />
-        <activity android:name=".activity.TopicCardActivity" />
-        <activity android:name=".activity.ChapterPracticeListActivity" />
+        <activity android:name=".activity.OtherCommentActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SendCommentActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MyCollectionActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.WrongActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.WrongChapterPracticeActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.FeedbackErrorActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MyCollectionPracticeActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.TopicCardActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.ChapterPracticeListActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".activity.VideoActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activity.PersonInfoActivity" />
-        <activity android:name=".activity.NewsContentActivity" />
-        <activity android:name=".activity.SendVideoCommentActivity" />
+        <activity android:name=".activity.PersonInfoActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.NewsContentActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SendVideoCommentActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SimulationTestActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SimulationTestActivity2"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.AboutUsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.NewsCommentActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SendNewsCommentActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MoniSubjectActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MyNoteActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MyNotePracticeActivity"
+            android:screenOrientation="portrait"/>
         <!--
         注意：如果您想兼容Android N或者以上的设备，必须要在AndroidManifest.xml文件中配置FileProvider来访
         问共享路径的文件。如果你使用的第三方库也配置了同样的FileProvider，你需要将第三方库配置的路径copy到我

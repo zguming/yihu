@@ -4,10 +4,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.botian.yihu.GlideImageLoader;
 import com.botian.yihu.ObserverOnNextListener;
@@ -47,6 +50,7 @@ public class VideoFragment extends RxFragment {
     private List<VideoClass.DataBean> data3;
     VideoClassAdapter adapter;
     String mid2;
+    String mid6;
 
     @Nullable
     @Override
@@ -69,6 +73,7 @@ public class VideoFragment extends RxFragment {
     public void getData() {
 
         mid2 = pref.getInt("subjectNo", 1) + "";
+        mid6 = pref.getInt("subjectNo2", 2) + "";
         ObserverOnNextListener<VideoClassZip> listener = new ObserverOnNextListener<VideoClassZip>() {
             @Override
             public void onNext(VideoClassZip data) {
@@ -76,7 +81,7 @@ public class VideoFragment extends RxFragment {
                 data3=data.getData();
                 recyclerView.setPullRefreshEnabled(false);
                 recyclerView.setLoadingMoreEnabled(false);
-                StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+                LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.addHeaderView(header);
                 adapter = new VideoClassAdapter(getActivity(), data3);
@@ -94,7 +99,7 @@ public class VideoFragment extends RxFragment {
                 banner.start();
             }
         };
-        ApiMethods.getVideoZip(new ProgressObserver<VideoClassZip>(getActivity(), listener), filter, "mid,eq,"+mid2, (RxAppCompatActivity) getActivity());
+        ApiMethods.getVideoZip(new ProgressObserver<VideoClassZip>(getActivity(), listener), filter, "mid,eq,"+mid2, "mids,eq,"+mid6, (RxAppCompatActivity) getActivity());
     }
 
     public static VideoFragment newInstance(String content) {
@@ -113,7 +118,8 @@ public class VideoFragment extends RxFragment {
 
         } else {// 重新显示到最前端中
             final String mid3 = pref.getInt("subjectNo", 1) + "";
-            if(!mid3.equals(mid2)){
+            final String mid4 = pref.getInt("subjectNo2", 2) + "";
+            if(!mid4.equals(mid6)){
                 ObserverOnNextListener<VideoClassZip> listener2 = new ObserverOnNextListener<VideoClassZip>() {
                     @Override
                     public void onNext(VideoClassZip data) {
@@ -136,7 +142,8 @@ public class VideoFragment extends RxFragment {
                     }
                 };
                 String filter2="mid,eq,"+mid3;
-                ApiMethods.getVideoZip(new ProgressObserver<VideoClassZip>(getActivity(), listener2), filter, filter2, (RxAppCompatActivity) getActivity());
+                String filter3="mids,eq,"+mid4;
+                ApiMethods.getVideoZip(new ProgressObserver<VideoClassZip>(getActivity(), listener2), filter, filter2, filter3,(RxAppCompatActivity) getActivity());
             }
 
         }

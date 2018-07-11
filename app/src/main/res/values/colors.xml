@@ -97,7 +97,8 @@
     <color name="color_light_green">#ff87e087</color>
     <color name="color_light_pink">#ffff9f86</color>
     <color name="color_light_purple">#ffa56de8</color>
-    <color name="color_light_yellow">#fffae16d</color>
+    <color name="color_light_yellow">#f9ecb5</color>
+    <color name="color_light_yellow1">#d46820</color>
     <color name="cv_BackGround">#ff222222</color>
     <color name="cv_Black">#ff000000</color>
     <color name="cv_Black_7a7a7a">#ff7a7a7a</color>

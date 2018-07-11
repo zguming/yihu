@@ -9,9 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.botian.yihu.R;
+import com.botian.yihu.activity.AboutUsActivity;
+import com.botian.yihu.activity.FeedbackErrorActivity;
 import com.botian.yihu.activity.PersonInfoActivity;
 import com.botian.yihu.beans.UserInfo;
 import com.botian.yihu.eventbus.LoginEvent;
@@ -41,6 +45,12 @@ public class UserFragment extends Fragment {
     ImageView userIcon;
     @BindView(R.id.quit_login)
     Button quitLogin;
+    @BindView(R.id.rl_about_us)
+    RelativeLayout rlAboutUs;
+    @BindView(R.id.rl_personal)
+    RelativeLayout rlPersonal;
+    @BindView(R.id.rl_suggest)
+    RelativeLayout rlSuggest;
     private ACache mCache;
     private UserInfo userInfo;
     private int judgement = 0;//判断登录状态，0为登录，1为未登录
@@ -66,7 +76,7 @@ public class UserFragment extends Fragment {
         userInfo = (UserInfo) mCache.getAsObject("userInfo");
         if (userInfo != null) {
             tvAccount.setText(userInfo.getUsername());
-            if (userInfo.getAvatar()!=null|| !userInfo.getAvatar().equals("")){
+            if (userInfo.getAvatar() != null || !userInfo.getAvatar().equals("")) {
                 Glide.with(this)
                         .load("http://btsc.botian120.com" + userInfo.getAvatar())
                         .into(userIcon);
@@ -92,30 +102,29 @@ public class UserFragment extends Fragment {
     }
 
 
-    @OnClick({R.id.user_icon, R.id.tv_account, R.id.quit_login})
+    @OnClick({R.id.user_icon, R.id.tv_account, R.id.quit_login, R.id.rl_about_us, R.id.rl_personal,R.id.rl_suggest})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.user_icon:
-                Intent intent;
+                //tvAccount.setText("登录/注册");
                 if (judgement == 0) {
-                    intent = new Intent(getActivity(), PersonInfoActivity.class);
-                    startActivity(intent);
+                    Intent intent77 = new Intent(getActivity(), PersonInfoActivity.class);
+                    startActivity(intent77);
                 } else {
-                    intent = new Intent(getActivity(), LoginActivity.class);
-                    startActivity(intent);
+                    Intent intent88 = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(intent88);
                 }
                 break;
             case R.id.tv_account:
-                Intent intent1;
                 if (judgement == 0) {
-                    intent1 = new Intent(getActivity(), PersonInfoActivity.class);
-                    startActivity(intent1);
+                    Intent intent18 = new Intent(getActivity(), PersonInfoActivity.class);
+                    startActivity(intent18);
                 } else {
-                    intent1 = new Intent(getActivity(), LoginActivity.class);
-                    startActivity(intent1);
+                    Intent intent19 = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(intent19);
                 }
                 break;
-                //退出登录
+            //退出登录
             case R.id.quit_login:
                 //缓存用户信息
                 UserInfo userInfo4 = null;
@@ -124,6 +133,28 @@ public class UserFragment extends Fragment {
                 userIcon.setImageResource(R.drawable.home_head_default);
                 judgement = 1;
                 quitLogin.setVisibility(View.GONE);
+                break;
+            case R.id.rl_about_us:
+                Intent intent10 = new Intent(getActivity(), AboutUsActivity.class);
+                startActivity(intent10);
+                break;
+            case R.id.rl_personal:
+                if (judgement == 1) {
+                    Toast.makeText(getActivity(), "请先登录", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent99 = new Intent(getActivity(), PersonInfoActivity.class);
+                    startActivity(intent99);
+                }
+                break;
+            case R.id.rl_suggest:
+                if (judgement == 1) {
+                    Toast.makeText(getActivity(), "请先登录", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent991 = new Intent(getActivity(), FeedbackErrorActivity.class);
+                    String userId=userInfo.getId()+"";
+                    intent991.putExtra("userId",userId);
+                    startActivity(intent991);
+                }
                 break;
         }
     }
@@ -136,9 +167,11 @@ public class UserFragment extends Fragment {
             userIcon.setImageBitmap(messageEvent.getPhoto());
         }
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event1(LoginEvent messageEvent) {
-       initView();
+        initView();
+        judgement = 0;
     }
 
     @Override
@@ -148,6 +181,5 @@ public class UserFragment extends Fragment {
             EventBus.getDefault().unregister(this);
         }
     }
-
 
 }

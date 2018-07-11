@@ -163,7 +163,7 @@ public class LoginActivity extends RxAppCompatActivity implements LoginContranct
             //如果登录成功缓存用户信息
             UserInfo userInfo=new UserInfo();
             userInfo.setId(data.getData().getId());
-            userInfo.setToken(data.getData().getToken());
+            //userInfo.setToken(data.getData().getToken());
             userInfo.setUsername(data.getData().getUsername());
             userInfo.setMoblie(data.getData().getMoblie());
             userInfo.setAvatar(data.getData().getAvatar());

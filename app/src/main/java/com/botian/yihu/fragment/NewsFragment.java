@@ -39,6 +39,7 @@ import butterknife.Unbinder;
 //资讯
 public class NewsFragment extends Fragment {
     private List<String> mVals = new ArrayList<>();
+    private List<Integer> mVals2 = new ArrayList<>();
     private SharedPreferences pref;
     @BindView(R.id.toolbar_news)
     Toolbar toolbarNews;
@@ -47,14 +48,17 @@ public class NewsFragment extends Fragment {
     Unbinder unbinder;
     int current_page;//当前分页
     int last_page;//总分页
-    String filter2 = "typeid,eq," + 1;
+    String filter2 ;
     String filter;
+    String filter3;
+    String typeid;
     ObserverOnNextListener<NewsList> listener;
     ObserverOnNextListener<NewsZip> listener2;
     List<NewsList.DataBeanX.DataBean> listData = new ArrayList<>();
     List<NewsZip> listData2 = new ArrayList<>();
     View header;
     int no;//科目id
+    int no2;//科目id
 
     @Nullable
     @Override
@@ -70,6 +74,7 @@ public class NewsFragment extends Fragment {
         pref = this.getActivity().getSharedPreferences("subjectSelectData", Context.MODE_PRIVATE);
         no = pref.getInt("subjectNo", 1);
         filter = "mid,eq," + no;
+        filter3 = "mids,eq," + no2;
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         header = LayoutInflater.from(getContext()).inflate(R.layout.header_news, null);
@@ -83,7 +88,7 @@ public class NewsFragment extends Fragment {
                 //commentRecyclerView.setLoadingMoreEnabled(false);
             }
         };
-        ApiMethods.getNewsLable(new ProgressObserver<NewsList>(getContext(), listener2), filter, (RxAppCompatActivity) getActivity());
+        ApiMethods.getNewsLable(new ProgressObserver<NewsList>(getContext(), listener2), filter, filter,(RxAppCompatActivity) getActivity());
         listener = new ObserverOnNextListener<NewsList>() {
             @Override
             public void onNext(NewsList data) {
@@ -124,7 +129,7 @@ public class NewsFragment extends Fragment {
                 // load more data here
                 if (current_page == last_page) {
                 } else {
-                    ApiMethods.getNewsList(new ProgressObserver<NewsList>(getContext(), listener), filter, current_page + 1 + "", "20", (RxAppCompatActivity) getActivity());
+                    ApiMethods.getNewsList(new ProgressObserver<NewsList>(getContext(), listener), filter,filter, filter3,current_page + 1 + "", "20", (RxAppCompatActivity) getActivity());
                 }
                 //ApiMethods.getComment(new ProgressObserver<OtherCommentBean>(OtherCommentActivity.this, listener), commentParcel.getId() + "",current_page+1+"","20");
                 //commentRecyclerView.loadMoreComplete();
@@ -157,7 +162,7 @@ public class NewsFragment extends Fragment {
                 // load more data here
                 if (current_page == last_page) {
                 } else {
-                    ApiMethods.getNewsList(new ProgressObserver<NewsList>(getContext(), listener), filter, current_page + 1 + "", "20", (RxAppCompatActivity) getActivity());
+                    ApiMethods.getNewsList(new ProgressObserver<NewsList>(getContext(), listener), filter,filter, filter3,current_page + 1 + "", "20", (RxAppCompatActivity) getActivity());
                 }
                 //ApiMethods.getComment(new ProgressObserver<OtherCommentBean>(OtherCommentActivity.this, listener), commentParcel.getId() + "",current_page+1+"","20");
                 //commentRecyclerView.loadMoreComplete();
@@ -204,8 +209,11 @@ public class NewsFragment extends Fragment {
     }
 
     public void setLable(List<NewsLable.DataBean> data) {
+        typeid=data.get(0).getId()+"";
+        filter2 = "typeid,eq," + typeid;
         for (int i = 0; i < data.size(); i++) {
             mVals.add(data.get(i).getTypename());
+            mVals2.add(data.get(i).getId());
         }
         setFlowlayout();
     }

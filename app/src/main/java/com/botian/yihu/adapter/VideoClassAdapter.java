@@ -47,6 +47,8 @@ public class VideoClassAdapter extends RecyclerView.Adapter<VideoClassAdapter.My
         TextView price;
         @BindView(R.id.views)
         TextView views;
+        @BindView(R.id.top_line)
+        View topLine;
         private View view;
 
         public MyViewHolder(View itemView) {
@@ -71,12 +73,15 @@ public class VideoClassAdapter extends RecyclerView.Adapter<VideoClassAdapter.My
             public void onClick(View view) {
                 //XRecyclerView默认添加了一个header，因此要得到正确的position,需减去1
                 int position = myViewHolder.getAdapterPosition() - 2;
-                Intent intent=new Intent(mContext, VideoActivity.class);
+                final Intent intent=new Intent(mContext, VideoActivity.class);
                 intent.putExtra("id",data.get(position).getId()+"");
+                intent.putExtra("title",data.get(position).getTypename());
+                intent.putExtra("price",data.get(position).getPrice());
+                intent.putExtra("content",data.get(position).getContent());
                 listener = new ObserverOnNextListener<No>() {
                     @Override
                     public void onNext(No data) {
-
+                        mContext.startActivity(intent);
                     }
                 };
                 mCache = ACache.get(mContext);
@@ -85,8 +90,10 @@ public class VideoClassAdapter extends RecyclerView.Adapter<VideoClassAdapter.My
                 if (userInfo!=null){
                     String mid=data.get(position).getId()+"";
                     ApiMethods.getVideoClassNum(new MyObserver<No>(listener),  mid, userInfo.getId()+"",(RxAppCompatActivity) mContext);
+                }else {
+                    mContext.startActivity(intent);
                 }
-                mContext.startActivity(intent);
+
             }
                 //notifyDataSetChanged();//刷新
 
@@ -99,10 +106,13 @@ public class VideoClassAdapter extends RecyclerView.Adapter<VideoClassAdapter.My
         String title = data.get(position).getTypename();
         holder.title.setText(title);
         String imageUrl="http://btsc.botian120.com"+data.get(position).getLitpic();
-        int width = (int) (ScreenSizeUtils.getInstance(mContext).getScreenWidth() * 0.47f);
+        //int width = (int) (ScreenSizeUtils.getInstance(mContext).getScreenWidth() * 0.47f);
+        if (position==0){
+            holder.topLine.setVisibility(View.VISIBLE);
+        }
         Glide.with(mContext)
                 .load(imageUrl)
-                .override(width,1000)
+                .centerCrop()
                 .into(holder.imageView);
 
         String price="¥"+data.get(position).getPrice();

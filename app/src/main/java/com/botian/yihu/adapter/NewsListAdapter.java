@@ -12,9 +12,7 @@ import android.widget.TextView;
 import com.botian.yihu.R;
 import com.botian.yihu.activity.NewsContentActivity;
 import com.botian.yihu.beans.NewsList;
-import com.botian.yihu.beans.UserInfo;
-import com.botian.yihu.util.ACache;
-import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -29,9 +27,18 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.MyView
     private List<NewsList.DataBeanX.DataBean> data;
     private Context mContext;
 
+
     static class MyViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.news_title)
         TextView newsTitle;
+        @BindView(R.id.news_pic)
+        ImageView newsPic;
+        @BindView(R.id.news_src)
+        TextView newsSrc;
+        @BindView(R.id.news_time)
+        TextView newsTime;
+        @BindView(R.id.top_line)
+        View topLine;
         private View view;
 
         public MyViewHolder(View itemView) {
@@ -56,9 +63,9 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.MyView
             public void onClick(View v) {
                 //XRecyclerView默认添加了一个header，因此要得到正确的position,需减去1
                 final int position = myViewHolder.getAdapterPosition() - 2;
-                Intent intent =new Intent(mContext, NewsContentActivity.class);
-                intent.putExtra("title",data.get(position).getTitle());
-                intent.putExtra("content",data.get(position).getDescription());
+                Intent intent = new Intent(mContext, NewsContentActivity.class);
+                intent.putExtra("id", data.get(position).getId() + "");
+                intent.putExtra("content", data.get(position).getcontent());
                 mContext.startActivity(intent);
             }
         });
@@ -69,7 +76,20 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.MyView
     public void onBindViewHolder(MyViewHolder holder, int position) {
         String title = data.get(position).getTitle();
         holder.newsTitle.setText(title);
-
+        String date = data.get(position).getCreate_time().substring(2, 10);
+        holder.newsSrc.setText(date);
+        String aa = data.get(position).getClick() + "次阅读";
+        holder.newsTime.setText(aa);
+        if (position==0){
+            holder.topLine.setVisibility(View.VISIBLE);
+        }
+        if (data.get(position).getLitpic() != null && !data.get(position).getLitpic().equals("")) {
+            holder.newsPic.setVisibility(View.VISIBLE);
+            Glide.with(mContext)
+                    .load("http://btsc.botian120.com" + data.get(position).getLitpic())
+                    //.centerCrop()
+                    .into(holder.newsPic);
+        }
     }
 
     @Override
@@ -78,4 +98,3 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.MyView
     }
 
 }
-

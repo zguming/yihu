@@ -9,7 +9,7 @@ public class SubjectBean {
      * code : 200
      * msg : 操作成功
      * invalidFilter : []
-     * data : [{"id":1,"name":"护士执业","sorts":1,"status":1,"create_time":"2018-05-04 08:50:08","update_time":"2018-05-07 15:54:00"},{"id":2,"name":"护师执业","sorts":2,"status":1,"create_time":"2018-05-04 08:50:49","update_time":"2018-05-04 08:50:49"},{"id":3,"name":"主管护师","sorts":3,"status":1,"create_time":"2018-05-04 08:50:57","update_time":"2018-05-04 08:50:57"}]
+     * data : [{"id":1,"pid":0,"name":"医护类","sorts":1,"status":1,"create_time":"2018-07-09 17:15:45","update_time":"2018-07-09 17:15:45"},{"id":2,"pid":1,"name":"护士职业","sorts":1,"status":1,"create_time":"2018-07-09 17:16:01","update_time":"2018-07-09 17:16:48"},{"id":3,"pid":1,"name":"护师职业","sorts":2,"status":1,"create_time":"2018-07-09 17:16:13","update_time":"2018-07-09 17:23:22"},{"id":4,"pid":1,"name":"主管护师","sorts":3,"status":1,"create_time":"2018-07-09 17:16:31","update_time":"2018-07-09 17:16:31"},{"id":6,"pid":0,"name":"测试","sorts":2,"status":1,"create_time":"2018-07-10 08:33:10","update_time":"2018-07-10 08:33:10"}]
      */
 
     private int code;
@@ -52,14 +52,16 @@ public class SubjectBean {
     public static class DataBean {
         /**
          * id : 1
-         * name : 护士执业
+         * pid : 0
+         * name : 医护类
          * sorts : 1
          * status : 1
-         * create_time : 2018-05-04 08:50:08
-         * update_time : 2018-05-07 15:54:00
+         * create_time : 2018-07-09 17:15:45
+         * update_time : 2018-07-09 17:15:45
          */
 
         private int id;
+        private int pid;
         private String name;
         private int sorts;
         private int status;
@@ -72,6 +74,14 @@ public class SubjectBean {
 
         public void setId(int id) {
             this.id = id;
+        }
+
+        public int getPid() {
+            return pid;
+        }
+
+        public void setPid(int pid) {
+            this.pid = pid;
         }
 
         public String getName() {

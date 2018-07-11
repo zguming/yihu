@@ -13,8 +13,12 @@ import com.botian.yihu.R;
 import com.botian.yihu.api.ApiMethods;
 import com.botian.yihu.beans.SendCommentBean;
 import com.botian.yihu.beans.UserInfo;
+import com.botian.yihu.eventbus.TopicCardEventNote;
+import com.botian.yihu.eventbus.VideoCommentEvent;
 import com.botian.yihu.util.ACache;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,6 +62,7 @@ public class SendVideoCommentActivity extends RxAppCompatActivity {
                         public void onNext(SendCommentBean data) {
                             Toast.makeText(SendVideoCommentActivity.this, data.getMsg(), Toast.LENGTH_SHORT).show();
                             if (data.getCode() == 200) {
+                                EventBus.getDefault().post(new VideoCommentEvent());
                                 finish();
                             }
                         }
