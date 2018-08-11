@@ -38,7 +38,7 @@ public class RegisterPresenter implements RegisterContranct.RegisterPresenter{
     }
 
     @Override//在这个方法里进行M层和V层的交互
-    public void presenter(Context context,String username,String mobile,String pwd,String version,String code,RxAppCompatActivity yy) {
+    public void presenter(Context context,String username,String mobile,String pwd,String code,RxAppCompatActivity yy) {
         //M层创建保存数据的callback接口对象 这个接口里方法的参数就是数据集合
         registerModel.model(new RegisterContranct.RegisterModel.CallBack() {
             @Override
@@ -46,7 +46,7 @@ public class RegisterPresenter implements RegisterContranct.RegisterPresenter{
                 //然后再用V层接口对象保存数据 在V层里展示出来
                 registerView.view(data);
             }
-        },context,username,mobile,pwd,version,code,yy);
+        },context,username,mobile,pwd,code,yy);
 
     }
 

@@ -2,11 +2,12 @@
 <litepal>
     <dbname value="PracticeData" ></dbname>
 
-    <version value="3" ></version>
+    <version value="9" ></version>
 
     <list>
-        <mapping class="com.botian.yihu.database.PracticeData"></mapping>
+        <mapping class="com.botian.yihu.database.WrongData"></mapping>
         <mapping class="com.botian.yihu.database.CollectData"></mapping>
         <mapping class="com.botian.yihu.database.NoteData"></mapping>
+        <mapping class="com.botian.yihu.database.ShareData"></mapping>
     </list>
 </litepal>

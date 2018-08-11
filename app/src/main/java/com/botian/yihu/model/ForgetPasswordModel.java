@@ -2,8 +2,8 @@ package com.botian.yihu.model;
 
 import android.content.Context;
 
-import com.botian.yihu.ObserverOnNextListener;
-import com.botian.yihu.ProgressObserver;
+import com.botian.yihu.rxjavautil.ObserverOnNextListener;
+import com.botian.yihu.rxjavautil.ProgressObserver;
 import com.botian.yihu.api.ApiMethods;
 import com.botian.yihu.contranct.ForgetPasswordContranct;
 import com.botian.yihu.beans.RegisterBean;

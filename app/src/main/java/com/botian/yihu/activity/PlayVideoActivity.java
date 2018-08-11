@@ -14,17 +14,18 @@ import cn.jzvd.JZVideoPlayerStandard;
 
 public class PlayVideoActivity extends RxAppCompatActivity {
     private TXVodPlayer mTXPlayerGetInfo;
-String url;
-String title;
-String cover;
+    String url;
+    String title;
+    String cover;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_video);
-        Intent intent=getIntent();
-        url=intent.getStringExtra("url");
-        title=intent.getStringExtra("title");
-        cover=intent.getStringExtra("cover");
+        Intent intent = getIntent();
+        url = intent.getStringExtra("url");
+        title = intent.getStringExtra("title");
+        cover = intent.getStringExtra("cover");
         int appId = 1254402451;
         String fileId = "7447398155509167622";
         //mTXPlayerGetInfo = new TXVodPlayer(this);

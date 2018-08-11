@@ -2,6 +2,7 @@ package com.botian.yihu.view;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -37,6 +38,7 @@ public class SubjectSelectActivity extends RxAppCompatActivity implements Subjec
     private SharedPreferences.Editor editor;
     private SharedPreferences pref;
     int no;
+    int no2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,7 @@ public class SubjectSelectActivity extends RxAppCompatActivity implements Subjec
         ButterKnife.bind(this);
         pref = getSharedPreferences("subjectSelectData", MODE_PRIVATE);
         no = pref.getInt("subjectNo", 1);
+        no2 = pref.getInt("subjectNo2", 2);
         SubjectPresenter subjectpresenter = new SubjectPresenter(this);
         subjectpresenter.presenter(this, this);
     }
@@ -66,15 +69,18 @@ public class SubjectSelectActivity extends RxAppCompatActivity implements Subjec
         TagFlowLayout mFlowLayout = view.findViewById(R.id.id_flowlayout);
         List<String> data = new ArrayList<>();
         List<Integer> data1 = new ArrayList<>();
+        //Log.d("TAG", "intitView2: "+id);
         for (int i=0;i<list2.size();i++){
             //二级列表
+            Log.d("TAG3", "intitView2: "+list2.size());
+
+            Log.d("TAG3", "intitView2: "+list2.get(i).getPid());
+
             if (list2.get(i).getPid()==id){
                 data.add(list2.get(i).getName());
+                //Log.d("TAG", "intitView2: "+list2.get(i).getName());
                 data1.add(list2.get(i).getId());
-            }else {
-                break;
             }
-
         }
         setFlowlayout(mFlowLayout,id,data,data1);
         //mVals.clear();
@@ -94,6 +100,18 @@ public class SubjectSelectActivity extends RxAppCompatActivity implements Subjec
                 return tv;
             }
         };
+        if (no==id){
+           for (int i=0;i<data1.size();i++){
+               if (data1.get(i)==no2){
+                   tagAdapter.setSelectedList(i);
+               }
+           }
+            //if (no != 0) {
+            //tagAdapter.setSelectedList(no - 1);
+            //} else {
+            //tagAdapter.setSelectedList(0);
+            //}
+        }
         //if (no != 0) {
             //tagAdapter.setSelectedList(no - 1);
         //} else {

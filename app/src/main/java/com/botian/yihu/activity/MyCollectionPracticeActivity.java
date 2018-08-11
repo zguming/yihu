@@ -1,7 +1,6 @@
 package com.botian.yihu.activity;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -83,6 +82,7 @@ public class MyCollectionPracticeActivity extends RxAppCompatActivity {
     ViewPager viewPagerAnswer;
     private int position = 0;
     private ArrayList<Integer> topicCard = new ArrayList<>();//答对0，答错1，当前题2
+    private ArrayList<Integer> collectionData = new ArrayList<>();//取消收藏position
     private int already = 0;//已答总数
     private int correct1 = 0;//答对总数
     private static List<CollectData> practiceList9 = new ArrayList<>();
@@ -154,11 +154,13 @@ public class MyCollectionPracticeActivity extends RxAppCompatActivity {
             public void run() {
                 int id1 = practiceList.get(finalI1).getTopicId();
                 int cl1 = practiceList.get(finalI1).getCl();
-                noteList9 = DataSupport.where("topicId=" + id1 + ";" + "cl=" + cl1).find(NoteData.class);
+                int judge = practiceList.get(finalI1).getJudge();
+
+                noteList9 = DataSupport.where("topicId=? and cl=? and judge=?",id1+"",cl1+"",judge+"").find(NoteData.class);
                 if (noteList9.size() > 0) {
                     NoteData noteData = new NoteData();
                     noteData.setNote(note);
-                    noteData.updateAll("topicId=" + id1 + ";" + "cl=" + cl1);
+                    noteData.updateAll("topicId=? and cl=? and judge=?",id1+"",cl1+"",judge+"");
                 } else {
                     NoteData noteData = new NoteData();
                     noteData.setTopicId(practiceList.get(finalI1).getTopicId());
@@ -175,6 +177,7 @@ public class MyCollectionPracticeActivity extends RxAppCompatActivity {
                     noteData.setMaterial(practiceList.get(finalI1).getMaterial());
                     noteData.setImage(practiceList.get(finalI1).getImage());
                     noteData.setNote(note);
+                    noteData.setJudge(judge);
                     noteData.save();
                 }
 
@@ -207,16 +210,16 @@ public class MyCollectionPracticeActivity extends RxAppCompatActivity {
                 Observable.create(new ObservableOnSubscribe<Integer>() {
                     @Override
                     public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
-                        //practiceList = DataSupport.order("id desc").find(CollectData.class);
-                        //String a=Thread.currentThread().getName();
-                        int position00 = viewPagerAnswer.getCurrentItem();
-                        int id = practiceList.get(position00).getTopicId();
-                        int cl = practiceList.get(position00).getCl();
-                        //practiceList9.clear();
-                        practiceList9 = DataSupport.where("topicId=" + id + ";" + "cl=" + cl).find(CollectData.class);
-                        emitter.onNext(1);
 
-                        //emitter.onComplete();
+                        int b=1;
+                        int a = viewPagerAnswer.getCurrentItem();
+                        for (int i=0;i<collectionData.size();i++){
+                            if(a==collectionData.get(i)){
+                                b=0;
+                                break;
+                            }
+                        }
+                        emitter.onNext(b);
                     }
                 }).subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -229,16 +232,15 @@ public class MyCollectionPracticeActivity extends RxAppCompatActivity {
 
                             @Override
                             public void onNext(Integer value) {
-                                //int v=value;
-                                if (practiceList9.size() > 0) {
-                                    imgCollect.setImageResource(R.drawable.ic_collect_press);
-                                    isCollected = 0;
-                                } else {
+
+                                if (value==0){
                                     imgCollect.setImageResource(R.drawable.ic_collect_normal);
                                     isCollected = 1;
+                                }else{
+                                    imgCollect.setImageResource(R.drawable.ic_collect_press);
+                                    isCollected = 0;
                                 }
-                                //init();
-                                //Log.d(TAG, "" + value);
+
                             }
 
                             @Override
@@ -269,16 +271,22 @@ public class MyCollectionPracticeActivity extends RxAppCompatActivity {
                 Observable.create(new ObservableOnSubscribe<Integer>() {
                     @Override
                     public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
-                        //practiceList = DataSupport.order("id desc").find(CollectData.class);
-                        //String a=Thread.currentThread().getName();
-                        int position00 = viewPager.getCurrentItem();
+                        /*int position00 = viewPager.getCurrentItem();
                         int id = practiceList.get(position00).getTopicId();
                         int cl = practiceList.get(position00).getCl();
-                        //practiceList9.clear();
                         practiceList9 = DataSupport.where("topicId=" + id + ";" + "cl=" + cl).find(CollectData.class);
-                        emitter.onNext(1);
+                        emitter.onNext(1);*/
+                        int b=1;
+                        int a = viewPagerAnswer.getCurrentItem();
+                        for (int i=0;i<collectionData.size();i++){
+                            if(a==collectionData.get(i)){
+                                b=0;
+                                break;
+                            }
+                        }
+                        emitter.onNext(b);
 
-                        //emitter.onComplete();
+
                     }
                 }).subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -291,16 +299,21 @@ public class MyCollectionPracticeActivity extends RxAppCompatActivity {
 
                             @Override
                             public void onNext(Integer value) {
-                                //int v=value;
-                                if (practiceList9.size() > 0) {
+                                /*if (practiceList9.size() > 0) {
                                     imgCollect.setImageResource(R.drawable.ic_collect_press);
                                     isCollected = 0;
                                 } else {
                                     imgCollect.setImageResource(R.drawable.ic_collect_normal);
                                     isCollected = 1;
+                                }*/
+                                if (value==0){
+                                    imgCollect.setImageResource(R.drawable.ic_collect_normal);
+                                    isCollected = 1;
+                                }else{
+                                    imgCollect.setImageResource(R.drawable.ic_collect_press);
+                                    isCollected = 0;
                                 }
-                                //init();
-                                //Log.d(TAG, "" + value);
+
                             }
 
                             @Override
@@ -323,7 +336,8 @@ public class MyCollectionPracticeActivity extends RxAppCompatActivity {
                 int position00 = viewPagerAnswer.getCurrentItem();
                 int id = practiceList.get(position00).getTopicId();
                 int cl = practiceList.get(position00).getCl();
-                practiceList9 = DataSupport.where("topicId=" + id + ";" + "cl=" + cl).find(CollectData.class);
+                int judge = practiceList.get(position00).getJudge();
+                practiceList9 = DataSupport.where("topicId=? and cl=? and judge=?",id+"",cl+"",judge+"").find(CollectData.class);
 
                 emitter.onNext(1);
 
@@ -419,8 +433,9 @@ public class MyCollectionPracticeActivity extends RxAppCompatActivity {
                             int position00 = position;
                             int id = practiceList.get(position00).getTopicId();
                             int cl = practiceList.get(position00).getCl();
+                            int judge = practiceList.get(position00).getJudge();
                             //practiceList9.clear();
-                            practiceList9 = DataSupport.where("topicId=" + id + ";" + "cl=" + cl).find(CollectData.class);
+                            practiceList9 = DataSupport.where("topicId=? and cl=? and judge=?",id+"",cl+"",judge+"").find(CollectData.class);
 
                             emitter.onNext(1);
 
@@ -472,8 +487,9 @@ public class MyCollectionPracticeActivity extends RxAppCompatActivity {
                             int position00 = position;
                             int id = practiceList.get(position00).getTopicId();
                             int cl = practiceList.get(position00).getCl();
+                            int judge = practiceList.get(position00).getJudge();
                             //practiceList9.clear();
-                            practiceList9 = DataSupport.where("topicId=" + id + ";" + "cl=" + cl).find(CollectData.class);
+                            practiceList9 = DataSupport.where("topicId=? and cl=? and judge=?",id+"",cl+"",judge+"").find(CollectData.class);
 
                             emitter.onNext(1);
 
@@ -535,10 +551,22 @@ public class MyCollectionPracticeActivity extends RxAppCompatActivity {
                 if (isCollected == 1) {
                     if (answer666 == 0) {
                         int a = viewPager.getCurrentItem();
+                        for (int i=0;i<collectionData.size();i++){
+                            if(a==collectionData.get(i)){
+                                collectionData.remove(i);
+                                break;
+                            }
+                        }
                         addCollectDataBase(a);
                         imgCollect.setImageResource(R.drawable.ic_collect_press);
                     } else if (answer666 == 1) {
                         int a = viewPagerAnswer.getCurrentItem();
+                        for (int i=0;i<collectionData.size();i++){
+                            if(a==collectionData.get(i)){
+                                collectionData.remove(i);
+                                break;
+                            }
+                        }
                         addCollectDataBase(a);
                         imgCollect.setImageResource(R.drawable.ic_collect_press);
                     }
@@ -546,10 +574,12 @@ public class MyCollectionPracticeActivity extends RxAppCompatActivity {
                 } else if (isCollected == 0) {
                     if (answer666 == 0) {
                         int a18 = viewPager.getCurrentItem();
+                        collectionData.add(a18);
                         delleteCollectDataBase(a18);
                         imgCollect.setImageResource(R.drawable.ic_collect_normal);
                     } else if (answer666 == 1) {
                         int a18 = viewPagerAnswer.getCurrentItem();
+                        collectionData.add(a18);
                         delleteCollectDataBase(a18);
                         imgCollect.setImageResource(R.drawable.ic_collect_normal);
                     }
@@ -592,13 +622,15 @@ public class MyCollectionPracticeActivity extends RxAppCompatActivity {
         collectData.setCl(practiceList.get(finalI1).getCl());
         collectData.setMaterial(practiceList.get(finalI1).getMaterial());
         collectData.setImage(practiceList.get(finalI1).getImage());
+        collectData.setJudge(practiceList.get(finalI1).getJudge());
         collectData.save();
     }
 
     public void delleteCollectDataBase(int finalI1) {
         int id98 = practiceList.get(finalI1).getTopicId();
         int cl98 = practiceList.get(finalI1).getCl();
-        DataSupport.deleteAll(CollectData.class, "topicId=" + id98 + ";" + "cl=" + cl98);
+        int judge = practiceList.get(finalI1).getJudge();
+        DataSupport.deleteAll(CollectData.class, "topicId=? and cl=? and judge=?",id98+"",cl98+"",judge+"");
 
     }
 
@@ -608,7 +640,8 @@ public class MyCollectionPracticeActivity extends RxAppCompatActivity {
 
     public void test(int i, int j) {
         //AnswerFragment会调用此方法
-        correct1 = correct1 + 1;
+        if (j==0){
+        correct1 = correct1 + 1;}
         topicCard.set(i, j);
 
     }

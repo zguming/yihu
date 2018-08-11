@@ -69,6 +69,7 @@ public class CollectAnswerFragment2 extends RxFragment {
     private int topicId;
     private int typeid;
     private int i;
+    private int judge;
     private int totalnum;
     View view;
     private String hostUrl = "http://btsc.botian120.com";
@@ -101,6 +102,7 @@ public class CollectAnswerFragment2 extends RxFragment {
         topicId = bundle.getInt("TopicId");
         typeid = bundle.getInt("Typeid");
         i = bundle.getInt("i");
+        judge = bundle.getInt("judge");
         totalnum = bundle.getInt("total");
         initViewAnswer();
     }
@@ -263,7 +265,7 @@ public class CollectAnswerFragment2 extends RxFragment {
             public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
                 int id1 = topicId;
                 int cl1 = cl;
-                noteList9 = DataSupport.where("topicId=" + id1 + ";" + "cl=" + cl1).find(NoteData.class);
+                noteList9 = DataSupport.where("topicId=? and cl=? and judge=?",id1+"",cl1+"",judge+"").find(NoteData.class);
                 //noteList9 = DataSupport.where("topicId=" + id1 + ";" + "cl=" + cl1).find(NoteData.class);
                 emitter.onNext(1);
 
@@ -318,6 +320,7 @@ public class CollectAnswerFragment2 extends RxFragment {
         args.putInt("Typeid", content.getTypeid());
         args.putInt("i", i);
         args.putInt("total", total);
+        args.putInt("judge", content.getJudge());
         CollectAnswerFragment2 fragment = new CollectAnswerFragment2();
         fragment.setArguments(args);
         return fragment;

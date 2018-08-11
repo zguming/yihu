@@ -14,7 +14,7 @@ public class RegisterContranct {
     public interface RegisterModel {
         //M层获取请求数据的方法 方法参数为下面的接口对象
         void model(CallBack callBack,Context context,String mobile,RxAppCompatActivity yy);
-        void model(CallBack callBack,Context context,String username,String mobile,String pwd,String version,String code,RxAppCompatActivity yy);
+        void model(CallBack callBack,Context context,String username,String mobile,String pwd,String code,RxAppCompatActivity yy);
 
         //M层获取到数据之后 存入这个接口的方法然后把数据回调给P层
         interface CallBack {
@@ -26,7 +26,7 @@ public class RegisterContranct {
     //P层接口及方法：M和V层的交互等逻辑（其实P层写不写接口都可以 用接口显得统一规范）
     public interface RegisterPresenter {
         void presenter(Context context, String mobile,RxAppCompatActivity yy);
-        void presenter(Context context, String username,String mobile,String pwd,String version,String code,RxAppCompatActivity yy);
+        void presenter(Context context, String username,String mobile,String pwd,String code,RxAppCompatActivity yy);
     }
 
     //V层接口 ：接收数据 显示数据

@@ -92,8 +92,17 @@ public class PracticeAnswer {
         private int click;
         private int status;
         private int cl;
+        private int zhenti;
         private String create_time;
         private String update_time;
+
+        public int getZhenti() {
+            return zhenti;
+        }
+
+        public void setZhenti(int zhenti) {
+            this.zhenti = zhenti;
+        }
 
         public int getId() {
             return id;

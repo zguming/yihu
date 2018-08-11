@@ -24,10 +24,21 @@
                 android:layout_height="1dp"
                 android:layout_weight="1"/>
             <TextView
+                android:id="@+id/timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"/>
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="15dp"
-                android:text="科目选择"
+                android:text="模拟考试"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
         </LinearLayout>
@@ -71,15 +82,24 @@
                 android:tag="skin:ic_practice_left_normal:src" />
         </RelativeLayout>
 
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/ln_topic_card"
             android:layout_width="0.0dip"
+            android:gravity="center"
             android:layout_height="fill_parent"
             android:layout_marginTop="@dimen/dp3"
+            android:orientation="vertical"
             android:layout_weight="1.0">
+
+            <ImageView
+                android:id="@+id/img_topic_card"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_topic_card_normal" />
 
             <TextView
                 android:id="@+id/tv_topic_card"
-                android:drawableTop="@drawable/ic_topic_card_normal"
                 android:tag="skin:selector_btn_topic_card:drawableTop"
                 android:textSize="@dimen/sp11"
                 android:layout_centerHorizontal="true"
@@ -87,7 +107,33 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/TextColorBlack"
                 android:text="答题卡" />
-        </RelativeLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ln_topic_card1"
+            android:layout_width="0.0dip"
+            android:gravity="center"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="@dimen/dp3"
+            android:orientation="vertical"
+            android:layout_weight="1.0">
+
+            <ImageView
+                android:id="@+id/img_topic_card1"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_topic_submit_normal_night" />
+
+            <TextView
+                android:id="@+id/tv_topic_card1"
+                android:tag="skin:selector_btn_topic_card:drawableTop"
+                android:textSize="@dimen/sp11"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/TextColorBlack"
+                android:text="提交" />
+        </LinearLayout>
         <RelativeLayout
             android:layout_width="0.0dip"
             android:layout_height="fill_parent"

@@ -462,4 +462,8 @@
     <color name="default_text">#ffc8c8c8</color>
     <color name="xwhite">#fbfbfb</color>
     <color name="transparent">#00000000</color>
+    <color name="radiobuttonzhong">#ef4147</color>
+    <color name="radiobutton">#514b4b</color>
+    <color name="btn_live">#5F6164</color>
+    <color name="btn_live_press">#2F3134</color>
 </resources>

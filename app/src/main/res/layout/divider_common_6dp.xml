@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge>
+    <View n1:background="@color/gray_line_color" n1:layout_width="fill_parent" n1:layout_height="1.0px"
+      xmlns:n1="http://schemas.android.com/apk/res/android" />
+    <View n2:background="@color/GrayBackground" n2:layout_width="fill_parent" n2:layout_height="@dimen/strangDividerHeight"
+      xmlns:n2="http://schemas.android.com/apk/res/android" />
+    <View n3:background="@color/gray_line_color" n3:layout_width="fill_parent" n3:layout_height="1.0px"
+      xmlns:n3="http://schemas.android.com/apk/res/android" />
+</merge>

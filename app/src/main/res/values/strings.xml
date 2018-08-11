@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="appName">护士资格考试</string>
+    <string name="appName">博天课堂</string>
     <string name="app_name">@string/appName</string>
     <string name="taobao">博天\n头条</string>
 </resources>

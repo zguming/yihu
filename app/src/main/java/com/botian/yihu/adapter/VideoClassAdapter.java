@@ -8,9 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.botian.yihu.MyObserver;
-import com.botian.yihu.ObserverOnNextListener;
+import com.botian.yihu.activity.MoniSubjectActivity;
+import com.botian.yihu.rxjavautil.MyObserver;
+import com.botian.yihu.rxjavautil.ObserverOnNextListener;
 import com.botian.yihu.R;
 import com.botian.yihu.activity.VideoActivity;
 import com.botian.yihu.api.ApiMethods;
@@ -18,7 +20,6 @@ import com.botian.yihu.beans.No;
 import com.botian.yihu.beans.UserInfo;
 import com.botian.yihu.beans.VideoClass;
 import com.botian.yihu.util.ACache;
-import com.botian.yihu.util.ScreenSizeUtils;
 import com.bumptech.glide.Glide;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
@@ -78,21 +79,24 @@ public class VideoClassAdapter extends RecyclerView.Adapter<VideoClassAdapter.My
                 intent.putExtra("title",data.get(position).getTypename());
                 intent.putExtra("price",data.get(position).getPrice());
                 intent.putExtra("content",data.get(position).getContent());
+                mCache = ACache.get(mContext);
+                //从缓存读取用户信息
+                userInfo = (UserInfo) mCache.getAsObject("userInfo");
                 listener = new ObserverOnNextListener<No>() {
                     @Override
                     public void onNext(No data) {
                         mContext.startActivity(intent);
                     }
                 };
-                mCache = ACache.get(mContext);
-                //从缓存读取用户信息
-                userInfo = (UserInfo) mCache.getAsObject("userInfo");
+
                 if (userInfo!=null){
                     String mid=data.get(position).getId()+"";
                     ApiMethods.getVideoClassNum(new MyObserver<No>(listener),  mid, userInfo.getId()+"",(RxAppCompatActivity) mContext);
                 }else {
-                    mContext.startActivity(intent);
+                    Toast.makeText(mContext, "请先登录", Toast.LENGTH_SHORT).show();
+
                 }
+
 
             }
                 //notifyDataSetChanged();//刷新

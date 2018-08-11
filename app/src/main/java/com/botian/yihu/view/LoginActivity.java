@@ -168,7 +168,7 @@ public class LoginActivity extends RxAppCompatActivity implements LoginContranct
             userInfo.setMoblie(data.getData().getMoblie());
             userInfo.setAvatar(data.getData().getAvatar());
             userInfo.setSex(data.getData().getSex());
-            mCache.put("userInfo", userInfo,  1200 * ACache.TIME_DAY);
+            mCache.put("userInfo", userInfo,  365 * ACache.TIME_DAY);
             Toast.makeText(this, d, Toast.LENGTH_SHORT).show();
             EventBus.getDefault().post(new LoginEvent(1));
             finish();

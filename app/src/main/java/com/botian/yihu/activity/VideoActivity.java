@@ -10,16 +10,16 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.botian.yihu.ObserverOnNextListener;
-import com.botian.yihu.ProgressObserver;
 import com.botian.yihu.R;
 import com.botian.yihu.api.ApiMethods;
 import com.botian.yihu.beans.VideoInfo;
 import com.botian.yihu.beans.VodRspData;
 import com.botian.yihu.eventbus.VideoEvent;
-import com.botian.yihu.fragment.VideoIntroduceFragment;
 import com.botian.yihu.fragment.VideoCatalogFragment;
 import com.botian.yihu.fragment.VideoDisscussFragment;
+import com.botian.yihu.fragment.VideoIntroduceFragment;
+import com.botian.yihu.rxjavautil.ObserverOnNextListener;
+import com.botian.yihu.rxjavautil.ProgressObserver;
 import com.botian.yihu.util.JZMediaIjkplayer;
 import com.tencent.rtmp.ITXVodPlayListener;
 import com.tencent.rtmp.TXLiveConstants;
@@ -67,6 +67,7 @@ public class VideoActivity extends RxAppCompatActivity {
     private TXVodPlayer mTXPlayerGetInfo;
     JZVideoPlayerStandard jzVideoPlayerStandard;
     String url;
+    private String buy="0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,11 +76,14 @@ public class VideoActivity extends RxAppCompatActivity {
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         Intent intent = getIntent();
+        View viff=videoplayer.getRootView();
+        TextView test=viff.findViewById(R.id.test);
+        test.setText("fjlads ");
         id = intent.getStringExtra("id");
         title = intent.getStringExtra("title");
         price = intent.getStringExtra("price");
         content = intent.getStringExtra("content");
-        videoIntroduceFragment = VideoIntroduceFragment.newInstance(title,price,content);
+        videoIntroduceFragment = VideoIntroduceFragment.newInstance(title,price,content,id);
         videoCatalogFragment = VideoCatalogFragment.newInstance(id);
         videoDisscussFragment = VideoDisscussFragment.newInstance(id);
         setDefaultFragment();
@@ -100,6 +104,14 @@ public class VideoActivity extends RxAppCompatActivity {
         };
         //视频目录第一条数据
         ApiMethods.getVideoDirectory1(new ProgressObserver<VideoInfo>(this, listener), "video_id,eq," + id, "pid,eq,1", this);
+    }
+
+    public String getBuy() {
+        return buy;
+    }
+
+    public void setBuy(String buy) {
+        this.buy = buy;
     }
 
     private ITXVodPlayListener mGetVodInfoListener = new ITXVodPlayListener() {
@@ -155,9 +167,12 @@ public class VideoActivity extends RxAppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.introduce:
-                introduce.setTextColor(getResources().getColor(R.color.colorAccent));
-                directory.setTextColor(getResources().getColor(R.color.default_text));
-                appraise.setTextColor(getResources().getColor(R.color.default_text));
+                introduce.setTextColor(getResources().getColor(R.color.blue));
+                //directory.setTextColor(getResources().getColor(R.color.default_text));
+                //appraise.setTextColor(getResources().getColor(R.color.default_text));
+                directory.setTextColor(getResources().getColor(R.color.textColorBlack));
+                appraise.setTextColor(getResources().getColor(R.color.textColorBlack));
+
                 view1.setVisibility(View.VISIBLE);
                 view2.setVisibility(View.INVISIBLE);
                 view3.setVisibility(View.INVISIBLE);
@@ -165,9 +180,9 @@ public class VideoActivity extends RxAppCompatActivity {
                 currentFragment = videoIntroduceFragment;
                 break;
             case R.id.directory:
-                introduce.setTextColor(getResources().getColor(R.color.default_text));
-                directory.setTextColor(getResources().getColor(R.color.colorAccent));
-                appraise.setTextColor(getResources().getColor(R.color.default_text));
+                introduce.setTextColor(getResources().getColor(R.color.textColorBlack));
+                directory.setTextColor(getResources().getColor(R.color.blue));
+                appraise.setTextColor(getResources().getColor(R.color.textColorBlack));
                 view1.setVisibility(View.INVISIBLE);
                 view2.setVisibility(View.VISIBLE);
                 view3.setVisibility(View.INVISIBLE);
@@ -175,9 +190,9 @@ public class VideoActivity extends RxAppCompatActivity {
                 currentFragment = videoCatalogFragment;
                 break;
             case R.id.appraise:
-                introduce.setTextColor(getResources().getColor(R.color.default_text));
-                directory.setTextColor(getResources().getColor(R.color.default_text));
-                appraise.setTextColor(getResources().getColor(R.color.colorAccent));
+                introduce.setTextColor(getResources().getColor(R.color.textColorBlack));
+                directory.setTextColor(getResources().getColor(R.color.textColorBlack));
+                appraise.setTextColor(getResources().getColor(R.color.blue));
                 view1.setVisibility(View.INVISIBLE);
                 view2.setVisibility(View.INVISIBLE);
                 view3.setVisibility(View.VISIBLE);
@@ -197,6 +212,15 @@ public class VideoActivity extends RxAppCompatActivity {
         com.bumptech.glide.Glide.with(this).load(cover).into(jzVideoPlayerStandard.thumbImageView);
         JZVideoPlayer.FULLSCREEN_ORIENTATION = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
         JZVideoPlayer.NORMAL_ORIENTATION = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+        View view =jzVideoPlayerStandard.getRootView();
+        TextView test=view.findViewById(R.id.test);
+        test.setText("fjlads ");
+        test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override

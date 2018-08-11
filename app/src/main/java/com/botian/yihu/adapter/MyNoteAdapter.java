@@ -88,7 +88,8 @@ public class MyNoteAdapter extends RecyclerView.Adapter<MyNoteAdapter.MyViewHold
                                 // .show();
                                 int id=data.get(position).getTopicId();
                                 int cl=data.get(position).getCl();
-                                DataSupport.deleteAll(NoteData.class,"topicId="+id+";"+"cl="+cl);
+                                int judge=data.get(position).getJudge();
+                                DataSupport.deleteAll(NoteData.class,"topicId="+id+";"+"cl="+cl+";"+"judge="+1);
                                 data.remove(position);
                                 notifyDataSetChanged();
                             }

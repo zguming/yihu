@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.botian.yihu.MyObserver;
-import com.botian.yihu.ObserverOnNextListener;
+import com.botian.yihu.rxjavautil.MyObserver;
+import com.botian.yihu.rxjavautil.ObserverOnNextListener;
 import com.botian.yihu.R;
 import com.botian.yihu.api.ApiMethods;
 import com.botian.yihu.beans.UserInfo;
@@ -83,9 +83,6 @@ public class VideoCommentAdapter extends RecyclerView.Adapter<VideoCommentAdapte
                         }else {
                             if (iscai == 1) {
                                 TextView textView = view.findViewById(R.id.commentList_item_tv_praise);
-                                Drawable mPraise = mContext.getResources().getDrawable(R.drawable.detail_like_p);
-                                mPraise.setBounds(0, 0, 40, 40);
-                                textView.setCompoundDrawables(mPraise, null, null, null);
                                 String str = data.get(position).getCai_num() + 1 + "";
                                 textView.setText(str);
                                 textView.setTextColor(mContext.getResources().getColor(R.color.blue));
@@ -93,9 +90,6 @@ public class VideoCommentAdapter extends RecyclerView.Adapter<VideoCommentAdapte
                                 iscai = 2;
                             } else {
                                 TextView textView = view.findViewById(R.id.commentList_item_tv_praise);
-                                Drawable mPraise = mContext.getResources().getDrawable(R.drawable.detail_like);
-                                mPraise.setBounds(0, 0, 40, 40);
-                                textView.setCompoundDrawables(mPraise, null, null, null);
                                 String str = data.get(position).getCai_num() + "";
                                 textView.setText(str);
                                 textView.setTextColor(mContext.getResources().getColor(R.color.default_text));
@@ -123,9 +117,6 @@ public class VideoCommentAdapter extends RecyclerView.Adapter<VideoCommentAdapte
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        Drawable mPraise = mContext.getResources().getDrawable(R.drawable.detail_like);
-        mPraise.setBounds(0, 0, 40, 40);
-        holder.commentListItemTvPraise.setCompoundDrawables(mPraise, null, null, null);
         String name = data.get(position).getUsres().getUsername();
         holder.name.setText(name);
         String date = data.get(position).getCreate_time().substring(2, 16);

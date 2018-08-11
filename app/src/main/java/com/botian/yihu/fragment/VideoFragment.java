@@ -5,16 +5,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
-import com.botian.yihu.GlideImageLoader;
-import com.botian.yihu.ObserverOnNextListener;
-import com.botian.yihu.ProgressObserver;
+import com.botian.yihu.util.GlideImageLoader;
+import com.botian.yihu.rxjavautil.ObserverOnNextListener;
+import com.botian.yihu.rxjavautil.ProgressObserver;
 import com.botian.yihu.R;
 import com.botian.yihu.adapter.VideoClassAdapter;
 import com.botian.yihu.api.ApiMethods;
@@ -45,7 +42,7 @@ public class VideoFragment extends RxFragment {
     private SharedPreferences pref;
     View header;
     private List<String> images = new ArrayList<>();
-    private String filter = "mid,eq,1";//首页轮播图mid==1
+    private String filter = "mid,eq,2";//课程轮播图mid==2
     Banner banner;
     private List<VideoClass.DataBean> data3;
     VideoClassAdapter adapter;

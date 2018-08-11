@@ -7,8 +7,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.botian.yihu.ObserverOnNextListener;
-import com.botian.yihu.ProgressObserver;
+import com.botian.yihu.rxjavautil.ObserverOnNextListener;
+import com.botian.yihu.rxjavautil.ProgressObserver;
 import com.botian.yihu.R;
 import com.botian.yihu.api.ApiMethods;
 import com.botian.yihu.beans.MistakeBean;

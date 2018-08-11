@@ -12,14 +12,10 @@ import android.widget.TextView;
 
 import com.botian.yihu.R;
 import com.botian.yihu.activity.MyCollectionPracticeActivity;
-import com.botian.yihu.beans.CollectionRecordsBean;
-import com.botian.yihu.beans.CollectionRecordsParcel;
-import com.botian.yihu.beans.MyCollection;
 import com.botian.yihu.database.CollectData;
 
 import org.litepal.crud.DataSupport;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -64,25 +60,6 @@ public class MyCollectAdapter extends RecyclerView.Adapter<MyCollectAdapter.MyVi
             public void onClick(View view) {
                 //XRecyclerView默认添加了一个header，因此要得到正确的position,需减去1
                 int position = myViewHolder.getAdapterPosition() - 1;
-                /*CollectionRecordsParcel collectionRecordsParcel = new CollectionRecordsParcel();
-                List<CollectionRecordsParcel.DataBean> dataBeanList=new ArrayList<>();
-                for (int i=0;i<data.size();i++){
-                    CollectionRecordsParcel.DataBean dataBean1 = new CollectionRecordsParcel.DataBean();
-                    dataBean1.setTopic_id(data.get(i).getId());
-                    dataBean1.setUser_id(data.get(i).getUserid());
-                    dataBean1.setName(data.get(i).getSection().getTitle());
-                    dataBean1.setA(data.get(i).getSection().getA());
-                    dataBean1.setB(data.get(i).getSection().getB());
-                    dataBean1.setC(data.get(i).getSection().getC());
-                    dataBean1.setD(data.get(i).getSection().getD());
-                    dataBean1.setE(data.get(i).getSection().getE());
-                    dataBean1.setCorrect(data.get(i).getSection().getCorrect());
-                    dataBean1.setImage(data.get(i).getSection().getLitpic());
-                    dataBean1.setAnalysis(data.get(i).getSection().getAnalysis());
-                    dataBeanList.add(dataBean1);
-                }
-                collectionRecordsParcel.setData(dataBeanList);
-                collectionRecordsParcel.setPosition(position);*/
                 Intent intent = new Intent(mContext, MyCollectionPracticeActivity.class);
                 //intent.putExtra("collectionRecordsParcel", collectionRecordsParcel);
                 intent.putExtra("position", position);
@@ -111,7 +88,8 @@ public class MyCollectAdapter extends RecyclerView.Adapter<MyCollectAdapter.MyVi
                                 // .show();
                                 int id=data.get(position).getTopicId();
                                 int cl=data.get(position).getCl();
-                                DataSupport.deleteAll(CollectData.class,"topicId="+id+";"+"cl="+cl);
+                                int judge=data.get(position).getJudge();
+                                DataSupport.deleteAll(CollectData.class,"topicId="+id+";"+"cl="+cl+";"+"judge="+judge);
                                 data.remove(position);
                                 notifyDataSetChanged();
                             }

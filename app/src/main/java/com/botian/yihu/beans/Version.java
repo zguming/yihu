@@ -4,14 +4,17 @@ import java.util.List;
 
 public class Version {
 
+
     /**
      * code : 400
-     * msg : 请更新到最新版!
-     * data : [{"id":1,"name":"1.0.0","status":0,"create_time":1525832449,"update_time":1525832758,"content":"","url":"www.baidu.com"}]
+     * msg : 请跟新到最新版本!
+     * invalidFilter : []
+     * data : [{"id":1,"name":"a_1.0.10","status":0,"create_time":"2018-05-09 10:20:49","update_time":"2018-07-14 09:41:03","content":"","url":"www.baidu.com"}]
      */
 
     private int code;
     private String msg;
+    private List<?> invalidFilter;
     private List<DataBean> data;
 
     public int getCode() {
@@ -30,6 +33,14 @@ public class Version {
         this.msg = msg;
     }
 
+    public List<?> getInvalidFilter() {
+        return invalidFilter;
+    }
+
+    public void setInvalidFilter(List<?> invalidFilter) {
+        this.invalidFilter = invalidFilter;
+    }
+
     public List<DataBean> getData() {
         return data;
     }
@@ -41,10 +52,10 @@ public class Version {
     public static class DataBean {
         /**
          * id : 1
-         * name : 1.0.0
+         * name : a_1.0.10
          * status : 0
-         * create_time : 1525832449
-         * update_time : 1525832758
+         * create_time : 2018-05-09 10:20:49
+         * update_time : 2018-07-14 09:41:03
          * content :
          * url : www.baidu.com
          */
@@ -52,8 +63,8 @@ public class Version {
         private int id;
         private String name;
         private int status;
-        private int create_time;
-        private int update_time;
+        private String create_time;
+        private String update_time;
         private String content;
         private String url;
 
@@ -81,19 +92,19 @@ public class Version {
             this.status = status;
         }
 
-        public int getCreate_time() {
+        public String getCreate_time() {
             return create_time;
         }
 
-        public void setCreate_time(int create_time) {
+        public void setCreate_time(String create_time) {
             this.create_time = create_time;
         }
 
-        public int getUpdate_time() {
+        public String getUpdate_time() {
             return update_time;
         }
 
-        public void setUpdate_time(int update_time) {
+        public void setUpdate_time(String update_time) {
             this.update_time = update_time;
         }
 

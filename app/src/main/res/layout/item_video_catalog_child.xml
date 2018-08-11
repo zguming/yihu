@@ -50,13 +50,22 @@
             android:layout_weight="1"
             android:layout_height="wrap_content" />
         <ImageView
-            android:id="@+id/tb_right"
+            android:id="@+id/tb_right1"
             android:layout_width="@dimen/dp20"
             android:layout_height="@dimen/dp20"
             android:layout_marginRight="10.0dip"
             android:gravity="center_vertical"
             android:scaleType="fitXY"
-            android:src="@drawable/nav_2_active" />
+            android:src="@drawable/ic_chapterinfo_lock" />
+        <ImageView
+            android:id="@+id/tb_right2"
+            android:layout_width="@dimen/dp20"
+            android:layout_height="@dimen/dp20"
+            android:layout_marginRight="10.0dip"
+            android:gravity="center_vertical"
+            android:scaleType="fitXY"
+            android:src="@drawable/nav_2_active"
+            android:visibility="gone"/>
     </LinearLayout>
 
     <View

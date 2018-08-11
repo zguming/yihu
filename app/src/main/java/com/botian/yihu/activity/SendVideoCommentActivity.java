@@ -7,13 +7,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.botian.yihu.ObserverOnNextListener;
-import com.botian.yihu.ProgressObserver;
+import com.botian.yihu.rxjavautil.ObserverOnNextListener;
+import com.botian.yihu.rxjavautil.ProgressObserver;
 import com.botian.yihu.R;
 import com.botian.yihu.api.ApiMethods;
 import com.botian.yihu.beans.SendCommentBean;
 import com.botian.yihu.beans.UserInfo;
-import com.botian.yihu.eventbus.TopicCardEventNote;
 import com.botian.yihu.eventbus.VideoCommentEvent;
 import com.botian.yihu.util.ACache;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;

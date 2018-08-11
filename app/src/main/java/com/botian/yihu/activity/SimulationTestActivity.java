@@ -4,13 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.botian.yihu.ObserverOnNextListener;
-import com.botian.yihu.ProgressObserver;
 import com.botian.yihu.R;
-import com.botian.yihu.api.ApiMethods;
-import com.botian.yihu.beans.MoniTest;
 import com.botian.yihu.beans.UserInfo;
 import com.botian.yihu.util.ACache;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
@@ -30,10 +27,14 @@ public class SimulationTestActivity extends RxAppCompatActivity {
     Button startTest;
     @BindView(R.id.place)
     TextView place;
+    @BindView(R.id.back)
+    ImageView back;
     private ACache mCache;
     private UserInfo userInfo;
-    String subjectNo;
+    String place1;
     String typeid;
+    String subjectNo;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,24 +42,20 @@ public class SimulationTestActivity extends RxAppCompatActivity {
         setContentView(R.layout.activity_simulation_test);
         ButterKnife.bind(this);
         Intent intent = getIntent();
+        place1 = intent.getStringExtra("place");
+        typeid = intent.getStringExtra("id");
         subjectNo = intent.getStringExtra("subjectNo");
         mCache = ACache.get(this);
         //从缓存读取用户信息
         userInfo = (UserInfo) mCache.getAsObject("userInfo");
-        ObserverOnNextListener<MoniTest> listener = new ObserverOnNextListener<MoniTest>() {
-            @Override
-            public void onNext(MoniTest data) {
-                place.setText("所在考场：" + data.getData().get(0).getTypename());
-                typeid = data.getData().get(0).getId() + "";
-                name.setText("姓名：" + userInfo.getUsername());
-                if (userInfo.getSex() == 0) {
-                    sex.setText("性别：女");
-                } else {
-                    sex.setText("性别：男");
-                }
-            }
-        };
-        ApiMethods.getMoniTestPlace(new ProgressObserver<MoniTest>(SimulationTestActivity.this, listener), "mid,eq," + subjectNo, this);
+        String a = "所在考场：" + place1;
+        place.setText(a);
+        name.setText("姓名：" + userInfo.getUsername());
+        if (userInfo.getSex() == 0) {
+            sex.setText("性别：女");
+        } else {
+            sex.setText("性别：男");
+        }
     }
 
     @OnClick({R.id.title, R.id.name, R.id.sex, R.id.start_test})
@@ -77,5 +74,10 @@ public class SimulationTestActivity extends RxAppCompatActivity {
                 startActivity(intent);
                 break;
         }
+    }
+
+    @OnClick(R.id.back)
+    public void onViewClicked() {
+        finish();
     }
 }

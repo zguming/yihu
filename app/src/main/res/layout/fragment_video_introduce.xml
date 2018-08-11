@@ -5,42 +5,47 @@
     android:layout_marginLeft="@dimen/dp5"
     android:layout_marginRight="@dimen/dp5"
     android:orientation="vertical">
-    <TextView
-        android:id="@+id/title"
+    <WebView
+        android:id="@+id/show"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp10"
-        android:textSize="20sp"
-        android:textColor="@color/textColorBlack"
-        android:text="标题"/>
+        android:layout_height="0dp"
+        android:scrollbars="none"
+        android:layout_weight="1">
+
+    </WebView>
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:background="@color/gray_line_color"/>
-    <TextView
-        android:id="@+id/price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp10"
-        android:layout_marginBottom="@dimen/dp10"
-        android:textColor="@color/red"
-        android:text="价格"/>
-    <View
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/gray_line_color"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dp10"
-        android:text="课程简介"
-        android:textColor="@color/textColorBlack"
-        android:textSize="18sp"
-        />
-    <TextView
-        android:id="@+id/content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="课程内容"/>
+        android:layout_height="40dp"
+        >
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/red"/>
+        <Button
+            android:id="@+id/phone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@drawable/selector_buy"
+            android:textColor="@color/white"
+            android:text="咨询客服"/>
+        <Button
+            android:id="@+id/buy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@drawable/selector_buy2"
+            android:textColor="@color/white"
+            android:text="购买"/>
+    </LinearLayout>
 
 </LinearLayout>

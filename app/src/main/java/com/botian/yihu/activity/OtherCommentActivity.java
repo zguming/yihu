@@ -10,9 +10,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.botian.yihu.MyObserver;
-import com.botian.yihu.ObserverOnNextListener;
-import com.botian.yihu.ProgressObserver;
+import com.botian.yihu.rxjavautil.MyObserver;
+import com.botian.yihu.rxjavautil.ObserverOnNextListener;
+import com.botian.yihu.rxjavautil.ProgressObserver;
 import com.botian.yihu.R;
 import com.botian.yihu.adapter.OtherCommentAdapter;
 import com.botian.yihu.api.ApiMethods;
@@ -76,7 +76,7 @@ public class OtherCommentActivity extends RxAppCompatActivity {
         listener = new ObserverOnNextListener<TopicCommentZip>() {
             @Override
             public void onNext(TopicCommentZip data) {
-                zanNum=data.getData().getTotal()+"";
+                zanNum = data.getData().getTotal() + "";
                 setAdapter(data.getData2());
                 //禁用下拉刷新和加载更多功能
                 commentRecyclerView.setPullRefreshEnabled(false);
@@ -95,11 +95,13 @@ public class OtherCommentActivity extends RxAppCompatActivity {
         String filter1 = "mid,eq," + commentParcel.getId();
         ApiMethods.getTopicCommentZip(new ProgressObserver<TopicCommentZip>(OtherCommentActivity.this, listener), filter1, this);
     }
-public void initView(){
-    Drawable mPraise = getResources().getDrawable(R.drawable.detail_like);
-    mPraise.setBounds(0, 0, 40, 40);
-    tvPraise.setCompoundDrawables(mPraise, null, null, null);
-}
+
+    public void initView() {
+        Drawable mPraise = getResources().getDrawable(R.drawable.detail_like);
+        mPraise.setBounds(0, 0, 40, 40);
+        tvPraise.setCompoundDrawables(mPraise, null, null, null);
+    }
+
     public void setAdapter(OtherCommentBean.DataBeanX data) {
         current_page = data.getCurrent_page();
         last_page = data.getLast_page();
@@ -129,7 +131,7 @@ public void initView(){
                 // load more data here
                 if (current_page == last_page) {
                 } else {
-                    ApiMethods.getComment(new MyObserver<OtherCommentBean>( listener1), commentParcel.getId() + "", current_page + 1 + "", "30", OtherCommentActivity.this);
+                    ApiMethods.getComment(new MyObserver<OtherCommentBean>(listener1), commentParcel.getId() + "", current_page + 1 + "", "30", OtherCommentActivity.this);
                 }
                 //ApiMethods.getComment(new ProgressObserver<OtherCommentBean>(OtherCommentActivity.this, listener), commentParcel.getId() + "",current_page+1+"","20");
                 //commentRecyclerView.loadMoreComplete();
@@ -137,18 +139,17 @@ public void initView(){
         });
     }
 
-    @OnClick({ R.id.rl_praise, R.id.rl_comment})
+    @OnClick({R.id.rl_praise, R.id.rl_comment})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_praise:
                 ObserverOnNextListener<ZanBean> listener = new ObserverOnNextListener<ZanBean>() {
                     @Override
                     public void onNext(ZanBean data) {
-                        String a=data.getMsg();
-                        if (data.getCode()==400){
+                        String a = data.getMsg();
+                        if (data.getCode() == 400) {
                             Toast.makeText(OtherCommentActivity.this, a, Toast.LENGTH_SHORT).show();
-                        }
-                        else {
+                        } else {
                             if (iscal == 1) {
                                 Drawable mPraise = getResources().getDrawable(R.drawable.detail_like_p);
                                 mPraise.setBounds(0, 0, 40, 40);
@@ -170,7 +171,7 @@ public void initView(){
                 if (userInfo == null) {
                     Toast.makeText(OtherCommentActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
                 } else {
-                    ApiMethods.getTiZan(new MyObserver<ZanBean>(listener), commentParcel.getId() + "", userInfo.getId() + "", commentParcel.getCl(), iscal+"", this);
+                    ApiMethods.getTiZan(new MyObserver<ZanBean>(listener), commentParcel.getId() + "", userInfo.getId() + "", commentParcel.getCl(), iscal + "", this);
                 }
                 break;
             case R.id.rl_comment:

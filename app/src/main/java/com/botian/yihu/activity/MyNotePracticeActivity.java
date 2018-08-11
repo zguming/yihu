@@ -177,8 +177,9 @@ public class MyNotePracticeActivity extends RxAppCompatActivity {
                         int position00 = viewPagerAnswer.getCurrentItem();
                         int id = practiceList.get(position00).getTopicId();
                         int cl = practiceList.get(position00).getCl();
+                        int judge = practiceList.get(position00).getJudge();
                         //practiceList9.clear();
-                        practiceList9 = DataSupport.where("topicId=" + id + ";" + "cl=" + cl).find(CollectData.class);
+                        practiceList9 = DataSupport.where("topicId=? and cl=? and judge=?",id+"",cl+"",judge+"").find(CollectData.class);
                         emitter.onNext(1);
 
                         //emitter.onComplete();
@@ -239,8 +240,9 @@ public class MyNotePracticeActivity extends RxAppCompatActivity {
                         int position00 = viewPager.getCurrentItem();
                         int id = practiceList.get(position00).getTopicId();
                         int cl = practiceList.get(position00).getCl();
+                        int judge = practiceList.get(position00).getJudge();
                         //practiceList9.clear();
-                        practiceList9 = DataSupport.where("topicId=" + id + ";" + "cl=" + cl).find(CollectData.class);
+                        practiceList9 = DataSupport.where("topicId=? and cl=? and judge=?",id+"",cl+"",judge+"").find(CollectData.class);
                         emitter.onNext(1);
 
                         //emitter.onComplete();
@@ -288,7 +290,8 @@ public class MyNotePracticeActivity extends RxAppCompatActivity {
                 int position00 = viewPagerAnswer.getCurrentItem();
                 int id = practiceList.get(position00).getTopicId();
                 int cl = practiceList.get(position00).getCl();
-                practiceList9 = DataSupport.where("topicId=" + id + ";" + "cl=" + cl).find(CollectData.class);
+                int judge = practiceList.get(position00).getJudge();
+                practiceList9 = DataSupport.where("topicId=? and cl=? and judge=?",id+"",cl+"",judge+"").find(CollectData.class);
 
                 emitter.onNext(1);
 
@@ -384,8 +387,9 @@ public class MyNotePracticeActivity extends RxAppCompatActivity {
                             int position00 = position;
                             int id = practiceList.get(position00).getTopicId();
                             int cl = practiceList.get(position00).getCl();
+                            int judge = practiceList.get(position00).getJudge();
                             //practiceList9.clear();
-                            practiceList9 = DataSupport.where("topicId=" + id + ";" + "cl=" + cl).find(CollectData.class);
+                            practiceList9 = DataSupport.where("topicId=? and cl=? and judge=?",id+"",cl+"",judge+"").find(CollectData.class);
 
                             emitter.onNext(1);
 
@@ -439,8 +443,9 @@ public class MyNotePracticeActivity extends RxAppCompatActivity {
                             int position00 = position;
                             int id = practiceList.get(position00).getTopicId();
                             int cl = practiceList.get(position00).getCl();
+                            int judge = practiceList.get(position00).getJudge();
                             //practiceList9.clear();
-                            practiceList9 = DataSupport.where("topicId=" + id + ";" + "cl=" + cl).find(CollectData.class);
+                            practiceList9 = DataSupport.where("topicId=? and cl=? and judge=?",id+"",cl+"",judge+"").find(CollectData.class);
 
                             emitter.onNext(1);
 
@@ -565,13 +570,16 @@ public class MyNotePracticeActivity extends RxAppCompatActivity {
         collectData.setCl(practiceList.get(finalI1).getCl());
         collectData.setMaterial(practiceList.get(finalI1).getMaterial());
         collectData.setImage(practiceList.get(finalI1).getImage());
+        collectData.setJudge(practiceList.get(finalI1).getJudge());
+
         collectData.save();
     }
 
     public void delleteCollectDataBase(int finalI1) {
         int id98 = practiceList.get(finalI1).getTopicId();
         int cl98 = practiceList.get(finalI1).getCl();
-        DataSupport.deleteAll(CollectData.class, "topicId=" + id98 + ";" + "cl=" + cl98);
+        int judge = practiceList.get(finalI1).getJudge();
+        DataSupport.deleteAll(CollectData.class, "topicId=? and cl=? and judge=?",id98+"",cl98+"",judge+"");
 
     }
 
@@ -581,11 +589,12 @@ public class MyNotePracticeActivity extends RxAppCompatActivity {
             public void run() {
                 int id1 = practiceList.get(finalI1).getTopicId();
                 int cl1 = practiceList.get(finalI1).getCl();
-                noteList9 = DataSupport.where("topicId=" + id1 + ";" + "cl=" + cl1).find(NoteData.class);
+                int judge = practiceList.get(finalI1).getJudge();
+                noteList9 = DataSupport.where("topicId=? and cl=? and judge=?",id1+"",cl1+"",judge+"").find(NoteData.class);
                 if (noteList9.size() > 0) {
                     NoteData noteData = new NoteData();
                     noteData.setNote(note);
-                    noteData.updateAll("topicId=" + id1 + ";" + "cl=" + cl1);
+                    noteData.updateAll("topicId=? and cl=? and judge=?",id1+"",cl1+"",judge+"");
                 } else {
                     NoteData noteData = new NoteData();
                     noteData.setTopicId(practiceList.get(finalI1).getTopicId());
@@ -602,6 +611,7 @@ public class MyNotePracticeActivity extends RxAppCompatActivity {
                     noteData.setMaterial(practiceList.get(finalI1).getMaterial());
                     noteData.setImage(practiceList.get(finalI1).getImage());
                     noteData.setNote(note);
+                    noteData.setJudge(practiceList.get(finalI1).getJudge());
                     noteData.save();
                 }
 
@@ -615,7 +625,8 @@ public class MyNotePracticeActivity extends RxAppCompatActivity {
 
     public void test(int i, int j) {
         //AnswerFragment会调用此方法
-        correct1 = correct1 + 1;
+        if (j==0){
+        correct1 = correct1 + 1;}
         topicCard.set(i, j);
 
     }

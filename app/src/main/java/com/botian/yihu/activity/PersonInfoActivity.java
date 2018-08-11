@@ -3,14 +3,15 @@ package com.botian.yihu.activity;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -21,15 +22,15 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.botian.yihu.ObserverOnNextListener;
-import com.botian.yihu.ProgressObserver;
+import com.botian.yihu.rxjavautil.ObserverOnNextListener;
+import com.botian.yihu.rxjavautil.ProgressObserver;
 import com.botian.yihu.R;
 import com.botian.yihu.api.ApiMethods;
 import com.botian.yihu.beans.ChangeUserInfo;
@@ -41,13 +42,10 @@ import com.botian.yihu.util.ScreenSizeUtils;
 import com.botian.yihu.view.ForgetPasswordActivity;
 import com.bumptech.glide.Glide;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
-
 import org.greenrobot.eventbus.EventBus;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -101,11 +99,6 @@ public class PersonInfoActivity extends RxAppCompatActivity {
     }
 
     private void initView() {
-        Drawable tv1 = getResources().getDrawable(R.drawable.ic_arrow_right_small);
-        tv1.setBounds(0, 0, 60, 60);
-        tvUsername.setCompoundDrawables(null, null, tv1, null);
-        tvGender.setCompoundDrawables(null, null, tv1, null);
-        textView3.setCompoundDrawables(null, null, tv1, null);
         tvAccount.setText(userInfo.getMoblie());
         tvUsername.setText(userInfo.getUsername());
         String sex;
@@ -222,6 +215,7 @@ public class PersonInfoActivity extends RxAppCompatActivity {
                     }
                 });
                 dialog3.show();
+
                 break;
             case R.id.rl_gender:
                 final String origin1 = tvGender.getText().toString();
@@ -466,6 +460,5 @@ public class PersonInfoActivity extends RxAppCompatActivity {
     public void onViewClicked() {
         finish();
     }
-
 
 }

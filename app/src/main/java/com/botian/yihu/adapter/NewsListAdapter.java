@@ -27,7 +27,6 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.MyView
     private List<NewsList.DataBeanX.DataBean> data;
     private Context mContext;
 
-
     static class MyViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.news_title)
         TextView newsTitle;
@@ -62,7 +61,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.MyView
             @Override
             public void onClick(View v) {
                 //XRecyclerView默认添加了一个header，因此要得到正确的position,需减去1
-                final int position = myViewHolder.getAdapterPosition() - 2;
+                final int position = myViewHolder.getAdapterPosition() - 1;
                 Intent intent = new Intent(mContext, NewsContentActivity.class);
                 intent.putExtra("id", data.get(position).getId() + "");
                 intent.putExtra("content", data.get(position).getcontent());
@@ -80,15 +79,17 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.MyView
         holder.newsSrc.setText(date);
         String aa = data.get(position).getClick() + "次阅读";
         holder.newsTime.setText(aa);
-        if (position==0){
-            holder.topLine.setVisibility(View.VISIBLE);
-        }
+        //if (position==0){
+            //holder.topLine.setVisibility(View.VISIBLE);
+        //}
         if (data.get(position).getLitpic() != null && !data.get(position).getLitpic().equals("")) {
             holder.newsPic.setVisibility(View.VISIBLE);
             Glide.with(mContext)
                     .load("http://btsc.botian120.com" + data.get(position).getLitpic())
                     //.centerCrop()
                     .into(holder.newsPic);
+        }else{
+            holder.newsPic.setVisibility(View.GONE);
         }
     }
 

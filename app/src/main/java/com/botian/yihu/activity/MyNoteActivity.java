@@ -91,25 +91,7 @@ public class MyNoteActivity extends RxAppCompatActivity {
                         //Log.d(TAG, "complete");
                     }
                 });
-        //mCache= ACache.get(this);
-        //从缓存读取用户信息
-        //userInfo = (UserInfo) mCache.getAsObject("userInfo");
-        /*listener = new ObserverOnNextListener<MyCollection>() {
-            @Override
-            public void onNext(MyCollection data) {
-                //禁用下拉刷新和加载更多功能
-                commentRecyclerView.setPullRefreshEnabled(false);
-                commentRecyclerView.setLoadingMoreEnabled(false);
-                LinearLayoutManager layoutManager = new LinearLayoutManager(MyCollectionActivity.this);
-                commentRecyclerView.setLayoutManager(layoutManager);
-                MyCollectAdapter adapter = new MyCollectAdapter(MyCollectionActivity.this, data.getData());
-                commentRecyclerView.setAdapter(adapter);
-            }
-        };
-        int userId=userInfo.getId();
-        String filter="userid,eq,"+userId;
-        ApiMethods.getCollectionRecords(new ProgressObserver<MyCollection>(MyCollectionActivity.this, listener),  filter,this);
-*/
+
     }
 
     @OnClick(R.id.back)

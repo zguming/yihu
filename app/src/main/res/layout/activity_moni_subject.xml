@@ -43,6 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp20"
         android:layout_marginRight="@dimen/dp20"
+        android:layout_marginTop="@dimen/dp30"
         android:background="@drawable/shape_login_bg"
         android:orientation="vertical"
         android:padding="20dp">
@@ -54,14 +55,15 @@
             android:layout_marginLeft="10dp"
             android:text="护士执业资格考试"
             android:textColor="@color/TextColorBlack"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:visibility="gone"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="35dp"
-            android:layout_marginTop="100dp"
-            android:background="?selectableItemBackground"
-            android:gravity="center_vertical">
+            android:layout_marginTop="40dp"
+            android:layout_gravity="center_vertical"
+            android:background="?selectableItemBackground">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -89,9 +91,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="35dp"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="40dp"
             android:background="?selectableItemBackground"
-            android:gravity="center_vertical">
+            android:layout_gravity="center_vertical">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -117,15 +120,55 @@
 
         </LinearLayout>
 
+    </LinearLayout>
+    <Button
+        android:id="@+id/start_test"
+        android:layout_width="wrap_content"
+        android:layout_height="40.0dip"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp10"
+        android:paddingLeft="@dimen/dp15"
+        android:paddingRight="@dimen/dp15"
+        android:background="@drawable/selector_login_btn"
+        android:text="开始考试"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/gray_line_color"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        >
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/red"/>
         <Button
-            android:id="@+id/start_test"
-            android:layout_width="wrap_content"
-            android:layout_height="45.0dip"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/dp10"
-            android:background="@drawable/selector_login_btn"
-            android:text="开始考试"
+            android:id="@+id/phone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@drawable/selector_buy"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:text="咨询客服"/>
+        <Button
+            android:id="@+id/buy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@drawable/selector_buy2"
+            android:textColor="@color/white"
+            android:text="购买"/>
     </LinearLayout>
 </LinearLayout>

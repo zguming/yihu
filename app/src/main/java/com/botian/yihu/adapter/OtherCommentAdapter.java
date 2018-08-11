@@ -1,16 +1,16 @@
 package com.botian.yihu.adapter;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.botian.yihu.MyObserver;
-import com.botian.yihu.ObserverOnNextListener;
+import com.botian.yihu.rxjavautil.MyObserver;
+import com.botian.yihu.rxjavautil.ObserverOnNextListener;
 import com.botian.yihu.R;
 import com.botian.yihu.api.ApiMethods;
 import com.botian.yihu.beans.OtherCommentBean;
@@ -38,6 +38,7 @@ public class OtherCommentAdapter extends RecyclerView.Adapter<OtherCommentAdapte
     private RxAppCompatActivity yy;
     private int iscai = 1;//1点赞，2取消点赞
 
+
     static class MyViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.userface)
         CircleImageView userface;
@@ -47,6 +48,8 @@ public class OtherCommentAdapter extends RecyclerView.Adapter<OtherCommentAdapte
         TextView date;
         @BindView(R.id.content)
         TextView content;
+        @BindView(R.id.image_praise)
+        ImageView imagePraise;
         @BindView(R.id.commentList_item_tv_praise)
         TextView commentListItemTvPraise;
         private View view;
@@ -69,7 +72,7 @@ public class OtherCommentAdapter extends RecyclerView.Adapter<OtherCommentAdapte
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_topic_comment, parent, false);
         final MyViewHolder myViewHolder = new MyViewHolder(view);
         //RecyclerView的item点击事件 点击切换fragment
-        myViewHolder.commentListItemTvPraise.setOnClickListener(new View.OnClickListener() {
+        myViewHolder.imagePraise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
                 //XRecyclerView默认添加了一个header，因此要得到正确的position,需减去1
@@ -78,27 +81,29 @@ public class OtherCommentAdapter extends RecyclerView.Adapter<OtherCommentAdapte
                     @Override
                     public void onNext(ZanBean data1) {
                         String a = data1.getMsg();
-                        if (data1.getCode()==400){
+                        if (data1.getCode() == 400) {
                             Toast.makeText(mContext, a, Toast.LENGTH_SHORT).show();
-                        }else {
+                        } else {
                             if (iscai == 1) {
-                                TextView textView = view.findViewById(R.id.commentList_item_tv_praise);
-                                Drawable mPraise = mContext.getResources().getDrawable(R.drawable.detail_like_p);
-                                mPraise.setBounds(0, 0, 40, 40);
-                                textView.setCompoundDrawables(mPraise, null, null, null);
+                                //TextView textView = view.findViewById(R.id.commentList_item_tv_praise);
+                                //ImageView imaageView = view.findViewById(R.id.image_praise);
+                                myViewHolder.imagePraise.setImageResource(R.drawable.detail_like_p);
+
                                 String str = data.get(position).getCai_num() + 1 + "";
-                                textView.setText(str);
-                                textView.setTextColor(mContext.getResources().getColor(R.color.blue));
+                                myViewHolder.commentListItemTvPraise.setText(str);
+
+                                //textView.setText(str);
+                                myViewHolder.commentListItemTvPraise.setTextColor(mContext.getResources().getColor(R.color.blue));
 
                                 iscai = 2;
                             } else {
-                                TextView textView = view.findViewById(R.id.commentList_item_tv_praise);
-                                Drawable mPraise = mContext.getResources().getDrawable(R.drawable.detail_like);
-                                mPraise.setBounds(0, 0, 40, 40);
-                                textView.setCompoundDrawables(mPraise, null, null, null);
+
+                                //ImageView imaageView = view.findViewById(R.id.image_praise);
+                                //TextView textView = view.findViewById(R.id.commentList_item_tv_praise);
                                 String str = data.get(position).getCai_num() + "";
-                                textView.setText(str);
-                                textView.setTextColor(mContext.getResources().getColor(R.color.default_text));
+                                myViewHolder.imagePraise.setImageResource(R.drawable.detail_like);
+                                myViewHolder.commentListItemTvPraise.setText(str);
+                                myViewHolder.commentListItemTvPraise.setTextColor(mContext.getResources().getColor(R.color.default_text));
 
                                 iscai = 1;
                             }
@@ -112,8 +117,8 @@ public class OtherCommentAdapter extends RecyclerView.Adapter<OtherCommentAdapte
                     Toast.makeText(mContext, "请先登录", Toast.LENGTH_SHORT).show();
                 } else {
                     String userid = userInfo.getId() + "";
-                    String mid=data.get(position).getId() + "";
-                    ApiMethods.getCommentZan(new MyObserver<ZanBean>(listener), mid, userid,  iscai + "", yy);
+                    String mid = data.get(position).getId() + "";
+                    ApiMethods.getCommentZan(new MyObserver<ZanBean>(listener), mid, userid, iscai + "", yy);
                     //notifyDataSetChanged();//刷新
                 }
             }
@@ -123,9 +128,6 @@ public class OtherCommentAdapter extends RecyclerView.Adapter<OtherCommentAdapte
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        Drawable mPraise = mContext.getResources().getDrawable(R.drawable.detail_like);
-        mPraise.setBounds(0, 0, 40, 40);
-        holder.commentListItemTvPraise.setCompoundDrawables(mPraise, null, null, null);
         String name = data.get(position).getUsres().getUsername();
         holder.name.setText(name);
         String date = data.get(position).getCreate_time().substring(2, 16);
@@ -134,12 +136,12 @@ public class OtherCommentAdapter extends RecyclerView.Adapter<OtherCommentAdapte
         holder.content.setText(content);
         String commentListItemTvPraise = data.get(position).getCai_num() + "";
         holder.commentListItemTvPraise.setText(commentListItemTvPraise);
-        String picUrl=(String)data.get(position).getUsres().getAvatar();
-        if (picUrl!=null&& !picUrl.equals("")) {
+        String picUrl = (String) data.get(position).getUsres().getAvatar();
+        if (picUrl != null && !picUrl.equals("")) {
             Glide.with(mContext)
-                    .load("http://btsc.botian120.com"+picUrl)
+                    .load("http://btsc.botian120.com" + picUrl)
                     .into(holder.userface);
-        }else {
+        } else {
             holder.userface.setImageResource(R.drawable.home_head_default);
         }
     }

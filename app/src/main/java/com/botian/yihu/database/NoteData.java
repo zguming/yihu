@@ -28,8 +28,26 @@ public class NoteData extends DataSupport {
     private String image;
     private String note;
     private int cl;
+    private int zhenti;
     private int typeid;
     private String material;
+    private int judge;
+
+    public int getJudge() {
+        return judge;
+    }
+
+    public void setJudge(int judge) {
+        this.judge = judge;
+    }
+
+    public int getZhenti() {
+        return zhenti;
+    }
+
+    public void setZhenti(int zhenti) {
+        this.zhenti = zhenti;
+    }
 
     public String getMaterial() {
         return material;

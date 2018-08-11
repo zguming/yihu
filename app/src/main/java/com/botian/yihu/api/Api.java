@@ -1,9 +1,6 @@
 package com.botian.yihu.api;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
-
-import com.botian.yihu.MyApplication;
+import com.botian.yihu.util.MyApplication;
 import com.botian.yihu.util.NetWorkUtils;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 

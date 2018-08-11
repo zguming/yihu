@@ -1,7 +1,5 @@
 package com.botian.yihu.beans;
 
-import java.util.List;
-
 /**
  * Created by Administrator on 2018/3/28 0028.
  */

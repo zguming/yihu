@@ -169,15 +169,6 @@ public class RegisterActivity extends RxAppCompatActivity implements RegisterCon
                 }
                 break;
             case R.id.register_btn://注册
-                String versionCode="0";
-                PackageManager manager = getPackageManager();//获取包管理器
-                try {
-                    //通过当前的包名获取包的信息
-                    PackageInfo info = manager.getPackageInfo(getPackageName(),0);//获取包对象信息
-                    versionCode=info.versionCode+"";
-                } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
-                }
                 mobile = acetRegisterUser.getText().toString();
                 identify = acetRegisterIdentify.getText().toString();
                 pwd = acetRegisterPwd.getText().toString();
@@ -189,7 +180,7 @@ public class RegisterActivity extends RxAppCompatActivity implements RegisterCon
                 //验证用户名,验证码和密码
                 if (validateAccount(mobile) && validateIdentify(identify) &&validateName(username)&& validatePassword(pwd)) {
                     registerpresenter = new RegisterPresenter(this);
-                    registerpresenter.presenter(this, username,mobile,pwd,versionCode,identify,this);
+                    registerpresenter.presenter(this, username,mobile,pwd,identify,this);
                 }
                 break;
         }

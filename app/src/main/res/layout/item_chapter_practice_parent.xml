@@ -40,13 +40,43 @@
 
     <TextView
         android:id="@+id/node_value"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="35dp"
         android:layout_marginRight="25dp"
         android:textColor="@color/textColorBlack"
         android:textSize="16sp" />
+    <TextView
+        android:id="@+id/node_value2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="98dp"
+        android:textColor="@color/textColorBlack"
+        android:textSize="16sp"
+        android:visibility="gone"/>
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="分享后解锁"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="31dp"
+        android:textColor="@color/yellow"
+        android:visibility="gone"/>
+    <ImageView
+        android:id="@+id/tb_right"
+        android:layout_width="@dimen/dp20"
+        android:layout_height="@dimen/dp20"
+        android:layout_marginRight="10.0dip"
+        android:layout_centerVertical="true"
+        android:scaleType="fitXY"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_chapterinfo_lock"
+        android:visibility="gone"/>
     <ImageView
         android:id="@+id/arrow"
         android:layout_width="20dp"

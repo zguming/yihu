@@ -1,7 +1,5 @@
 package com.botian.yihu.activity;
 
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -11,11 +9,7 @@ import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
-import com.botian.yihu.MyObserver;
-import com.botian.yihu.ObserverOnNextListener;
 import com.botian.yihu.R;
-import com.botian.yihu.api.ApiMethods;
-import com.botian.yihu.beans.Version;
 import com.botian.yihu.fragment.LiveFragment;
 import com.botian.yihu.fragment.NewsFragment;
 import com.botian.yihu.fragment.PracticeFragment;
@@ -29,7 +23,7 @@ public class MainActivity extends RxAppCompatActivity implements BottomNavigatio
     private UserFragment mUserFragment;
     private NewsFragment mNewsFragment;
     private PracticeFragment mPracticeFragment;
-    //private LiveFragment mLiveFragment;
+    private LiveFragment mLiveFragment;
     private FragmentManager mFragmentManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,32 +38,15 @@ public class MainActivity extends RxAppCompatActivity implements BottomNavigatio
         bottomNavigationBar.setActiveColor(R.color.Main_text_click);
         bottomNavigationBar.addItem(new BottomNavigationItem(R.drawable.nav_1_active, "练习").setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.nav_1)))
                 .addItem(new BottomNavigationItem(R.drawable.nav_2_active, "课程").setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.nav_2)))
-                //.addItem(new BottomNavigationItem(R.drawable.main_live_focus, "直播").setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.main_live)))
+                .addItem(new BottomNavigationItem(R.drawable.nav_5_activity, "直播").setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.nav_5)))
                 .addItem(new BottomNavigationItem(R.drawable.nav_3_active, "资讯").setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.nav_3)))
                 .addItem(new BottomNavigationItem(R.drawable.nav_4_active, "我的").setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.nav_4)))
                 .setFirstSelectedPosition(0)
                 .initialise();
         setDefaultFragment();
         bottomNavigationBar.setTabSelectedListener(this);
-        ObserverOnNextListener<Version> listener = new ObserverOnNextListener<Version>() {
-            @Override
-            public void onNext(Version data) {
-                String versionCode="0";
-                PackageManager manager = getPackageManager();//获取包管理器
-                try {
-                    //通过当前的包名获取包的信息
-                    PackageInfo info = manager.getPackageInfo(getPackageName(),0);//获取包对象信息
-                    versionCode=info.versionCode+"";
-                } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
-                }
-              String version = data.getData().get(0).getName();
-                if (versionCode.equals(version)){
 
-                }
-            }
-        };
-        ApiMethods.getVersion(new MyObserver<Version>( listener),this);
+
     }
     /**
      * 设置默认的
@@ -109,15 +86,15 @@ public class MainActivity extends RxAppCompatActivity implements BottomNavigatio
                     transaction.show(mVideoFragment);
                 }
                 break;
-            /*case 2:
+            case 2:
                 if (mLiveFragment == null) {
                     mLiveFragment = LiveFragment.newInstance("直播");
                     transaction.add(R.id.layFrame, mLiveFragment);
                 }else{
                     transaction.show(mLiveFragment);
                 }
-                break;*/
-            case 2:
+                break;
+            case 3:
                 if (mNewsFragment == null) {
                     mNewsFragment = NewsFragment.newInstance("资讯");
                     transaction.add(R.id.layFrame, mNewsFragment);
@@ -125,7 +102,7 @@ public class MainActivity extends RxAppCompatActivity implements BottomNavigatio
                     transaction.show(mNewsFragment);
                 }
                 break;
-            case 3:
+            case 4:
                 if (mUserFragment == null) {
                     mUserFragment = UserFragment.newInstance("我的");
                     transaction.add(R.id.layFrame, mUserFragment);
@@ -151,9 +128,9 @@ public class MainActivity extends RxAppCompatActivity implements BottomNavigatio
         if (mVideoFragment != null){
             transaction.hide(mVideoFragment);
         }
-        //if (mLiveFragment != null){
-        //    transaction.hide(mLiveFragment);
-        //}
+        if (mLiveFragment != null){
+            transaction.hide(mLiveFragment);
+        }
         if (mNewsFragment != null){
             transaction.hide(mNewsFragment);
         }

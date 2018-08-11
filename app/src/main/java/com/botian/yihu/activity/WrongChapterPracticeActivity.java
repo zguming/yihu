@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.botian.yihu.R;
 import com.botian.yihu.adapter.MyPagerAdapter;
 import com.botian.yihu.beans.CommentParcel;
-import com.botian.yihu.database.PracticeData;
+import com.botian.yihu.database.WrongData;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import org.litepal.crud.DataSupport;
@@ -29,13 +29,13 @@ public class WrongChapterPracticeActivity extends RxAppCompatActivity {
     ViewPager viewPager;
     private ArrayList<View> viewsList;
     private MyPagerAdapter mAdapter;
-    private List<PracticeData> practiceList;
+    private List<WrongData> practiceList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wrong_chapter_practice);
         ButterKnife.bind(this);
-        practiceList = DataSupport.findAll(PracticeData.class);
+        practiceList = DataSupport.findAll(WrongData.class);
         viewsList = new ArrayList<View>();
         initView();
         mAdapter = new MyPagerAdapter(viewsList);

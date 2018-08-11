@@ -119,16 +119,26 @@
                 android:id="@+id/tv_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:background="@color/transparent"
-                android:drawableRight="@drawable/ic_arrow_right_small"
                 android:gravity="center|right"
                 android:singleLine="true"
                 android:text="\ 192819199"
                 android:textColor="@color/textColorGray"
+                android:layout_toLeftOf="@+id/arrow"
                 android:textCursorDrawable="@drawable/shape_text_cursor"
-                android:textSize="15.0sp" />
+                android:textSize="14.0sp" />
+
+            <ImageView
+                android:id="@+id/arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="14dp"
+                android:layout_marginTop="14dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_arrow_right_small" />
         </RelativeLayout>
 
         <View
@@ -152,12 +162,22 @@
                 android:id="@+id/tv_gender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:drawableRight="@drawable/ic_arrow_right_small"
                 android:gravity="center_vertical"
+                android:layout_toLeftOf="@+id/arrow2"
                 android:text="女"
-                android:textSize="15.0sp" />
+                android:textSize="14.0sp" />
+
+            <ImageView
+                android:id="@+id/arrow2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="14dp"
+                android:layout_marginTop="14dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_arrow_right_small" />
         </RelativeLayout>
 
         <View
@@ -190,19 +210,29 @@
                 android:layout_centerVertical="true"
                 android:text="密码"
                 android:textColor="@color/textColorBlack"
-                android:textSize="15.0sp" />
+                android:textSize="14.0sp" />
 
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/textView2"
-                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:drawableRight="@drawable/ic_arrow_right_small"
                 android:gravity="center_vertical"
                 android:text="修改"
-                android:textSize="15.0sp" />
+                android:layout_toLeftOf="@+id/arrow3"
+                android:textSize="14.0sp" />
+
+            <ImageView
+                android:id="@+id/arrow3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="14dp"
+                android:layout_marginTop="14dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_arrow_right_small" />
         </RelativeLayout>
 
         <View

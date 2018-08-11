@@ -2,14 +2,12 @@ package com.botian.yihu.model;
 
 import android.content.Context;
 
-import com.botian.yihu.ObserverOnNextListener;
-import com.botian.yihu.ProgressObserver;
+import com.botian.yihu.rxjavautil.ObserverOnNextListener;
+import com.botian.yihu.rxjavautil.ProgressObserver;
 import com.botian.yihu.api.ApiMethods;
 import com.botian.yihu.beans.LoginBean;
 import com.botian.yihu.contranct.LoginContranct;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
-
-import org.json.JSONException;
 
 public class LoginModel implements LoginContranct.LoginModel {
 

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_bg2"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/dp15"
+        android:paddingBottom="@dimen/dp15"
+        android:paddingLeft="@dimen/dp8"
+        android:paddingRight="@dimen/dp8">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="资讯客服"
+            android:textColor="@color/textColorBlack"
+            android:textSize="16sp" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="周一~周六，8:30~17:30在线"
+            android:textSize="15sp" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/gray_line_color"/>
+
+    <LinearLayout
+        android:id="@+id/ln_qq"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/dp8"
+        android:paddingBottom="@dimen/dp8"
+        android:paddingLeft="@dimen/dp8"
+        android:paddingRight="@dimen/dp8">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="咨询QQ"
+            android:textColor="@color/textColorBlack"
+            android:textSize="16sp" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="408685957"
+            android:textColor="@color/blue"
+            android:textSize="15sp" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/gray_line_color"/>
+    <LinearLayout
+        android:id="@+id/ln_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/dp8"
+        android:paddingBottom="@dimen/dp8"
+        android:paddingLeft="@dimen/dp8"
+        android:paddingRight="@dimen/dp8">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="咨询电话"
+            android:textColor="@color/textColorBlack"
+            android:textSize="16sp" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0371-56871616"
+            android:textColor="@color/blue"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+</LinearLayout>

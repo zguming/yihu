@@ -16,15 +16,28 @@ import com.botian.yihu.activity.MyNotePracticeActivity;
 import com.botian.yihu.activity.OtherCommentActivity;
 import com.botian.yihu.beans.CommentParcel;
 import com.botian.yihu.database.NoteData;
+import com.botian.yihu.database.WrongData;
 import com.bumptech.glide.Glide;
+import com.trello.rxlifecycle2.components.support.RxFragment;
+
+import org.litepal.crud.DataSupport;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Administrator on 2018/1/31 0031.
  */
 //直播
-public class NoteAnswerFragment extends Fragment {
+public class NoteAnswerFragment extends RxFragment {
     @BindView(R.id.noteContent)
     TextView noteContent;
     private String a;
@@ -42,9 +55,12 @@ public class NoteAnswerFragment extends Fragment {
     private int topicId;
     private int typeid;
     private int i;
+    private int zhenti;
+    private int judge;
     private int totalnum;
     View view;
     private String hostUrl = "http://btsc.botian120.com";
+    private List<WrongData> wrongList9 = new ArrayList<>();
 
 
     @Nullable
@@ -74,6 +90,8 @@ public class NoteAnswerFragment extends Fragment {
         typeid = bundle.getInt("Typeid");
         i = bundle.getInt("i");
         totalnum = bundle.getInt("total");
+        zhenti = bundle.getInt("zhenti");
+        judge = bundle.getInt("judge");
         initView();
     }
     public void initView(){
@@ -111,7 +129,7 @@ public class NoteAnswerFragment extends Fragment {
         final LinearLayout bottomHide = view.findViewById(R.id.bottom_hide);
         final TextView tvTipsYourChoose = view.findViewById(R.id.tv_tips_yourchoose);
         final TextView btnLookOtherNote = view.findViewById(R.id.btnLookOtherNote);
-        final TextView btnFeedbackError = view.findViewById(R.id.btn_feedback_error);
+        //final TextView btnFeedbackError = view.findViewById(R.id.btn_feedback_error);
         TextView check = view.findViewById(R.id.check);
         TextView analyse = view.findViewById(R.id.analyseinfo);
         bottomHide.setVisibility(View.INVISIBLE);
@@ -149,7 +167,7 @@ public class NoteAnswerFragment extends Fragment {
                     answerTextA.setTextColor(getResources().getColor(R.color.false1));
                     tvTipsYourChoose.setTextColor(getResources().getColor(R.color.false1));
                     //把错题添加到数据库
-                    //addDataBase(finalI1);
+                    addDataBase();
                     if (correct.equals("B")) {
                         answerB.setImageDrawable(getResources().getDrawable(R.drawable.r_2));
                         answerTextB.setTextColor(getResources().getColor(R.color.correct));
@@ -188,7 +206,7 @@ public class NoteAnswerFragment extends Fragment {
                     answerTextB.setTextColor(getResources().getColor(R.color.false1));
                     tvTipsYourChoose.setTextColor(getResources().getColor(R.color.false1));
                     //把错题添加到数据库
-                    //addDataBase(finalI1);
+                    addDataBase();
                     if (correct.equals("A")) {
                         answerA.setImageDrawable(getResources().getDrawable(R.drawable.r_1));
                         answerTextA.setTextColor(getResources().getColor(R.color.correct));
@@ -227,7 +245,7 @@ public class NoteAnswerFragment extends Fragment {
                     answerTextC.setTextColor(getResources().getColor(R.color.false1));
                     tvTipsYourChoose.setTextColor(getResources().getColor(R.color.false1));
                     //把错题添加到数据库
-                    //addDataBase(finalI1);
+                    addDataBase();
                     if (correct.equals("A")) {
                         answerA.setImageDrawable(getResources().getDrawable(R.drawable.r_1));
                         answerTextA.setTextColor(getResources().getColor(R.color.correct));
@@ -267,7 +285,7 @@ public class NoteAnswerFragment extends Fragment {
                     answerTextD.setTextColor(getResources().getColor(R.color.false1));
                     tvTipsYourChoose.setTextColor(getResources().getColor(R.color.false1));
                     //把错题添加到数据库
-                    //addDataBase(finalI1);
+                    addDataBase();
                     if (correct.equals("A")) {
                         answerA.setImageDrawable(getResources().getDrawable(R.drawable.r_1));
                         answerTextA.setTextColor(getResources().getColor(R.color.correct));
@@ -307,7 +325,7 @@ public class NoteAnswerFragment extends Fragment {
                     answerTextE.setTextColor(getResources().getColor(R.color.false1));
                     tvTipsYourChoose.setTextColor(getResources().getColor(R.color.false1));
                     //把错题添加到数据库
-                    //addDataBase(finalI1);
+                    addDataBase();
                     if (correct.equals("A")) {
                         answerA.setImageDrawable(getResources().getDrawable(R.drawable.r_1));
                         answerTextA.setTextColor(getResources().getColor(R.color.correct));
@@ -358,9 +376,67 @@ public class NoteAnswerFragment extends Fragment {
         args.putInt("Typeid", content.getTypeid());
         args.putInt("i", i);
         args.putInt("total", total);
+        args.putInt("zhenti", content.getZhenti());
+        args.putInt("judge", content.getJudge());
         NoteAnswerFragment fragment = new NoteAnswerFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+    public void addDataBase() {
+        Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
+                wrongList9 = DataSupport.where("topicId=? and cl=? and judge=?",topicId+"",cl+"",judge+"").find(WrongData.class);
+
+                emitter.onNext(1);
+
+                //emitter.onComplete();
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .compose(this.<Integer>bindToLifecycle())
+                .subscribe(new Observer<Integer>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        //Log.d(TAG, "subscribe");
+
+                    }
+
+                    @Override
+                    public void onNext(Integer value) {
+                        if (wrongList9.size() <= 0) {
+                            WrongData wrongData = new WrongData();
+                            wrongData.setTopicId(topicId);
+                            wrongData.setName(name);
+                            wrongData.setA(a);
+                            wrongData.setB(b);
+                            wrongData.setC(c);
+                            wrongData.setD(d);
+                            wrongData.setE(e);
+                            wrongData.setCorrect(correct);
+                            wrongData.setAnalysis(analysis);
+                            wrongData.setMaterial(material);
+                            wrongData.setImage(image);
+                            wrongData.setKind(zhenti);
+                            wrongData.setJudge(judge);
+                            wrongData.setType(1);
+                            wrongData.save();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        //Log.d(TAG, "error");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        //Log.d(TAG, "complete");
+                    }
+                });
+
+
     }
 }
 

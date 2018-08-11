@@ -85,7 +85,7 @@ public class MoniTopic {
         private String analysis;
         private Object flag;
         private Object jumplink;
-        private Object litpic;
+        private String litpic;
         private Object writer;
         private Object keywords;
         private Object description;
@@ -93,6 +93,14 @@ public class MoniTopic {
         private String create_time;
         private String update_time;
         private String titlecl;
+
+        public String getLitpic() {
+            return litpic;
+        }
+
+        public void setLitpic(String litpic) {
+            this.litpic = litpic;
+        }
 
         public String getTitlecl() {
             return titlecl;
@@ -206,13 +214,6 @@ public class MoniTopic {
             this.jumplink = jumplink;
         }
 
-        public Object getLitpic() {
-            return litpic;
-        }
-
-        public void setLitpic(Object litpic) {
-            this.litpic = litpic;
-        }
 
         public Object getWriter() {
             return writer;

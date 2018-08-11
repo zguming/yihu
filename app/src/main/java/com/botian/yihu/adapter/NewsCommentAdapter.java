@@ -1,26 +1,17 @@
 package com.botian.yihu.adapter;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.botian.yihu.MyObserver;
-import com.botian.yihu.ObserverOnNextListener;
 import com.botian.yihu.R;
-import com.botian.yihu.api.ApiMethods;
 import com.botian.yihu.beans.GetNewsComment;
-import com.botian.yihu.beans.OtherCommentBean;
 import com.botian.yihu.beans.UserInfo;
-import com.botian.yihu.beans.ZanBean;
 import com.botian.yihu.util.ACache;
 import com.bumptech.glide.Glide;
-import com.google.gson.Gson;
-import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import java.util.List;
 

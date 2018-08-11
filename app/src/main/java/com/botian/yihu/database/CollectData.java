@@ -29,8 +29,26 @@ public class CollectData extends DataSupport {
     private String analysis;
     private String image;
     private int cl;
+    private int zhenti;
     private int typeid;
+    private String note;
     private String material;
+    private int judge;
+    public int getJudge() {
+        return judge;
+    }
+
+    public void setJudge(int judge) {
+        this.judge = judge;
+    }
+
+    public int getZhenti() {
+        return zhenti;
+    }
+
+    public void setZhenti(int zhenti) {
+        this.zhenti = zhenti;
+    }
 
     public String getMaterial() {
         return material;

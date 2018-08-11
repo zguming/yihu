@@ -92,7 +92,7 @@
                     <ImageView
                         android:layout_width="45dp"
                         android:layout_height="45dp"
-                        android:src="@drawable/ic_main_collect" />
+                        android:src="@drawable/pic_sc" />
 
                     <TextView
                         android:id="@+id/tv_collect"
@@ -117,7 +117,7 @@
                     <ImageView
                         android:layout_width="45dp"
                         android:layout_height="45dp"
-                        android:src="@drawable/ic_main_wrong" />
+                        android:src="@drawable/pic_ct" />
 
                     <TextView
                         android:id="@+id/tv_wrong"
@@ -143,7 +143,7 @@
                     <ImageView
                         android:layout_width="45dp"
                         android:layout_height="45dp"
-                        android:src="@drawable/ic_main_notes" />
+                        android:src="@drawable/pic_bj" />
 
                     <TextView
                         android:id="@+id/tv_notes"
@@ -169,7 +169,7 @@
                     <ImageView
                         android:layout_width="45dp"
                         android:layout_height="45dp"
-                        android:src="@drawable/ic_main_pay" />
+                        android:src="@drawable/pic_yue" />
 
                     <TextView
                         android:id="@+id/tv_pay"
@@ -214,16 +214,16 @@
                     android:textColor="@color/red"
                     android:text="@string/taobao" />
 
-                <com.botian.yihu.myview.UPMarqueeView
+                <com.botian.yihu.MyVideoPlayer.UPMarqueeView
                     android:id="@+id/upview1"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="0dp"
                     android:layout_width="match_parent"
                     android:layout_toRightOf="@+id/tbtv"
                     android:layout_centerVertical="true"
                     android:layout_marginTop="10dp"
                     android:layout_height="match_parent">
 
-                </com.botian.yihu.myview.UPMarqueeView>
+                </com.botian.yihu.MyVideoPlayer.UPMarqueeView>
             </RelativeLayout>
 
 
@@ -273,7 +273,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginRight="@dimen/dp5"
 
-                        android:src="@drawable/ic_main_chapter_test" />
+                        android:src="@drawable/pic11" />
                 </RelativeLayout>
 
                 <View
@@ -316,7 +316,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginRight="@dimen/dp5"
 
-                        android:src="@drawable/ic_main_high_test" />
+                        android:src="@drawable/ic_main_chapter_test" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -390,7 +390,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="@dimen/dp15"
-                        android:text="历年精选"
+                        android:text="历年真题"
                         android:textColor="@color/textColorLightGreen"
                         android:textSize="16.0sp"
                         android:textStyle="bold" />
@@ -436,7 +436,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="@dimen/dp15"
-                        android:text="靠前押题"
+                        android:text="考前押题"
                         android:textColor="@color/textColorLightYellow"
                         android:textSize="16.0sp"
                         android:textStyle="bold" />
@@ -459,7 +459,7 @@
                         android:layout_below="@+id/tv_forecast_exams_sub"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="@dimen/dp5"
-                        android:src="@drawable/ic_main_exams" />
+                        android:src="@drawable/pic9" />
                 </RelativeLayout>
 
             </LinearLayout>

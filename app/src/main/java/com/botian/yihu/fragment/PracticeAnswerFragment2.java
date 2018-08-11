@@ -256,7 +256,7 @@ public class PracticeAnswerFragment2 extends RxFragment {
             public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
                 int id1 = topicId;
                 int cl1 = cl;
-                noteList9 = DataSupport.where("topicId=" + id1 + ";" + "cl=" + cl1).find(NoteData.class);
+                noteList9 = DataSupport.where("topicId=? and cl=? and judge=?",id1+"",cl1+"","1").find(NoteData.class);
                 //noteList9 = DataSupport.where("topicId=" + id1 + ";" + "cl=" + cl1).find(NoteData.class);
                 emitter.onNext(1);
 

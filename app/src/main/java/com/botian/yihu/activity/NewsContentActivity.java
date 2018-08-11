@@ -8,8 +8,8 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.botian.yihu.MyObserver;
-import com.botian.yihu.ObserverOnNextListener;
+import com.botian.yihu.rxjavautil.MyObserver;
+import com.botian.yihu.rxjavautil.ObserverOnNextListener;
 import com.botian.yihu.R;
 import com.botian.yihu.api.ApiMethods;
 import com.botian.yihu.beans.No;
@@ -67,7 +67,7 @@ public class NewsContentActivity extends RxAppCompatActivity {
     /**
      * 将html文本内容中包含img标签的图片，宽度变为屏幕宽度，高度根据宽度比例自适应
      **/
-    public static String getNewContent(String htmltext) {
+    public  String getNewContent(String htmltext) {
         try {
             Document doc = Jsoup.parse(htmltext);
             Elements elements = doc.getElementsByTag("img");
