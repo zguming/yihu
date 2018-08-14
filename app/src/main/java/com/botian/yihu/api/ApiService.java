@@ -3,11 +3,7 @@ package com.botian.yihu.api;
 import com.botian.yihu.beans.Adlist;
 import com.botian.yihu.beans.ChangeUserInfo;
 import com.botian.yihu.beans.ChapterPracticeListBean;
-import com.botian.yihu.beans.CollectMaterialTitle;
-import com.botian.yihu.beans.CollectionBean;
-import com.botian.yihu.beans.CollectionDellBean;
 import com.botian.yihu.beans.GetNewsComment;
-import com.botian.yihu.beans.GetVerson;
 import com.botian.yihu.beans.HighTest;
 import com.botian.yihu.beans.KaoQianBuy;
 import com.botian.yihu.beans.KaoQianClTitle;
@@ -21,7 +17,6 @@ import com.botian.yihu.beans.MoniBuy;
 import com.botian.yihu.beans.MoniCl;
 import com.botian.yihu.beans.MoniTest;
 import com.botian.yihu.beans.MoniTopic;
-import com.botian.yihu.beans.MyCollection;
 import com.botian.yihu.beans.MyMoney;
 import com.botian.yihu.beans.MyNoteSection;
 import com.botian.yihu.beans.NewsLable;
@@ -31,7 +26,6 @@ import com.botian.yihu.beans.OtherCommentBean;
 import com.botian.yihu.beans.PayBeans;
 import com.botian.yihu.beans.PayOrder;
 import com.botian.yihu.beans.PracticeAnswer;
-import com.botian.yihu.beans.PracticeBean;
 import com.botian.yihu.beans.RegisterBean;
 import com.botian.yihu.beans.SearchKaoQianBuy;
 import com.botian.yihu.beans.SearchMoniBuy;
@@ -53,8 +47,6 @@ import com.botian.yihu.beans.ZanNum;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -97,11 +89,11 @@ public interface ApiService {
 
     //get请求科目
     @GET("api/Column")
-    Observable<SubjectBean> getSubject(@Query("noPage") String noPage, @Query("filter[]") String filter9, @Query("token_api") String token);
+    Observable<SubjectBean> getSubject(@Query("orderBy[]") String orderBy,@Query("noPage") String noPage, @Query("filter[]") String filter9, @Query("token_api") String token);
 
     //得到章节列表
     @GET("api/chapter")
-    Observable<ChapterPracticeListBean> getChapterPracticeList(@Query("noPage") String noPage, @Query("filter[]") String filter, @Query("filter[]") String filter2, @Query("filter[]") String filter8, @Query("filter[]") String filter9, @Query("token_api") String token);
+    Observable<ChapterPracticeListBean> getChapterPracticeList(@Query("orderBy[]") String orderBy,@Query("noPage") String noPage, @Query("filter[]") String filter, @Query("filter[]") String filter2, @Query("filter[]") String filter8, @Query("filter[]") String filter9, @Query("token_api") String token);
 
     //得到章节题
     @GET("api/section")
@@ -162,7 +154,7 @@ public interface ApiService {
     //Observable<CollectionDellBean> getCollectionDell(@Query("user_id")String user_id);
     //视频分类
     @GET("api/video")
-    Observable<VideoClass> getVideoClass(@Query("noPage") String noPage, @Query("filter[]") String filter, @Query("filter[]") String filter2, @Query("filter[]") String filter9, @Query("token_api") String token);
+    Observable<VideoClass> getVideoClass(@Query("orderBy[]") String orderBy,@Query("noPage") String noPage, @Query("filter[]") String filter, @Query("filter[]") String filter2, @Query("filter[]") String filter9, @Query("token_api") String token);
 
     //视频分类浏览次数
     @POST("api/videolike/save")
@@ -170,11 +162,11 @@ public interface ApiService {
 
     //视频目录
     @GET("api/directory")
-    Observable<VideoCataLog> getVideoDirectory(@Query("noPage") String noPage, @Query("filter[]") String filter, @Query("filter[]") String filter9, @Query("token_api") String token);
+    Observable<VideoCataLog> getVideoDirectory(@Query("orderBy[]") String orderBy,@Query("noPage") String noPage, @Query("filter[]") String filter, @Query("filter[]") String filter9, @Query("token_api") String token);
 
     //视频目录第一条
     @GET("api/directory")
-    Observable<VideoCatalog2> getVideoDirectory1(@Query("filter[]") String filter, @Query("filter[]") String filter2, @Query("page") String page, @Query("pageSize") String limit, @Query("filter[]") String filter9, @Query("token_api") String token);
+    Observable<VideoCatalog2> getVideoDirectory1(@Query("orderBy[]") String orderBy,@Query("filter[]") String filter, @Query("filter[]") String filter2, @Query("page") String page, @Query("pageSize") String limit, @Query("filter[]") String filter9, @Query("token_api") String token);
 
     //视频数据
     @GET("api/videodata")
@@ -198,7 +190,7 @@ public interface ApiService {
 
     //资讯标签
     @GET("api/information")
-    Observable<NewsLable> getNewsLable(@Query("noPage") String noPage, @Query("filter[]") String filter, @Query("filter[]") String filter2, @Query("filter[]") String filter9, @Query("token_api") String token);
+    Observable<NewsLable> getNewsLable(@Query("orderBy[]") String orderBy,@Query("noPage") String noPage, @Query("filter[]") String filter, @Query("filter[]") String filter2, @Query("filter[]") String filter9, @Query("token_api") String token);
 
     //资讯列表
     @GET("api/spy")
@@ -206,7 +198,7 @@ public interface ApiService {
 
     //模拟考试场地
     @GET("api/cbt")
-    Observable<MoniTest> getMoniTestPlace(@Query("noPage") String page, @Query("filter[]") String filter, @Query("filter[]") String filter9, @Query("token_api") String token);
+    Observable<MoniTest> getMoniTestPlace(@Query("orderBy[]") String orderBy,@Query("noPage") String page, @Query("filter[]") String filter, @Query("filter[]") String filter9, @Query("token_api") String token);
 
     //模拟考试题
     @GET("api/cbtsection")
@@ -274,13 +266,13 @@ public interface ApiService {
 
     //直播列表
     @GET("api/zhibo")
-    Observable<Live> getLive(@Query("noPage") String noPage, @Query("addon") String addon, @Query("filter[]") String filter3,@Query("filter[]") String filter4,@Query("token_api") String token);
+    Observable<Live> getLive(@Query("orderBy[]") String orderBy,@Query("noPage") String noPage, @Query("addon") String addon, @Query("filter[]") String filter3,@Query("filter[]") String filter4,@Query("token_api") String token);
     //高频考点
     @GET("api/high")
     Observable<HighTest> getHighTest( @Query("noPage") String noPage, @Query("filter[]") String filter,@Query("filter[]") String filter2,@Query("filter[]") String filter3,@Query("token_api") String token);
     //考前押题列表
     @GET("api/bet")
-    Observable<KaoQianYaTiList> getKaoQianList(@Query("noPage") String noPage, @Query("filter[]") String filter, @Query("filter[]") String filter2,  @Query("token_api") String token);
+    Observable<KaoQianYaTiList> getKaoQianList(@Query("orderBy[]") String orderBy,@Query("noPage") String noPage, @Query("filter[]") String filter, @Query("filter[]") String filter2,  @Query("token_api") String token);
     //考前押题购买
     @POST("api/betpay/betbuy")
     Observable<KaoQianBuy> KaoQianBuy(@Query("userid") String userid, @Query("column_id") String column_id, @Query("bet_id") String bet_id);

@@ -52,7 +52,7 @@ public class VideoCatalogFragment extends RxFragment {
     Unbinder unbinder;
     private List<VideoCataLog.DataBean> videoCataLogList = new ArrayList<>();//视频一集列表数据
     private List<VideoCataLog.DataBean> videoCataLogList2 = new ArrayList<>();//视频二级列表数据
-    private int position = 0;
+    //private int position = 0;
     private String mid;
     private VideoActivity activity;
     private String buy = "0";
@@ -110,7 +110,7 @@ public class VideoCatalogFragment extends RxFragment {
     }
 
     private void fillFolder(TreeNode folder, int id) {
-        for (int i = position; i < videoCataLogList2.size(); i++) {
+        for (int i = 0; i < videoCataLogList2.size(); i++) {
             if (videoCataLogList2.get(i).getPid() == id) {
                 TreeNode file = new TreeNode(new VideoCatalogChild.IconTreeItem(videoCataLogList2.get(i).getTypename(), videoCataLogList2.get(i).getId(), buy, videoCataLogList2.get(i).getBuy())).setViewHolder(new VideoCatalogChild(getActivity()));
                 folder.addChildren(file);
@@ -146,9 +146,6 @@ public class VideoCatalogFragment extends RxFragment {
                         }
                     }
                 });
-            } else {
-                position = i;
-                break;
             }
 
         }
@@ -198,7 +195,6 @@ public class VideoCatalogFragment extends RxFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(VideoBuyEvent2 messageEvent) {
         buy = "1";
-        position=0;
         container.removeAllViews();
         setList();
     }

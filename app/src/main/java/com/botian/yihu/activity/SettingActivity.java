@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.botian.yihu.R;
 import com.botian.yihu.database.CollectData;
 import com.botian.yihu.database.NoteData;
+import com.botian.yihu.database.UserInfoData;
 import com.botian.yihu.database.WrongData;
 import com.botian.yihu.eventbus.QuitLoginEvent;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
@@ -71,6 +72,7 @@ public class SettingActivity extends RxAppCompatActivity {
                                 // TODO Auto-generated method stub
                                 Toast.makeText(SettingActivity.this, "已经退出登录", Toast.LENGTH_SHORT).show();
                                 quitLogin.setVisibility(View.GONE);
+                                DataSupport.deleteAll(UserInfoData.class);
                             }
                         }).setNegativeButton("取消", new DialogInterface.OnClickListener() {// 消极
 

@@ -29,6 +29,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.botian.yihu.database.UserInfoData;
 import com.botian.yihu.rxjavautil.ObserverOnNextListener;
 import com.botian.yihu.rxjavautil.ProgressObserver;
 import com.botian.yihu.R;
@@ -43,6 +45,8 @@ import com.botian.yihu.view.ForgetPasswordActivity;
 import com.bumptech.glide.Glide;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 import org.greenrobot.eventbus.EventBus;
+import org.litepal.crud.DataSupport;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -270,12 +274,27 @@ public class PersonInfoActivity extends RxAppCompatActivity {
                 }
                 ObserverOnNextListener<ChangeUserInfo> listener6 = new ObserverOnNextListener<ChangeUserInfo>() {
                     @Override
-                    public void onNext(ChangeUserInfo data) {
+                    public void onNext(final ChangeUserInfo data) {
                         Toast.makeText(PersonInfoActivity.this, data.getMsg(), Toast.LENGTH_SHORT).show();
-                        int id = userInfo.getId();
-                        String token = userInfo.getToken();
-                        String mobile = userInfo.getMoblie();
-                        String avatar = userInfo.getAvatar();
+                        final int id = userInfo.getId();
+                        final String token = userInfo.getToken();
+                        final String mobile = userInfo.getMoblie();
+                        final String avatar = userInfo.getAvatar();
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                DataSupport.deleteAll(UserInfoData.class);
+                                UserInfoData userInfoData = new UserInfoData();
+                                userInfoData.setNoid(id);
+                                userInfoData.setToken(token);
+                                userInfoData.setUsername(username);
+                                userInfoData.setMoblie(mobile);
+                                userInfoData.setAvatar(avatar);
+                                userInfoData.setSex(sex);
+                                userInfoData.save();
+
+                            }
+                        }).start();
                         UserInfo userInfo5 = new UserInfo();
                         userInfo5.setId(id);
                         userInfo5.setToken(token);

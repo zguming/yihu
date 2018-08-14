@@ -39,9 +39,7 @@ public class MoniBuyActivity extends RxAppCompatActivity {
     private ACache mCache;
     private UserInfo userInfo;
     private String place;
-    private String subject;
     private String typeid;
-    private String subjectNo;
     private String money;
 
     @Override
@@ -51,15 +49,13 @@ public class MoniBuyActivity extends RxAppCompatActivity {
         ButterKnife.bind(this);
         Intent intent = getIntent();
         place = intent.getStringExtra("place");
-        subject = intent.getStringExtra("subject");
         typeid = intent.getStringExtra("id");
-        subjectNo = intent.getStringExtra("subjectNo");
         money = intent.getStringExtra("money");
         String price="价格:"+money+"金币";
         tvUnitPrice.setText(price);
         String pay=money+"金币";
         tvPayCount.setText(pay);
-        tvClassname.setText("商品名称");
+        tvClassname.setText(place);
         mCache = ACache.get(this);
         //从缓存读取用户信息
         userInfo = (UserInfo) mCache.getAsObject("userInfo");
@@ -87,7 +83,7 @@ public class MoniBuyActivity extends RxAppCompatActivity {
                         }
                     }
                 };
-                ApiMethods.moniBuy(new ProgressObserver<MoniBuy>(MoniBuyActivity.this, listener), userInfo.getId() + "", subjectNo, typeid, this);
+                ApiMethods.moniBuy(new ProgressObserver<MoniBuy>(MoniBuyActivity.this, listener), userInfo.getId() + "",  typeid, this);
 
                 break;
         }

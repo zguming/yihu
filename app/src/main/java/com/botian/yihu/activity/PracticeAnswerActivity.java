@@ -5,14 +5,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.botian.yihu.rxjavautil.ObserverOnNextListener;
-import com.botian.yihu.rxjavautil.ProgressObserver;
+
 import com.botian.yihu.R;
 import com.botian.yihu.adapter.MyFragmentPagerAdapter;
 import com.botian.yihu.api.ApiMethods;
@@ -20,18 +18,22 @@ import com.botian.yihu.beans.PracticeAnswer;
 import com.botian.yihu.beans.UserInfo;
 import com.botian.yihu.database.CollectData;
 import com.botian.yihu.database.NoteData;
-import com.botian.yihu.database.WrongData;
 import com.botian.yihu.eventbus.TopicCardEvent;
 import com.botian.yihu.fragment.PracticeAnswerFragment;
 import com.botian.yihu.fragment.PracticeAnswerFragment2;
+import com.botian.yihu.rxjavautil.ObserverOnNextListener;
+import com.botian.yihu.rxjavautil.ProgressObserver;
 import com.botian.yihu.util.ACache;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.litepal.crud.DataSupport;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -107,10 +109,13 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
         userInfo = (UserInfo) mCache.getAsObject("userInfo");
         Intent intent = getIntent();
         String typeid = intent.getIntExtra("typeid", 0) + "";
+        initView1();
         ObserverOnNextListener<PracticeAnswer> listener = new ObserverOnNextListener<PracticeAnswer>() {
             @Override
             public void onNext(PracticeAnswer data) {
                 practiceList = data.getData();
+                if (practiceList.size()==0){
+                    bottomTab.setVisibility(View.INVISIBLE);}
                 initView();
                 //mAdapter = new MyPagerAdapter(viewsList);
                 //viewPager.setAdapter(mAdapter);
@@ -121,7 +126,8 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
             }
         };
         ApiMethods.getPracticeAnswer(new ProgressObserver<PracticeAnswer>(this, listener), "typeid,eq,"+typeid, this);
-        initView1();
+
+
     }
 
     public void firstJudge() {

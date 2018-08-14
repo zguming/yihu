@@ -152,7 +152,8 @@ public class CollectAnswerFragment2 extends RxFragment {
         linearAnswerE.setClickable(false);
         TextView check = view.findViewById(R.id.check);
         TextView analyse = view.findViewById(R.id.analyseinfo);
-        timu.setText(name);
+        String name1=i+1+"."+name;
+        timu.setText(name1);
         answerTextA.setText(a);
         answerTextB.setText(b);
         answerTextC.setText(c);

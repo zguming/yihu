@@ -16,12 +16,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.botian.yihu.MyVideoPlayer.UPMarqueeView;
+import com.botian.yihu.MyVideoPlayer.UpdataDialog;
 import com.botian.yihu.R;
 import com.botian.yihu.activity.ChapterPracticeListActivity;
 import com.botian.yihu.activity.HighTestActivity;
 import com.botian.yihu.activity.KaoQianListActivity;
 import com.botian.yihu.activity.MoniListActivity;
-import com.botian.yihu.activity.MoniSubjectActivity;
 import com.botian.yihu.activity.MyCollectionActivity;
 import com.botian.yihu.activity.MyNoteActivity;
 import com.botian.yihu.activity.MymoneyActivity;
@@ -34,9 +35,8 @@ import com.botian.yihu.beans.UserInfo;
 import com.botian.yihu.beans.Version;
 import com.botian.yihu.database.CollectData;
 import com.botian.yihu.database.NoteData;
+import com.botian.yihu.database.UserInfoData;
 import com.botian.yihu.database.WrongData;
-import com.botian.yihu.MyVideoPlayer.UPMarqueeView;
-import com.botian.yihu.MyVideoPlayer.UpdataDialog;
 import com.botian.yihu.rxjavautil.MyObserver;
 import com.botian.yihu.rxjavautil.ObserverOnNextListener;
 import com.botian.yihu.util.ACache;
@@ -134,6 +134,7 @@ public class PracticeFragment extends RxFragment {
     private List<CollectData> collectList = new ArrayList<>();
     private List<WrongData> wrongList = new ArrayList<>();
     private List<NoteData> noteList = new ArrayList<>();
+    private List<UserInfoData> userInfoData = new ArrayList<>();
     private UPMarqueeView upview1;
     List<String> data = new ArrayList<>();
     List<View> views = new ArrayList<>();
@@ -152,6 +153,18 @@ public class PracticeFragment extends RxFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mCache = ACache.get(getActivity());
+        userInfoData= DataSupport.findAll(UserInfoData.class);
+        if (userInfoData.size()>0){
+            UserInfo userInfo=new UserInfo();
+            userInfo.setId(userInfoData.get(0).getNoid());
+            //userInfo.setToken(data.getData().getToken());
+            userInfo.setUsername(userInfoData.get(0).getUsername());
+            userInfo.setMoblie(userInfoData.get(0).getMoblie());
+            userInfo.setAvatar(userInfoData.get(0).getAvatar());
+            userInfo.setSex(userInfoData.get(0).getSex());
+            mCache.put("userInfo", userInfo,  365 * ACache.TIME_DAY);
+        }
+
         //从缓存读取用户信息
         userInfo = (UserInfo) mCache.getAsObject("userInfo");
         ObserverOnNextListener<Adlist> listener = new ObserverOnNextListener<Adlist>() {

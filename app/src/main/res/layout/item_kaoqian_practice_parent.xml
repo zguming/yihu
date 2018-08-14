@@ -19,7 +19,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
             android:background="@color/bottom_line_blue"
-            android:visibility="invisible"/>
+            android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/arrow_icon"
@@ -35,7 +35,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
             android:background="@color/bottom_line_blue"
-            android:visibility="invisible"/>
+            android:visibility="invisible" />
     </LinearLayout>
 
     <TextView
@@ -47,35 +47,57 @@
         android:layout_marginRight="25dp"
         android:textColor="@color/textColorBlack"
         android:textSize="16sp" />
-    <TextView
-        android:id="@+id/price"
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/dp30"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:textColor="@color/cv_yellow"
-        android:textSize="16sp"
-        />
-    <TextView
-        android:id="@+id/buy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/dp10"
-        android:layout_alignParentRight="true"
+        >
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginRight="@dimen/dp5"
+            android:text="10金币"
+            android:textColor="@color/red_ff6230"
+            android:textSize="@dimen/sp14"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/buy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dp10"
+            android:background="@drawable/shape_buy"
+            android:paddingBottom="@dimen/dp1"
+            android:paddingLeft="@dimen/dp8"
+            android:paddingRight="@dimen/dp8"
+            android:paddingTop="@dimen/dp1"
+            android:text="购买"
+            android:textColor="@color/red_ff6230"
+            android:textSize="@dimen/sp14"
+            android:visibility="gone"/>
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/arrow"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginRight="@dimen/dp6"
         android:layout_centerVertical="true"
-        android:textColor="@color/cv_yellow"
-        android:text="购买"
-        android:textSize="16sp"
-        />
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_arrow_right_small"/>
     <View
         android:id="@+id/bottom_line3"
         android:layout_width="fill_parent"
         android:layout_height="1px"
+        android:layout_alignParentBottom="true"
         android:layout_marginLeft="@dimen/dp30"
         android:background="@color/gray_line_color"
-        android:layout_alignParentBottom="true"
-        android:visibility="gone"/>
+        android:visibility="gone" />
+
     <View
         android:id="@+id/bottom_line"
         android:layout_width="fill_parent"

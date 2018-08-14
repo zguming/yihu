@@ -1,7 +1,5 @@
 package com.botian.yihu.api;
 
-import android.util.Log;
-
 import com.botian.yihu.beans.Adlist;
 import com.botian.yihu.beans.ChangeUserInfo;
 import com.botian.yihu.beans.ChapterPracticeListBean;
@@ -357,21 +355,21 @@ public class ApiMethods {
     public static void getSubject(ProgressObserver<SubjectBean> observer, RxAppCompatActivity yy) {
         String md5 = GetMd5.md5();
         //Log.d("TAG", "getSubject: "+md5);
-        ApiSubscribe(Api.getApiService().getSubject("", "status,eq,1", md5), observer, yy.<SubjectBean>bindToLifecycle());
+        ApiSubscribe(Api.getApiService().getSubject("sorts,asc","", "status,eq,1", md5), observer, yy.<SubjectBean>bindToLifecycle());
     }
 
     /**
      * 用于请求章节练习列表
      */
     public static void getChapterPracticeList(ProgressObserver<ChapterPracticeListBean> observer, String mid, String mid2, String filter, RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getChapterPracticeList("", mid, mid2, filter, "status,eq,1", GetMd5.md5()), observer, yy.<ChapterPracticeListBean>bindToLifecycle());
+        ApiSubscribe(Api7Days.getApiService().getChapterPracticeList("sorts,asc","", mid, mid2, filter, "status,eq,1", GetMd5.md5()), observer, yy.<ChapterPracticeListBean>bindToLifecycle());
     }
 
     /**
      * 用于请求章节练习题&章节练习材料标题
      */
     public static void getPracticeAnswer(ProgressObserver<PracticeAnswer> observer, String typeid, RxAppCompatActivity yy) {
-        ApiSubscribeZip(Api.getApiService().getPracticeAnswer("", typeid, "status,eq,1", GetMd5.md5()).subscribeOn(Schedulers.io()), Api.getApiService().getPracticeMterial("", typeid, "status,eq,1", GetMd5.md5()).subscribeOn(Schedulers.io()), observer, yy.<PracticeAnswer>bindToLifecycle());
+        ApiSubscribeZip(Api7Days.getApiService().getPracticeAnswer("", typeid, "status,eq,1", GetMd5.md5()).subscribeOn(Schedulers.io()), Api.getApiService().getPracticeMterial("", typeid, "status,eq,1", GetMd5.md5()).subscribeOn(Schedulers.io()), observer, yy.<PracticeAnswer>bindToLifecycle());
     }
 
     /**
@@ -460,21 +458,21 @@ public class ApiMethods {
      * 用于请求视频分类 轮播图
      */
     public static void getVideoZip(ProgressObserver<VideoClassZip> observer, String filter, String filter2, String filter3, RxAppCompatActivity yy) {
-        ApiVideoClassZip(Api.getApiService().getAdlist("noPage", filter, "status,eq,1", GetMd5.md5()).subscribeOn(Schedulers.io()), Api.getApiService().getVideoClass("noPage", filter2, filter3, "status,eq,1", GetMd5.md5()).subscribeOn(Schedulers.io()), observer, yy.<VideoClassZip>bindToLifecycle());
+        ApiVideoClassZip(Api.getApiService().getAdlist("noPage", filter, "status,eq,1", GetMd5.md5()).subscribeOn(Schedulers.io()), Api.getApiService().getVideoClass("sorts,asc","noPage", filter2, filter3, "status,eq,1", GetMd5.md5()).subscribeOn(Schedulers.io()), observer, yy.<VideoClassZip>bindToLifecycle());
     }
 
     /**
      * 视频目录
      */
     public static void getVideoDirectory(ProgressObserver<VideoCataLog> observer, String filter, RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getVideoDirectory("noPage", filter, "status,eq,1", GetMd5.md5()), observer, yy.<VideoCataLog>bindToLifecycle());
+        ApiSubscribe(Api.getApiService().getVideoDirectory("sorts,asc","noPage", filter, "status,eq,1", GetMd5.md5()), observer, yy.<VideoCataLog>bindToLifecycle());
     }
 
     /**
      * 视频目录第一条
      */
     public static void getVideoDirectory1(ProgressObserver<VideoInfo> observer, String filter, String filter2, RxAppCompatActivity yy) {
-        ApiVideo(Api.getApiService().getVideoDirectory1(filter, filter2, "1", "1", "status,eq,1", GetMd5.md5()), observer, yy.<VideoInfo>bindToLifecycle());
+        ApiVideo(Api.getApiService().getVideoDirectory1("sorts,asc",filter, filter2, "1", "1", "status,eq,1", GetMd5.md5()), observer, yy.<VideoInfo>bindToLifecycle());
     }
 
     /**
@@ -551,14 +549,14 @@ public class ApiMethods {
      * 资讯标签
      */
     public static void getNewsLable(MyObserver<NewsLable> observer, String filter, String filter2, RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getNewsLable("noPage", filter, filter2, "status,eq,1", GetMd5.md5()), observer, yy.<NewsLable>bindToLifecycle());
+        ApiSubscribe(Api.getApiService().getNewsLable("sorts,asc","noPage", filter, filter2, "status,eq,1", GetMd5.md5()), observer, yy.<NewsLable>bindToLifecycle());
     }
 
     /**
      * 模拟考试场地
      */
     public static void getMoniTestPlace(ProgressObserver<MoniTest> observer,  RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getMoniTestPlace("noPage", "mids,eq,"+SubjectUtil.getSubjectNo2(), "status,eq,1", GetMd5.md5()), observer, yy.<MoniTest>bindToLifecycle());
+        ApiSubscribe(Api.getApiService().getMoniTestPlace("sorts,asc","noPage", "mids,eq,"+SubjectUtil.getSubjectNo2(), "status,eq,1", GetMd5.md5()), observer, yy.<MoniTest>bindToLifecycle());
     }
 
     /**
@@ -634,8 +632,8 @@ public class ApiMethods {
     /**
      * 购买模拟考试
      */
-    public static void moniBuy(ProgressObserver<MoniBuy> observer, String userid, String column_id, String cbt_id, RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().moniBuy(userid, column_id, cbt_id), observer, yy.<MoniBuy>bindToLifecycle());
+    public static void moniBuy(ProgressObserver<MoniBuy> observer, String userid,  String cbt_id, RxAppCompatActivity yy) {
+        ApiSubscribe(Api.getApiService().moniBuy(userid, SubjectUtil.getSubjectNo2()+"", cbt_id), observer, yy.<MoniBuy>bindToLifecycle());
     }
 
     /**
@@ -663,21 +661,21 @@ public class ApiMethods {
      * 直播列表
      */
     public static void getLive(ProgressObserver<Live> observer, RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getLive("noPage", "Zhteacher", "status,eq,1", "column_id,eq," + SubjectUtil.getSubjectNo2(), GetMd5.md5()), observer, yy.<Live>bindToLifecycle());
+        ApiSubscribe(Api.getApiService().getLive("sorts,asc","noPage", "Zhteacher", "status,eq,1", "column_id,eq," + SubjectUtil.getSubjectNo2(), GetMd5.md5()), observer, yy.<Live>bindToLifecycle());
     }
 
     /**
      * 高频考点
      */
     public static void getHighTest(ProgressObserver<HighTest> observer, String filter, String filter2, RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getHighTest("noPage", filter, filter2, "status,eq,1", GetMd5.md5()), observer, yy.<HighTest>bindToLifecycle());
+        ApiSubscribe(Api1Days.getApiService().getHighTest("noPage", filter, filter2, "status,eq,1", GetMd5.md5()), observer, yy.<HighTest>bindToLifecycle());
     }
 
     /**
      * 考前押题列表
      */
     public static void getKaoQianList(ProgressObserver<KaoQianYaTiList> observer, RxAppCompatActivity yy) {
-        ApiSubscribe(Api.getApiService().getKaoQianList("noPage", "mids,eq," + SubjectUtil.getSubjectNo2(), "status,eq,1", GetMd5.md5()), observer,  yy.<KaoQianYaTiList>bindToLifecycle());
+        ApiSubscribe(Api1Days.getApiService().getKaoQianList("sorts,asc","noPage", "mids,eq," + SubjectUtil.getSubjectNo2(), "status,eq,1", GetMd5.md5()), observer,  yy.<KaoQianYaTiList>bindToLifecycle());
     }
 
     /**
@@ -694,10 +692,10 @@ public class ApiMethods {
         ApiSubscribe(Api.getApiService().SearchKaoQianBuy(userid, SubjectUtil.getSubjectNo2() + "", id), observer, yy.<SearchKaoQianBuy>bindToLifecycle());
     }
     /**
-     * 用于请求章节练习题&章节练习材料标题
+     * 用于请求考前押题练习题&考前押题材料标题
      */
     public static void getKaoQianNormal(ProgressObserver<KaoQianNormal> observer, String typeid, RxAppCompatActivity yy) {
-        ApiSubscribeZip3(Api.getApiService().getKaoQianNormal("", "bet_id,eq,"+typeid, "mids,eq,"+SubjectUtil.getSubjectNo2(), "status,eq,1", GetMd5.md5()).subscribeOn(Schedulers.io()), Api.getApiService().getKaoQianStuffTitle("", "bet_id,eq,"+typeid, "mids,eq,"+SubjectUtil.getSubjectNo2(), "status,eq,1", GetMd5.md5()).subscribeOn(Schedulers.io()), observer, yy.<KaoQianNormal>bindToLifecycle());
+        ApiSubscribeZip3(Api1Days.getApiService().getKaoQianNormal("", "bet_id,eq,"+typeid, "mids,eq,"+SubjectUtil.getSubjectNo2(), "status,eq,1", GetMd5.md5()).subscribeOn(Schedulers.io()), Api.getApiService().getKaoQianStuffTitle("", "bet_id,eq,"+typeid, "mids,eq,"+SubjectUtil.getSubjectNo2(), "status,eq,1", GetMd5.md5()).subscribeOn(Schedulers.io()), observer, yy.<KaoQianNormal>bindToLifecycle());
     }
 
 }

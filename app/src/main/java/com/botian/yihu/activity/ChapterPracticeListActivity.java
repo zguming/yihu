@@ -49,7 +49,7 @@ public class ChapterPracticeListActivity extends RxAppCompatActivity {
     ImageView back;
     @BindView(R.id.title)
     TextView title;
-    private int position = 0;
+    //private int position = 0;
     private int zhenti;
     private String title1;
     private ACache mCache;
@@ -123,7 +123,7 @@ public class ChapterPracticeListActivity extends RxAppCompatActivity {
     }
 
     private void fillFolder(TreeNode folder, final int id, final int share) {
-        for (int i = position; i < list2.size(); i++) {
+        for (int i = 0; i < list2.size(); i++) {
             if (list2.get(i).getPid() == id) {
                 TreeNode file = new TreeNode(new ChapterPracticeChild.IconTreeItem(list2.get(i).getTypename(), list2.get(i).getId())).setViewHolder(new ChapterPracticeChild(this));
                 folder.addChildren(file);
@@ -165,9 +165,6 @@ public class ChapterPracticeListActivity extends RxAppCompatActivity {
                         }
                     }
                 });
-            } else {
-                position = i;
-                break;
             }
 
         }
@@ -205,7 +202,7 @@ public class ChapterPracticeListActivity extends RxAppCompatActivity {
                 };
                 //刷新列表
                 container.removeAllViews();
-                position=0;
+                //position=0;
                 setList();
 
                 //提交分享数据

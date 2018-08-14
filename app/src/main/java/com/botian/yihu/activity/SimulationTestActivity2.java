@@ -73,6 +73,8 @@ public class SimulationTestActivity2 extends RxAppCompatActivity {
     private MyFragmentPagerAdapter mAdapter;
     FragmentManager fm;
     private String correct;
+    private String time11;
+    private String score11;
     private String corrects;
     private String wrong;
     private String wrongs;
@@ -81,6 +83,8 @@ public class SimulationTestActivity2 extends RxAppCompatActivity {
     private int w1 = 0;
     private int w2 = 0;
     private long time;
+    int score23;
+    CountDownTimer timer;
 
 
     @Override
@@ -92,6 +96,9 @@ public class SimulationTestActivity2 extends RxAppCompatActivity {
         Intent intent = getIntent();
         subjectNo = intent.getStringExtra("mid");
         typeid = intent.getStringExtra("typeid");
+        time11 = intent.getStringExtra("time");
+        score11 = intent.getStringExtra("score");
+        score23= Integer.parseInt(score11);
         mCache = ACache.get(this);
         //从缓存读取用户信息
         userInfo = (UserInfo) mCache.getAsObject("userInfo");
@@ -105,13 +112,14 @@ public class SimulationTestActivity2 extends RxAppCompatActivity {
                     topicCard.add(6);//6是初始默认数字，无意义
                 }
                 /** 倒计时60秒，一次1秒 */
-                CountDownTimer timer = new CountDownTimer(30 * 1000, 1000) {
+                 timer = new CountDownTimer(100*60 * 1000, 1000) {
                     @Override
                     public void onTick(long millisUntilFinished) {
                         // TODO Auto-generated method stub
                         //text.setText("还剩"+millisUntilFinished/1000+"秒");
-                        time = 7200 - (millisUntilFinished / 1000);
+                        time = 6000 - (millisUntilFinished / 1000);
                         String timeStr = getTime(millisUntilFinished);
+                        timer1.setVisibility(View.INVISIBLE);
                         timer1.setText(timeStr);
 
                     }
@@ -119,6 +127,7 @@ public class SimulationTestActivity2 extends RxAppCompatActivity {
                     @Override
                     public void onFinish() {
                         //timer1.setText("时间用完");
+                        lnTopicCard1.setClickable(false);
                         Double score1=(double)correct1/120;
                         Double score2=score1*380;
                         BigDecimal b = new BigDecimal(score2);
@@ -176,6 +185,8 @@ public class SimulationTestActivity2 extends RxAppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.ln_topic_card1:
+                lnTopicCard1.setClickable(false);
+                timer.cancel();
                 // 创建构建器
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 // 设置参数
@@ -234,7 +245,7 @@ public class SimulationTestActivity2 extends RxAppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         // 设置参数
         builder.setTitle(msg)
-                .setMessage("考试成绩为："+score+"分")
+                .setMessage("总分120分"+"\n"+"做对了"+correct1+"道题"+"\n"+"您的考试成绩为："+correct1+"分")
                 .setPositiveButton("查看详细", new DialogInterface.OnClickListener() {// 积极
 
                     @Override
@@ -254,6 +265,7 @@ public class SimulationTestActivity2 extends RxAppCompatActivity {
                 // .show();
             }
         });
+
         builder.create().show();
     }
 

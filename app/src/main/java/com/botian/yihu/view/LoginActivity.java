@@ -12,16 +12,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.botian.yihu.R;
+import com.botian.yihu.beans.LoginBean;
 import com.botian.yihu.beans.UserInfo;
 import com.botian.yihu.contranct.LoginContranct;
-import com.botian.yihu.beans.LoginBean;
+import com.botian.yihu.database.CollectData;
+import com.botian.yihu.database.UserInfoData;
+import com.botian.yihu.database.WrongData;
 import com.botian.yihu.eventbus.LoginEvent;
-import com.botian.yihu.eventbus.TopicCardEvent;
 import com.botian.yihu.presenter.LoginPresenter;
 import com.botian.yihu.util.ACache;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import org.greenrobot.eventbus.EventBus;
+import org.litepal.crud.DataSupport;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -157,10 +160,25 @@ public class LoginActivity extends RxAppCompatActivity implements LoginContranct
     }
 
     @Override
-    public void view(LoginBean data) {
+    public void view(final LoginBean data) {
         String d = data.getMsg();
         if(data.getCode()==200){
             //如果登录成功缓存用户信息
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    DataSupport.deleteAll(UserInfoData.class);
+                    UserInfoData userInfoData = new UserInfoData();
+                    userInfoData.setNoid(data.getData().getId());
+                    //userInfo.setToken(data.getData().getToken());
+                    userInfoData.setUsername(data.getData().getUsername());
+                    userInfoData.setMoblie(data.getData().getMoblie());
+                    userInfoData.setAvatar(data.getData().getAvatar());
+                    userInfoData.setSex(data.getData().getSex());
+                    userInfoData.save();
+
+                }
+            }).start();
             UserInfo userInfo=new UserInfo();
             userInfo.setId(data.getData().getId());
             //userInfo.setToken(data.getData().getToken());

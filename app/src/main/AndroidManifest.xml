@@ -146,11 +146,16 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".activity.PaySuccessActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activity.KaoQianListActivity" />
-        <activity android:name=".activity.KaoqianBuyActivity" />
-        <activity android:name=".activity.KaoQianActivity" />
-        <activity android:name=".activity.HighTestAnswerActivity" />
-        <activity android:name=".activity.MoniListActivity" />
+        <activity android:name=".activity.KaoQianListActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.KaoqianBuyActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.KaoQianActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.HighTestAnswerActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MoniListActivity"
+            android:screenOrientation="portrait"/>
 
         <!--
         注意：如果您想兼容Android N或者以上的设备，必须要在AndroidManifest.xml文件中配置FileProvider来访

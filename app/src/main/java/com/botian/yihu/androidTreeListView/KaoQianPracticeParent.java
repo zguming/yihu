@@ -61,22 +61,9 @@ public class KaoQianPracticeParent extends TreeNode.BaseNodeViewHolder<KaoQianPr
         bottomLine3 = view.findViewById(R.id.bottom_line3);
         arrowIcon = view.findViewById(R.id.arrow);
         tbright = view.findViewById(R.id.tb_right);
-        /*if (value.share!=0) {
-            int id=value.noid;
-            int columnid= SubjectUtil.getSubjectNo2();
-            List<ShareData> shareData= DataSupport.where("chapterId=" + id + ";" + "columnid=" + columnid).find(ShareData.class);
-            if (shareData.size()>0){
 
-            }else {
-            tbright.setVisibility(View.VISIBLE);
-            text.setVisibility(View.VISIBLE);
-            arrowIcon.setVisibility(GONE);
-            tvValue.setVisibility(GONE);
-            tvValue2.setVisibility(View.VISIBLE);
-            tvValue2.setText(value.text);}
-        }*/
         tvValue.setText(value.text);
-        String price1 = "¥" + value.price;
+        String price1 =  value.price+"金币";
         price.setText(price1);
         ObserverOnNextListener<SearchKaoQianBuy> listener21 = new ObserverOnNextListener<SearchKaoQianBuy>() {
             @Override
@@ -84,8 +71,12 @@ public class KaoQianPracticeParent extends TreeNode.BaseNodeViewHolder<KaoQianPr
 
                 if (data1.getCode() == 200) {
                     buy.setVisibility(GONE);
+                    price.setVisibility(GONE);
+                    arrowIcon.setVisibility(View.VISIBLE);
                 } else {
-
+                    buy.setVisibility(View.VISIBLE);
+                    price.setVisibility(View.VISIBLE);
+                    arrowIcon.setVisibility(GONE);
                 }
 
             }
@@ -104,7 +95,7 @@ public class KaoQianPracticeParent extends TreeNode.BaseNodeViewHolder<KaoQianPr
     public void toggle(boolean active) {
         super.toggle(active);
         arrowView.setImageResource(active ? R.drawable.iconfont_jianhao : R.drawable.iconfont_jiahao);
-        //arrowIcon.setImageResource(active ? R.drawable.ic_arrow_down : R.drawable.ic_arrow_right_small);
+        arrowIcon.setImageResource(active ? R.drawable.ic_arrow_down : R.drawable.ic_arrow_right_small);
         bottomLine.setVisibility(active ? View.VISIBLE : View.INVISIBLE);
         bottomLine2.setVisibility(active ? GONE : View.VISIBLE);
         bottomLine3.setVisibility(active ? View.VISIBLE : GONE);

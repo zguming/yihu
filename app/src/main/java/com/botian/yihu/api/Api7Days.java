@@ -17,8 +17,8 @@ import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-public class Api {
+//缓存7天
+public class Api7Days {
 
     public static String baseUrl = "http://btsc.botian120.com/";
     //读超时长，单位：毫秒
@@ -30,16 +30,16 @@ public class Api {
     //单例
     public static ApiService getApiService() {
         if (apiService == null) {
-            synchronized (Api.class) {
+            synchronized (Api7Days.class) {
                 if (apiService == null) {
-                    new Api();
+                    new Api7Days();
                 }
             }
         }
         return apiService;
     }
 
-    private Api() {
+    private Api7Days() {
         HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor();
         logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         //缓存
@@ -70,7 +70,7 @@ public class Api {
                     public Response intercept( Chain chain) throws IOException {
                         Request request = chain.request();
                         Response originalResponse = chain.proceed(request);
-                        int maxAge = 60 * 60 * 24 * 30;    // 在线缓存,单位:秒
+                        int maxAge = 60 * 60 * 24 * 7;    // 在线缓存,单位:秒
                         return originalResponse.newBuilder()
                                 .removeHeader("Pragma")// 清除头信息，因为服务器如果不支持，会返回一些干扰信息，不清除下面无法生效
                                 .removeHeader("Cache-Control")
@@ -81,7 +81,7 @@ public class Api {
                 .cache(cache)
                 .build();
         Retrofit retrofit = new Retrofit.Builder()
-                //.client(client)
+                .client(client)
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())//请求的结果转为实体类
                 //适配RxJava2.0,RxJava1.x则为RxJavaCallAdapterFactory.create()

@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.botian.yihu.R;
-import com.botian.yihu.androidTreeListView.ChapterPracticeChild;
 import com.botian.yihu.androidTreeListView.KaoQianPracticeChild;
 import com.botian.yihu.androidTreeListView.KaoQianPracticeParent;
 import com.botian.yihu.api.ApiMethods;
@@ -47,7 +46,7 @@ public class KaoQianListActivity extends RxAppCompatActivity {
     ImageView back;
     @BindView(R.id.title)
     TextView title;
-    private int position = 0;
+    //private int position = 0;
     private ACache mCache;
     private UserInfo userInfo;
     private View mview;
@@ -64,7 +63,6 @@ public class KaoQianListActivity extends RxAppCompatActivity {
         mCache = ACache.get(this);
         //从缓存读取用户信息
         userInfo = (UserInfo) mCache.getAsObject("userInfo");
-        Intent intent = getIntent();
         title.setText("考前押题");
         queryFromServer();
     }
@@ -117,7 +115,7 @@ public class KaoQianListActivity extends RxAppCompatActivity {
         for (int i = 0; i < list.size(); i++) {
             final TreeNode folder = new TreeNode(new KaoQianPracticeParent.IconTreeItem(list.get(i).getName(), list.get(i).getId(), list.get(i).getPrice(), userInfo.getId() + "", this)).setViewHolder(new KaoQianPracticeParent(this));
 
-            fillFolder(folder, list.get(i).getId(), list.get(i).getPrice());
+            fillFolder(folder, list.get(i).getId(), list.get(i).getPrice(),list.get(i).getName());
             root.addChildren(folder);
         }
         tView = new AndroidTreeView(this, root);
@@ -125,8 +123,8 @@ public class KaoQianListActivity extends RxAppCompatActivity {
         container.addView(tView.getView());
     }
 
-    private void fillFolder(TreeNode folder, final int id, final String price) {
-        for (int i = position; i < list2.size(); i++) {
+    private void fillFolder(TreeNode folder, final int id, final String price, final String name) {
+        for (int i = 0; i < list2.size(); i++) {
             if (list2.get(i).getPid() == id) {
                 TreeNode file = new TreeNode(new KaoQianPracticeChild.IconTreeItem(list2.get(i).getName(), list2.get(i).getId())).setViewHolder(new KaoQianPracticeChild(this));
                 folder.addChildren(file);
@@ -156,6 +154,7 @@ public class KaoQianListActivity extends RxAppCompatActivity {
                                                     Intent intent = new Intent(KaoQianListActivity.this, KaoqianBuyActivity.class);
                                                     intent.putExtra("price", price);
                                                     intent.putExtra("id", id + "");
+                                                    intent.putExtra("name", name + "");
                                                     startActivity(intent);
                                                 }
                                             }).setNegativeButton("取消", new DialogInterface.OnClickListener() {// 消极
@@ -177,10 +176,8 @@ public class KaoQianListActivity extends RxAppCompatActivity {
                         ApiMethods.SearchKaoQianBuy(new MyObserver<SearchKaoQianBuy>(listener21), userInfo.getId() + "", id + "", KaoQianListActivity.this);
                     }
                 });
-            } else {
-                position = i;
-                break;
             }
+
 
         }
 
@@ -194,7 +191,6 @@ public class KaoQianListActivity extends RxAppCompatActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(KaoqianBuyEvent messageEvent) {
         container.removeAllViews();
-        position = 0;
         setList();
     }
 

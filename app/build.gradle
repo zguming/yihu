@@ -33,10 +33,12 @@ MobSDK {
     ShareSDK {
         devInfo {
             Wechat {
-                appId "wxde4ce39f345361b0"
-                //appId "wx638f68ee3a703493"
-                appSecret "2e1bfcf5a0ff82e56bdea37f6cd1c641"
-                //appSecret "a422dae4c00f51e6cdab991eaf696d81"
+                //测试用
+                //appId "wxde4ce39f345361b0"
+                //appSecret "2e1bfcf5a0ff82e56bdea37f6cd1c641"
+                //正式用
+                appId "wx638f68ee3a703493"
+                appSecret "a422dae4c00f51e6cdab991eaf696d81"
                 userName "gh_afb25ac019c9"
                 path "pages/index/index.html?id=1"
                 withShareTicket true
