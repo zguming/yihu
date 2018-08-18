@@ -1,6 +1,7 @@
 package com.botian.yihu.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.botian.yihu.activity.AdActivity;
 import com.botian.yihu.util.GlideImageLoader;
 import com.botian.yihu.rxjavautil.ObserverOnNextListener;
 import com.botian.yihu.rxjavautil.ProgressObserver;
@@ -22,6 +24,7 @@ import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +45,7 @@ public class VideoFragment extends RxFragment {
     private SharedPreferences pref;
     View header;
     private List<String> images = new ArrayList<>();
+    private List<String> url333 = new ArrayList<>();
     private String filter = "mid,eq,2";//课程轮播图mid==2
     Banner banner;
     private List<VideoClass.DataBean> data3;
@@ -85,6 +89,8 @@ public class VideoFragment extends RxFragment {
                 recyclerView.setAdapter(adapter);
                 for (int i = 0; i < data.getData2().size(); i++) {
                     images.add("http://btsc.botian120.com" + data.getData2().get(i).getLitpic());
+                    url333.add(data.getData2().get(i).getUrl());
+
                 }
                 banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
                 //设置图片加载器
@@ -94,6 +100,16 @@ public class VideoFragment extends RxFragment {
                 banner.setDelayTime(4000);
                 //banner设置方法全部调用完毕时最后调用
                 banner.start();
+                banner.setOnBannerListener(new OnBannerListener() {
+                    @Override
+                    public void OnBannerClick(int position) {
+                        if (!url333.get(position).equals("")){
+                            Intent inten11taaa=new Intent(getActivity(), AdActivity.class);
+                            inten11taaa.putExtra("link",url333.get(position));
+                            startActivity(inten11taaa);
+                        }
+                    }
+                });
             }
         };
         ApiMethods.getVideoZip(new ProgressObserver<VideoClassZip>(getActivity(), listener), filter, "mid,eq,"+mid2, "mids,eq,"+mid6, (RxAppCompatActivity) getActivity());
