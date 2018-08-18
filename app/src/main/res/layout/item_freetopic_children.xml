@@ -26,7 +26,7 @@
             android:gravity="center_vertical"
             android:orientation="vertical">
 
-            <com.botian.yihu.MyVideoPlayer.JustifyTextView
+            <com.botian.yihu.MyView.JustifyTextView
                 android:id="@+id/my_textView"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

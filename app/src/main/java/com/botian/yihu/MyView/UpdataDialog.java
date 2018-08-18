@@ -1,4 +1,4 @@
-package com.botian.yihu.MyVideoPlayer;
+package com.botian.yihu.MyView;
 
 import android.app.Activity;
 import android.app.Dialog;

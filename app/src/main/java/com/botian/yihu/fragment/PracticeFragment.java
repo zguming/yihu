@@ -16,9 +16,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.botian.yihu.MyVideoPlayer.UPMarqueeView;
-import com.botian.yihu.MyVideoPlayer.UpdataDialog;
+import com.botian.yihu.MyView.UPMarqueeView;
+import com.botian.yihu.MyView.UpdataDialog;
 import com.botian.yihu.R;
+import com.botian.yihu.activity.AdActivity;
 import com.botian.yihu.activity.ChapterPracticeListActivity;
 import com.botian.yihu.activity.HighTestActivity;
 import com.botian.yihu.activity.KaoQianListActivity;
@@ -27,6 +28,7 @@ import com.botian.yihu.activity.MyCollectionActivity;
 import com.botian.yihu.activity.MyNoteActivity;
 import com.botian.yihu.activity.MymoneyActivity;
 import com.botian.yihu.activity.NewsContentActivity;
+import com.botian.yihu.activity.PerDayActivity;
 import com.botian.yihu.activity.WrongActivity;
 import com.botian.yihu.api.ApiMethods;
 import com.botian.yihu.beans.Adlist;
@@ -48,6 +50,7 @@ import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
+import com.youth.banner.listener.OnBannerListener;
 
 import org.litepal.crud.DataSupport;
 
@@ -70,7 +73,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by Administrator on 2018/1/12 0012.
  */
 //练习
-public class PracticeFragment extends RxFragment {
+public class PracticeFragment extends RxFragment  {
 
     @BindView(R.id.tv_collect)
     TextView tvCollect;
@@ -123,10 +126,13 @@ public class PracticeFragment extends RxFragment {
     LinearLayout lnPay;
     @BindView(R.id.title_switch1)
     ImageView titleSwitch1;
+    @BindView(R.id.rl_per_days)
+    LinearLayout rlPerDays;
     private View view;
     private SharedPreferences pref;
     private String filter = "mid,eq,1";//首页轮播图mid==1
     private List<String> images = new ArrayList<>();
+    private List<String> url333 = new ArrayList<>();
     int subjectNo;
     int subjectNo2;
     private ACache mCache;
@@ -153,16 +159,16 @@ public class PracticeFragment extends RxFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mCache = ACache.get(getActivity());
-        userInfoData= DataSupport.findAll(UserInfoData.class);
-        if (userInfoData.size()>0){
-            UserInfo userInfo=new UserInfo();
+        userInfoData = DataSupport.findAll(UserInfoData.class);
+        if (userInfoData.size() > 0) {
+            UserInfo userInfo = new UserInfo();
             userInfo.setId(userInfoData.get(0).getNoid());
             //userInfo.setToken(data.getData().getToken());
             userInfo.setUsername(userInfoData.get(0).getUsername());
             userInfo.setMoblie(userInfoData.get(0).getMoblie());
             userInfo.setAvatar(userInfoData.get(0).getAvatar());
             userInfo.setSex(userInfoData.get(0).getSex());
-            mCache.put("userInfo", userInfo,  365 * ACache.TIME_DAY);
+            mCache.put("userInfo", userInfo, 365 * ACache.TIME_DAY);
         }
 
         //从缓存读取用户信息
@@ -170,8 +176,10 @@ public class PracticeFragment extends RxFragment {
         ObserverOnNextListener<Adlist> listener = new ObserverOnNextListener<Adlist>() {
             @Override
             public void onNext(Adlist data) {
+
                 for (int i = 0; i < data.getData().size(); i++) {
                     images.add("http://btsc.botian120.com" + data.getData().get(i).getLitpic());
+                    url333.add(data.getData().get(i).getUrl());
                 }
                 banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
                 //设置图片加载器
@@ -181,6 +189,16 @@ public class PracticeFragment extends RxFragment {
                 banner.setDelayTime(4000);
                 //banner设置方法全部调用完毕时最后调用
                 banner.start();
+                banner.setOnBannerListener(new OnBannerListener() {
+                    @Override
+                    public void OnBannerClick(int position) {
+                        if (!url333.get(position).equals("")){
+                            Intent inten11taaa=new Intent(getActivity(), AdActivity.class);
+                            inten11taaa.putExtra("link",url333.get(position));
+                            startActivity(inten11taaa);
+                        }
+                    }
+                });
 
             }
         };
@@ -197,7 +215,7 @@ public class PracticeFragment extends RxFragment {
         subjectNo2 = pref.getInt("subjectNo2", 2);
         String filter8 = "mid,eq," + subjectNo;
         String filter9 = "mids,eq," + subjectNo2;
-        ApiMethods.getNewsList(new MyObserver<NewsList>(listener3), "flag,eq,h", filter8, filter9,  "1", "6", (RxAppCompatActivity) getActivity());
+        ApiMethods.getNewsList(new MyObserver<NewsList>(listener3), filter8, filter8, filter9, "1", "6", (RxAppCompatActivity) getActivity());
         initParam();
         upDater();//更新app
 
@@ -286,12 +304,16 @@ public class PracticeFragment extends RxFragment {
         }
     }
 
-    @OnClick({R.id.ln_collect, R.id.ln_wrong, R.id.ln_notes, R.id.ln_pay, R.id.title_switch, R.id.title_switch1, R.id.my_subject, R.id.rl_chapter_practice, R.id.rl_practice_exam,R.id.rl_calendar_year_exams,R.id.rl_high_exams,R.id.rl_forecast_exams})
+    @OnClick({R.id.ln_collect, R.id.ln_wrong, R.id.ln_notes, R.id.ln_pay, R.id.title_switch, R.id.title_switch1, R.id.my_subject, R.id.rl_chapter_practice, R.id.rl_practice_exam, R.id.rl_calendar_year_exams, R.id.rl_high_exams, R.id.rl_forecast_exams,R.id.rl_per_days})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ln_collect:
                 Intent intent26 = new Intent(getActivity(), MyCollectionActivity.class);
                 startActivity(intent26);
+                break;
+            case R.id.rl_per_days:
+                Intent intent216 = new Intent(getActivity(), PerDayActivity.class);
+                startActivity(intent216);
                 break;
             case R.id.rl_forecast_exams:
                 if (userInfo != null) {
@@ -408,6 +430,7 @@ public class PracticeFragment extends RxFragment {
                     Intent intent = new Intent(getActivity(), NewsContentActivity.class);
                     intent.putExtra("id", data2.getData().getData().get(position).getId());
                     intent.putExtra("content", data2.getData().getData().get(position).getcontent());
+                    intent.putExtra("link", data2.getData().getData().get(position).getJumplink());
                     startActivity(intent);
                 }
             });
@@ -419,8 +442,9 @@ public class PracticeFragment extends RxFragment {
                 public void onClick(View view) {
                     //Toast.makeText(getActivity(), position + "你点击了" + data.get(position + 1).toString(), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getActivity(), NewsContentActivity.class);
-                    intent.putExtra("id", data2.getData().getData().get(position+1).getId());
-                    intent.putExtra("content", data2.getData().getData().get(position+1).getcontent());
+                    intent.putExtra("id", data2.getData().getData().get(position + 1).getId());
+                    intent.putExtra("content", data2.getData().getData().get(position + 1).getcontent());
+                    intent.putExtra("link", data2.getData().getData().get(position + 1).getJumplink());
                     startActivity(intent);
                 }
             });
@@ -442,16 +466,17 @@ public class PracticeFragment extends RxFragment {
      * 初始化数据
      */
     private void initdata(NewsList data1) {
-        data2=data1;
+        data2 = data1;
         data = new ArrayList<>();
-        for (int i=0;i<data1.getData().getData().size();i++){
+        for (int i = 0; i < data1.getData().getData().size(); i++) {
             data.add(data1.getData().getData().get(i).getTitle());
         }
 
 //        data.add("竟不是小米乐视！看水抢了骁龙821首发了！！！");
 
     }
-    public void upDater(){
+
+    public void upDater() {
         ObserverOnNextListener<Version> listener33 = new ObserverOnNextListener<Version>() {
             @Override
             public void onNext(final Version data) {
@@ -496,5 +521,7 @@ public class PracticeFragment extends RxFragment {
         String versionNama = GetVersionName.getVerName(getActivity());
         ApiMethods.getVersion(new MyObserver<Version>(listener33), versionNama, (RxAppCompatActivity) getActivity());
     }
+
+
 
 }

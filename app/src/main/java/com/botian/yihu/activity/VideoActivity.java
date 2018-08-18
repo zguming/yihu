@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -67,7 +68,9 @@ public class VideoActivity extends RxAppCompatActivity {
     private TXVodPlayer mTXPlayerGetInfo;
     JZVideoPlayerStandard jzVideoPlayerStandard;
     String url;
-    private String buy="0";
+    private int init = 0;
+    private String url1;
+    private String buy = "0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,14 +79,11 @@ public class VideoActivity extends RxAppCompatActivity {
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         Intent intent = getIntent();
-        View viff=videoplayer.getRootView();
-        TextView test=viff.findViewById(R.id.test);
-        test.setText("fjlads ");
         id = intent.getStringExtra("id");
         title = intent.getStringExtra("title");
         price = intent.getStringExtra("price");
         content = intent.getStringExtra("content");
-        videoIntroduceFragment = VideoIntroduceFragment.newInstance(title,price,content,id);
+        videoIntroduceFragment = VideoIntroduceFragment.newInstance(title, price, content, id);
         videoCatalogFragment = VideoCatalogFragment.newInstance(id);
         videoDisscussFragment = VideoDisscussFragment.newInstance(id);
         setDefaultFragment();
@@ -103,7 +103,7 @@ public class VideoActivity extends RxAppCompatActivity {
             }
         };
         //视频目录第一条数据
-        ApiMethods.getVideoDirectory1(new ProgressObserver<VideoInfo>(this, listener), "video_id,eq," + id, "pid,eq,1", this);
+        ApiMethods.getVideoDirectory1(new ProgressObserver<VideoInfo>(this, listener), "video_id,eq," + id, "pid,gt,0", this);
     }
 
     public String getBuy() {
@@ -125,8 +125,14 @@ public class VideoActivity extends RxAppCompatActivity {
 
                 data.url = param.getString(TXLiveConstants.EVT_PLAY_URL);
                 data.title = param.getString(TXLiveConstants.EVT_PLAY_NAME);
+                //if (init == 0) {
+                    //url1 = data.url;
+                    //url = data.url;
+                    //init = 1;
+                //} else {
+                    url = data.url;
+                //}
 
-                 url = data.url;
                 String cover = data.cover;
                 String title = data.title;
                 if (data.title == null || data.title.length() == 0) {
@@ -212,15 +218,7 @@ public class VideoActivity extends RxAppCompatActivity {
         com.bumptech.glide.Glide.with(this).load(cover).into(jzVideoPlayerStandard.thumbImageView);
         JZVideoPlayer.FULLSCREEN_ORIENTATION = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
         JZVideoPlayer.NORMAL_ORIENTATION = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
-        View view =jzVideoPlayerStandard.getRootView();
-        TextView test=view.findViewById(R.id.test);
-        test.setText("fjlads ");
-        test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-            }
-        });
     }
 
     @Override
@@ -239,15 +237,19 @@ public class VideoActivity extends RxAppCompatActivity {
         JZVideoPlayer.FULLSCREEN_ORIENTATION = ActivityInfo.SCREEN_ORIENTATION_SENSOR;
         JZVideoPlayer.NORMAL_ORIENTATION = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void Event(VideoEvent videoEvent) {
         jzVideoPlayerStandard.setUp(videoEvent.getUrl()
                 , JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, videoEvent.getTitle());
-        if (!url.equals(videoEvent.getUrl())){
+        if (!url.equals(videoEvent.getUrl())) {
+            //Log.d("TAG", "Event: "+url.equals(videoEvent.getUrl()));
             jzVideoPlayerStandard.startButton.performClick();
+            url = videoEvent.getUrl();
 
         }
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();

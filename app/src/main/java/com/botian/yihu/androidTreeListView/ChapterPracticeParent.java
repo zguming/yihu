@@ -51,7 +51,7 @@ public class ChapterPracticeParent extends TreeNode.BaseNodeViewHolder<ChapterPr
         bottomLine3 = view.findViewById(R.id.bottom_line3);
         arrowIcon = view.findViewById(R.id.arrow);
         tbright = view.findViewById(R.id.tb_right);
-        if (value.share!=0) {
+        if (value.share==1) {
             int id=value.noid;
             int columnid= SubjectUtil.getSubjectNo2();
             List<ShareData> shareData= DataSupport.where("chapterId=? and columnid=?" ,id+"",columnid+"").find(ShareData.class);

@@ -68,7 +68,7 @@
             android:layout_below="@id/tv_about_introduction"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dimen_5_dip"
-            android:text="a_1.0.0" />
+            android:text="a_1.0.1" />
     </RelativeLayout>
 
     <ScrollView

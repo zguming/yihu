@@ -45,6 +45,7 @@ import com.botian.yihu.beans.VideoInfo;
 import com.botian.yihu.beans.VodeoBuyList;
 import com.botian.yihu.beans.ZanBean;
 import com.botian.yihu.beans.ZanNum;
+import com.botian.yihu.beans.ZhiBo;
 import com.botian.yihu.rxjavautil.MyObserver;
 import com.botian.yihu.rxjavautil.ProgressObserver;
 import com.botian.yihu.util.GetMac;
@@ -663,12 +664,18 @@ public class ApiMethods {
     public static void getLive(ProgressObserver<Live> observer, RxAppCompatActivity yy) {
         ApiSubscribe(Api.getApiService().getLive("sorts,asc","noPage", "Zhteacher", "status,eq,1", "column_id,eq," + SubjectUtil.getSubjectNo2(), GetMd5.md5()), observer, yy.<Live>bindToLifecycle());
     }
+    /**
+     * 观看直播
+     */
+    public static void getZhibo(MyObserver<ZhiBo> observer, String id,RxAppCompatActivity yy) {
+        ApiSubscribe(Api.getApiService().getZhibo( "id,eq,"+id, GetMd5.md5(),"1","1"), observer, yy.<ZhiBo>bindToLifecycle());
+    }
 
     /**
      * 高频考点
      */
     public static void getHighTest(ProgressObserver<HighTest> observer, String filter, String filter2, RxAppCompatActivity yy) {
-        ApiSubscribe(Api1Days.getApiService().getHighTest("noPage", filter, filter2, "status,eq,1", GetMd5.md5()), observer, yy.<HighTest>bindToLifecycle());
+        ApiSubscribe(Api7Days.getApiService().getHighTest("noPage", filter, filter2, "status,eq,1", GetMd5.md5()), observer, yy.<HighTest>bindToLifecycle());
     }
 
     /**

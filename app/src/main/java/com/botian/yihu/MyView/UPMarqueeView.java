@@ -1,4 +1,4 @@
-package com.botian.yihu.MyVideoPlayer;
+package com.botian.yihu.MyView;
 
 import android.content.Context;
 import android.util.AttributeSet;

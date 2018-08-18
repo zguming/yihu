@@ -34,7 +34,7 @@
             android:layout_marginLeft="@dimen/dp5"
             android:orientation="vertical">
 
-            <com.botian.yihu.MyVideoPlayer.JustifyTextView
+            <com.botian.yihu.MyView.JustifyTextView
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <com.botian.yihu.MyVideoPlayer.JustifyTextView
+                <com.botian.yihu.MyView.JustifyTextView
                     android:id="@+id/news_src"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
                     android:textColor="#666666"
                     android:textSize="15sp" />
 
-                <com.botian.yihu.MyVideoPlayer.JustifyTextView
+                <com.botian.yihu.MyView.JustifyTextView
                     android:id="@+id/views"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
                     android:textSize="15sp" />
             </LinearLayout>
 
-            <com.botian.yihu.MyVideoPlayer.JustifyTextView
+            <com.botian.yihu.MyView.JustifyTextView
                 android:id="@+id/price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

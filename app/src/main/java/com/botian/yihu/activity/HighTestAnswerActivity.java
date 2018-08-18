@@ -14,7 +14,6 @@ import com.botian.yihu.R;
 import com.botian.yihu.adapter.MyFragmentPagerAdapter;
 import com.botian.yihu.api.ApiMethods;
 import com.botian.yihu.beans.HighTest;
-import com.botian.yihu.beans.KaoQianNormal;
 import com.botian.yihu.beans.UserInfo;
 import com.botian.yihu.eventbus.TopicCardEvent1;
 import com.botian.yihu.fragment.HighTestPracticeFragment;

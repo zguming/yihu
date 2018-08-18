@@ -10,12 +10,18 @@ import android.widget.TextView;
 
 import com.botian.yihu.R;
 import com.botian.yihu.activity.PlayLiveActivity;
+import com.botian.yihu.api.ApiMethods;
+import com.botian.yihu.beans.KaoQianYaTiList;
 import com.botian.yihu.beans.Live;
 import com.botian.yihu.beans.No;
 import com.botian.yihu.beans.UserInfo;
+import com.botian.yihu.beans.ZhiBo;
+import com.botian.yihu.rxjavautil.MyObserver;
 import com.botian.yihu.rxjavautil.ObserverOnNextListener;
+import com.botian.yihu.rxjavautil.ProgressObserver;
 import com.botian.yihu.util.ACache;
 import com.bumptech.glide.Glide;
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import java.util.List;
 
@@ -70,10 +76,20 @@ public class LiveAdapter extends RecyclerView.Adapter<LiveAdapter.MyViewHolder> 
             public void onClick(View view) {
                 //XRecyclerView默认添加了一个header，因此要得到正确的position,需减去1
                 int position = myViewHolder.getAdapterPosition() - 1;
-                Intent intent = new Intent(mContext, PlayLiveActivity.class);
-                intent.putExtra("url", data.get(position).getCode());
-                intent.putExtra("title", data.get(position).getTitle());
-                mContext.startActivity(intent);
+                ObserverOnNextListener<ZhiBo> listener = new ObserverOnNextListener<ZhiBo>() {
+                    @Override
+                    public void onNext(ZhiBo data) {
+                        Intent intent = new Intent(mContext, PlayLiveActivity.class);
+                        intent.putExtra("url", data.getData().getData().get(0).getCode());
+                        intent.putExtra("title", data.getData().getData().get(0).getTitle());
+                        mContext.startActivity(intent);
+                    }
+                };
+
+
+                ApiMethods.getZhibo(new MyObserver<ZhiBo>( listener),data.get(position).getId()+"", (RxAppCompatActivity)mContext);
+
+
 
             }
 

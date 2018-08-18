@@ -1,6 +1,7 @@
 package com.botian.yihu.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -31,6 +32,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.litepal.crud.DataSupport;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,6 +98,18 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
     private List<Fragment> fragmentlist = new ArrayList<>();//无背题
     private MyFragmentPagerAdapter mAdapter;
     FragmentManager fm;
+    private SharedPreferences.Editor editor;
+    private SharedPreferences pref;
+    //每日做题情况统计
+    private int perdayChCorrect;
+    private int perdayChWrong;
+    private int perdayZhCorrect;
+    private int perdayZhWrong;
+    //private int alldayCorrect;
+    //private int alldayWrong;
+    private int zhenti;
+    private String    date;
+    private String    date2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,8 +121,24 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
         mCache = ACache.get(this);
         //从缓存读取用户信息
         userInfo = (UserInfo) mCache.getAsObject("userInfo");
+        SimpleDateFormat sDateFormat    =   new    SimpleDateFormat("yyyy-MM-dd");
+        date    =    sDateFormat.format(new    java.util.Date());
+        pref = getSharedPreferences("perday", MODE_PRIVATE);
+
+        //alldayCorrect=pref.getInt("alldayCorrect",0);
+        //alldayWrong=pref.getInt("alldayWrong",0);
         Intent intent = getIntent();
         String typeid = intent.getIntExtra("typeid", 0) + "";
+        zhenti=intent.getIntExtra("zhenti", 1);
+        if (zhenti==1){//是真题
+            perdayZhCorrect=pref.getInt("perdayZhCorrect",0);
+            perdayZhWrong=pref.getInt("perdayZhWrong",0);
+        }else {
+            perdayChCorrect=pref.getInt("perdayChCorrect",0);
+            perdayChWrong=pref.getInt("perdayChWrong",0);
+
+        }
+        date2=pref.getString("perdayDate","");
         initView1();
         ObserverOnNextListener<PracticeAnswer> listener = new ObserverOnNextListener<PracticeAnswer>() {
             @Override
@@ -642,6 +672,28 @@ public class PracticeAnswerActivity extends RxAppCompatActivity {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+        editor=getSharedPreferences("perday",MODE_PRIVATE).edit();
+
+
+        if (zhenti==1){//是真题
+            if (date.equals(date2)){
+            editor.putInt("perdayZhCorrect",correct1+perdayZhCorrect);
+            editor.putInt("perdayZhWrong",already-correct1+perdayZhWrong);}
+            else {
+                editor.putInt("perdayZhCorrect",correct1);
+                editor.putInt("perdayZhWrong",already-correct1);
+            }
+        }else {
+            if (date.equals(date2)){
+            editor.putInt("perdayChCorrect",correct1+perdayChCorrect);
+            editor.putInt("perdayChWrong",already-correct1+perdayChWrong);}
+            else {
+                editor.putInt("perdayChCorrect",correct1);
+                editor.putInt("perdayChWrong",already-correct1);
+            }
+        }
+        editor.putString("perdayDate",date);
+        editor.apply();
     }
 
     public void test(int i, int j) {

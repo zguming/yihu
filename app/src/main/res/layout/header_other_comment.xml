@@ -7,7 +7,7 @@
     android:paddingBottom="@dimen/dp3"
     android:orientation="vertical">
 
-    <com.botian.yihu.MyVideoPlayer.JustifyTextView
+    <com.botian.yihu.MyView.JustifyTextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

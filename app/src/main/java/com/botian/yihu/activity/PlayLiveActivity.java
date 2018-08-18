@@ -3,6 +3,7 @@ package com.botian.yihu.activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.widget.ImageView;
 
 import com.botian.yihu.R;
 import com.botian.yihu.util.JZMediaIjkplayer;
@@ -10,6 +11,7 @@ import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.jzvd.JZVideoPlayer;
 import cn.jzvd.JZVideoPlayerStandard;
 
@@ -18,6 +20,9 @@ public class PlayLiveActivity extends RxAppCompatActivity {
     JZVideoPlayerStandard videoplayer;
     String url;
     String title;
+    @BindView(R.id.back)
+    ImageView back;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +33,7 @@ public class PlayLiveActivity extends RxAppCompatActivity {
         title = intent.getStringExtra("title");
         playVideo();
     }
+
     public void playVideo() {
         JZVideoPlayerStandard jzVideoPlayerStandard = (JZVideoPlayerStandard) findViewById(R.id.videoplayer);
         JZVideoPlayer.setMediaInterface(new JZMediaIjkplayer());
@@ -54,5 +60,10 @@ public class PlayLiveActivity extends RxAppCompatActivity {
         //Change these two variables back
         JZVideoPlayer.FULLSCREEN_ORIENTATION = ActivityInfo.SCREEN_ORIENTATION_SENSOR;
         JZVideoPlayer.NORMAL_ORIENTATION = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+    }
+
+    @OnClick(R.id.back)
+    public void onViewClicked() {
+        finish();
     }
 }

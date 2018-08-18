@@ -14,16 +14,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/dp10"
-        android:paddingBottom="@dimen/dp10"
+        android:paddingBottom="8dp"
         android:paddingStart="@dimen/dp12"
         android:paddingEnd="@dimen/dp12"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/news_pic"
-            android:layout_width="85dp"
+            android:layout_width="90dp"
             android:layout_height="60dp"
-            android:layout_marginEnd="5dp"
+            android:layout_marginEnd="8dp"
             android:scaleType="centerCrop"
             android:visibility="gone" />
 
@@ -32,11 +32,12 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.botian.yihu.MyVideoPlayer.JustifyTextView
+            <com.botian.yihu.MyView.JustifyTextView
                 android:id="@+id/news_title"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginBottom="18dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="@dimen/dp3"
                 android:singleLine="false"
                 android:layout_weight="1"
                 android:text="新闻标题"
@@ -49,23 +50,23 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <com.botian.yihu.MyVideoPlayer.JustifyTextView
+                <com.botian.yihu.MyView.JustifyTextView
                     android:id="@+id/news_src"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="新闻内容"
                     android:textColor="#666666"
                     android:layout_marginRight="@dimen/dp45"
-                    android:textSize="15sp" />
+                    android:textSize="14sp" />
 
-                <com.botian.yihu.MyVideoPlayer.JustifyTextView
+                <com.botian.yihu.MyView.JustifyTextView
                     android:id="@+id/news_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
                     android:text="新闻来源"
                     android:textColor="#666666"
-                    android:textSize="15sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>
 

@@ -108,6 +108,7 @@ public class NewsContentFragment extends Fragment {
         }else{
             init2=0;
             recyclerView.setLoadingMoreEnabled(true);
+            adapter.notifyDataSetChanged();
             recyclerView.refreshComplete();
 
         }

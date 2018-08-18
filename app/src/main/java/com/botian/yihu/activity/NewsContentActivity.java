@@ -1,10 +1,12 @@
 package com.botian.yihu.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -37,7 +39,9 @@ public class NewsContentActivity extends RxAppCompatActivity {
     private ACache mCache;
     private UserInfo userInfo;
     private ObserverOnNextListener<No> listener;
+    String link;
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,11 +49,18 @@ public class NewsContentActivity extends RxAppCompatActivity {
         ButterKnife.bind(this);
         Intent intent = getIntent();
         String contentStr = intent.getStringExtra("content");
+        link = intent.getStringExtra("link");
         id = intent.getStringExtra("id");
+        show.getSettings().setJavaScriptEnabled(true);
+        show.setWebViewClient(new WebViewClient());
         String text = Html.fromHtml(contentStr).toString();
         //http://btsc.botian120.com
         String cc = text.replaceAll("<img src=\"", "<img src=\"http://btsc.botian120.com");
-        show.loadDataWithBaseURL(null, getNewContent(cc), "text/html", "utf-8", null);
+        if (link.equals("")) {
+            show.loadDataWithBaseURL(null, getNewContent(cc), "text/html", "utf-8", null);
+        } else {
+            show.loadUrl(link);
+        }
         listener = new ObserverOnNextListener<No>() {
             @Override
             public void onNext(No data) {
@@ -58,8 +69,8 @@ public class NewsContentActivity extends RxAppCompatActivity {
         mCache = ACache.get(this);
         //从缓存读取用户信息
         userInfo = (UserInfo) mCache.getAsObject("userInfo");
-        if (userInfo!=null){
-            ApiMethods.sendNewNum(new MyObserver<No>(listener),  id, userInfo.getId()+"", this);
+        if (userInfo != null) {
+            ApiMethods.sendNewNum(new MyObserver<No>(listener), id, userInfo.getId() + "", this);
         }
     }
 
@@ -67,7 +78,7 @@ public class NewsContentActivity extends RxAppCompatActivity {
     /**
      * 将html文本内容中包含img标签的图片，宽度变为屏幕宽度，高度根据宽度比例自适应
      **/
-    public  String getNewContent(String htmltext) {
+    public String getNewContent(String htmltext) {
         try {
             Document doc = Jsoup.parse(htmltext);
             Elements elements = doc.getElementsByTag("img");

@@ -44,6 +44,7 @@ import com.botian.yihu.beans.VideoInfo;
 import com.botian.yihu.beans.VodeoBuyList;
 import com.botian.yihu.beans.ZanBean;
 import com.botian.yihu.beans.ZanNum;
+import com.botian.yihu.beans.ZhiBo;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
@@ -166,7 +167,7 @@ public interface ApiService {
 
     //视频目录第一条
     @GET("api/directory")
-    Observable<VideoCatalog2> getVideoDirectory1(@Query("orderBy[]") String orderBy,@Query("filter[]") String filter, @Query("filter[]") String filter2, @Query("page") String page, @Query("pageSize") String limit, @Query("filter[]") String filter9, @Query("token_api") String token);
+    Observable<VideoCatalog2> getVideoDirectory1(@Query("orderBy[]") String orderBy, @Query("filter[]") String filter, @Query("filter[]") String filter2, @Query("page") String page, @Query("pageSize") String limit, @Query("filter[]") String filter9, @Query("token_api") String token);
 
     //视频数据
     @GET("api/videodata")
@@ -267,6 +268,10 @@ public interface ApiService {
     //直播列表
     @GET("api/zhibo")
     Observable<Live> getLive(@Query("orderBy[]") String orderBy,@Query("noPage") String noPage, @Query("addon") String addon, @Query("filter[]") String filter3,@Query("filter[]") String filter4,@Query("token_api") String token);
+    //观看直播
+    @GET("api/zhibo")
+    Observable<ZhiBo> getZhibo(  @Query("filter[]") String filter3,  @Query("token_api") String token, @Query("page") String page, @Query("pageSize") String limit);
+
     //高频考点
     @GET("api/high")
     Observable<HighTest> getHighTest( @Query("noPage") String noPage, @Query("filter[]") String filter,@Query("filter[]") String filter2,@Query("filter[]") String filter3,@Query("token_api") String token);

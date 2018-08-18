@@ -105,7 +105,7 @@ public class ChapterPracticeListActivity extends RxAppCompatActivity {
         for (int i = 0; i < list.size(); i++) {
             final TreeNode folder = new TreeNode(new ChapterPracticeParent.IconTreeItem(list.get(i).getTypename(), list.get(i).getId(), list.get(i).getShare())).setViewHolder(new ChapterPracticeParent(this));
             int share = list.get(i).getShare();
-            if (share != 0) {
+            if (share == 1) {
                 int id = list.get(i).getId();
                 int columnid = SubjectUtil.getSubjectNo2();
                 List<ShareData> shareData = DataSupport.where("chapterId=" + id + ";" + "columnid=" + columnid).find(ShareData.class);
@@ -130,7 +130,7 @@ public class ChapterPracticeListActivity extends RxAppCompatActivity {
                 file.setClickListener(new TreeNode.TreeNodeClickListener() {
                     @Override
                     public void onClick(TreeNode node, Object value) {
-                        if (share != 0) {
+                        if (share == 1) {
                             // 创建构建器
                             AlertDialog.Builder builder = new AlertDialog.Builder(ChapterPracticeListActivity.this);
                             // 设置参数
@@ -161,6 +161,7 @@ public class ChapterPracticeListActivity extends RxAppCompatActivity {
                             int id = ((ChapterPracticeChild.IconTreeItem) value).getNoid();
                             Intent intent = new Intent(ChapterPracticeListActivity.this, PracticeAnswerActivity.class);
                             intent.putExtra("typeid", id);
+                            intent.putExtra("zhenti", zhenti);
                             startActivity(intent);
                         }
                     }

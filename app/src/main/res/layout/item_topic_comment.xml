@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.botian.yihu.MyVideoPlayer.JustifyTextView
+                <com.botian.yihu.MyView.JustifyTextView
                     android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
                     android:textColor="@color/textColorBlack" />
             </LinearLayout>
 
-            <com.botian.yihu.MyVideoPlayer.JustifyTextView
+            <com.botian.yihu.MyView.JustifyTextView
                 android:id="@+id/date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
                 android:textSize="12.0sp" />
         </LinearLayout>
     </LinearLayout>
-    <com.botian.yihu.MyVideoPlayer.JustifyTextView
+    <com.botian.yihu.MyView.JustifyTextView
         android:id="@+id/content"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

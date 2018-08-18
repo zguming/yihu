@@ -49,10 +49,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="10.0dip"
-            android:drawableLeft="@drawable/item_comment"
             android:text="查看评论"
             android:layout_centerInParent="true"
-            android:textColor="#ffc8c8c8"
+            android:textColor="@color/blue"
             android:textSize="21sp"/>
     </RelativeLayout>
 

@@ -72,7 +72,7 @@
             android:layout_marginRight="5dp"
             android:focusableInTouchMode="true"
             android:orientation="vertical">
-            <com.botian.yihu.MyVideoPlayer.JustifyTextView
+            <com.botian.yihu.MyView.JustifyTextView
                 android:id="@+id/cailiao"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -85,7 +85,7 @@
                 android:textColor="@color/TextColorBlack"
                 android:textSize="16sp"
                 android:visibility="gone"/>
-            <com.botian.yihu.MyVideoPlayer.JustifyTextView
+            <com.botian.yihu.MyView.JustifyTextView
                 android:id="@+id/timu"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -335,7 +335,7 @@
                     android:textColor="#ff7a7a7a"
                     android:textSize="13.0sp" />
 
-                <com.botian.yihu.MyVideoPlayer.JustifyTextView
+                <com.botian.yihu.MyView.JustifyTextView
                     android:id="@+id/analyseinfo"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"

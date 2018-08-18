@@ -13,7 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.botian.yihu.MyVideoPlayer.UpdataDialog;
+import com.botian.yihu.MyView.UpdataDialog;
 import com.botian.yihu.R;
 import com.botian.yihu.activity.AboutUsActivity;
 import com.botian.yihu.activity.FeedbackErrorActivity;

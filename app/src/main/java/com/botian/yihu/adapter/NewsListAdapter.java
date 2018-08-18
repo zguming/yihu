@@ -65,6 +65,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.MyView
                 Intent intent = new Intent(mContext, NewsContentActivity.class);
                 intent.putExtra("id", data.get(position).getId() + "");
                 intent.putExtra("content", data.get(position).getcontent());
+                intent.putExtra("link", data.get(position).getJumplink());
                 mContext.startActivity(intent);
             }
         });

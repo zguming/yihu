@@ -73,7 +73,7 @@
             android:text="clarity"
             android:textAlignment="center"
             android:textColor="#ffffff" />
-        
+
         <ImageView
             android:id="@+id/fullscreen"
             android:layout_width="52.5dp"

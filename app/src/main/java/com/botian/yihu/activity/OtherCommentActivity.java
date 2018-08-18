@@ -1,18 +1,15 @@
 package com.botian.yihu.activity;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.botian.yihu.rxjavautil.MyObserver;
-import com.botian.yihu.rxjavautil.ObserverOnNextListener;
-import com.botian.yihu.rxjavautil.ProgressObserver;
 import com.botian.yihu.R;
 import com.botian.yihu.adapter.OtherCommentAdapter;
 import com.botian.yihu.api.ApiMethods;
@@ -21,6 +18,9 @@ import com.botian.yihu.beans.OtherCommentBean;
 import com.botian.yihu.beans.TopicCommentZip;
 import com.botian.yihu.beans.UserInfo;
 import com.botian.yihu.beans.ZanBean;
+import com.botian.yihu.rxjavautil.MyObserver;
+import com.botian.yihu.rxjavautil.ObserverOnNextListener;
+import com.botian.yihu.rxjavautil.ProgressObserver;
 import com.botian.yihu.util.ACache;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
@@ -51,6 +51,14 @@ public class OtherCommentActivity extends RxAppCompatActivity {
     ObserverOnNextListener<OtherCommentBean> listener1;
     @BindView(R.id.tv_praise)
     TextView tvPraise;
+    @BindView(R.id.abv)
+    ImageView abv;
+    @BindView(R.id.back)
+    ImageView back;
+    @BindView(R.id.abvq)
+    ImageView abvq;
+    @BindView(R.id.tv_comment)
+    TextView tvComment;
     private ACache mCache;
     private UserInfo userInfo;
     private int iscal = 1;//1点赞，2取消
@@ -97,9 +105,7 @@ public class OtherCommentActivity extends RxAppCompatActivity {
     }
 
     public void initView() {
-        Drawable mPraise = getResources().getDrawable(R.drawable.detail_like);
-        mPraise.setBounds(0, 0, 40, 40);
-        tvPraise.setCompoundDrawables(mPraise, null, null, null);
+
     }
 
     public void setAdapter(OtherCommentBean.DataBeanX data) {
@@ -139,7 +145,7 @@ public class OtherCommentActivity extends RxAppCompatActivity {
         });
     }
 
-    @OnClick({R.id.rl_praise, R.id.rl_comment})
+    @OnClick({R.id.rl_praise, R.id.rl_comment,R.id.back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_praise:
@@ -151,15 +157,11 @@ public class OtherCommentActivity extends RxAppCompatActivity {
                             Toast.makeText(OtherCommentActivity.this, a, Toast.LENGTH_SHORT).show();
                         } else {
                             if (iscal == 1) {
-                                Drawable mPraise = getResources().getDrawable(R.drawable.detail_like_p);
-                                mPraise.setBounds(0, 0, 40, 40);
-                                tvPraise.setCompoundDrawables(mPraise, null, null, null);
+                                abv.setImageResource(R.drawable.detail_like_p);
                                 tvPraise.setTextColor(getResources().getColor(R.color.blue));
                                 iscal = 2;
                             } else {
-                                Drawable mPraise = getResources().getDrawable(R.drawable.detail_like);
-                                mPraise.setBounds(0, 0, 40, 40);
-                                tvPraise.setCompoundDrawables(mPraise, null, null, null);
+                                abv.setImageResource(R.drawable.detail_like);
                                 tvPraise.setTextColor(getResources().getColor(R.color.black));
                                 iscal = 1;
                             }
@@ -184,6 +186,11 @@ public class OtherCommentActivity extends RxAppCompatActivity {
                     startActivity(intent);
                 }
                 break;
+            case R.id.back:
+                finish();
+                break;
         }
     }
+
+
 }

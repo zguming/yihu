@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.botian.yihu.MyView.MyViewPager;
 import com.botian.yihu.rxjavautil.MyObserver;
 import com.botian.yihu.rxjavautil.ObserverOnNextListener;
 import com.botian.yihu.R;
@@ -36,7 +37,7 @@ public class NewsFragment extends Fragment {
     @BindView(R.id.tablayout)
     TabLayout tablayout;
     @BindView(R.id.viewpager)
-    ViewPager viewpager;
+    MyViewPager viewpager;
     private SharedPreferences pref;
     Unbinder unbinder;
     String filter;

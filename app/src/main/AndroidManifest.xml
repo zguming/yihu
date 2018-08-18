@@ -156,6 +156,10 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".activity.MoniListActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".activity.PerDayActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.AdActivity"
+            android:screenOrientation="portrait"/>
 
         <!--
         注意：如果您想兼容Android N或者以上的设备，必须要在AndroidManifest.xml文件中配置FileProvider来访
